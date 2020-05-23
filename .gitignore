@@ -1,0 +1,11 @@
+node_modules
+src/*.js*
+src/*.d.ts
+sample/**/*.d.ts
+react-nativescript-navigation/dist
+react-nativescript-navigation/src/*.js
+react-nativescript-navigation/src/**/*.js
+*.mov
+github_img/HQ
+.npmrc
+sample/.awcache

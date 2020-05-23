@@ -1,0 +1,51 @@
+{
+  "name": "react-nativescript-navigation",
+  "version": "0.0.1",
+  "description": "React Navigation integration for NativeScript",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "postinstall": "patch-package",
+    "prettier": "prettier --print-width 120 --tab-width 4 --trailing-comma es5 --end-of-line lf --write \"src/**/*.ts\"",
+    "build": "tsc --project ./tsconfig.json",
+    "dev": "tsc --watch --project ./tsconfig.json",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shirakaba/react-nativescript-navigation.git"
+  },
+  "keywords": [
+    "NativeScript",
+    "Navigation",
+    "React"
+  ],
+  "author": "Jamie Birch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shirakaba/react-nativescript-navigation/issues"
+  },
+  "homepage": "https://github.com/shirakaba/react-nativescript-navigation#readme",
+  "peerDependencies": {
+    "@types/react": "16.9.34",
+    "react": "^16.9.0",
+    "tns-core-modules": "^6.5.0"
+  },
+  "dependencies": {
+    "react-nativescript": "file:../../react-nativescript/react-nativescript",
+  },
+  "devDependencies": {
+    "@types/react": "16.9.34",
+    "patch-package": "^6.2.2",
+    "prettier": "1.18.2",
+    "react": "16.9.0",
+    "tns-core-modules": "6.5.0",
+    "typescript": "3.7.2"
+  }
+}
