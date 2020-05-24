@@ -48,15 +48,16 @@ function TabNavigator({
     initialRouteName,
   });
 
+  console.log(`GOT INDEX:`, state.index);
   console.log(`GOT ROUTES:`, state.routes);
 
   return (
-    <stackLayout style={{ width: "100%", height: "100%", }}>
-      <flexboxLayout style={{ flexGrow: 0, flexDirection: 'row', backgroundColor: "lightgray", ...tabBarStyle }}>
+    <tabs style={{ width: "100%", height: "100%", }} selectedIndex={state.index}>
+      <tabStrip nodeRole="tabStrip">
         {state.routes.map(route => (
-          <button
+          <tabStripItem
             key={route.key}
-            style={{ flexGrow: 1, color: "black", backgroundColor: "white", borderColor: "gray", borderWidth: 1, }}
+            nodeRole="items"
             onTap={() => {
               const event = navigation.emit({
                 type: 'tabPress',
@@ -73,16 +74,28 @@ function TabNavigator({
               }
             }}
           >
-            {descriptors[route.key].options.title || route.name}
-          </button>
+            <label
+              nodeRole="label"
+              style={{}}
+            >
+              {descriptors[route.key].options.title || route.name}
+            </label>
+            {/* We'll be able to fill this later by exposing options. */}
+            <image
+              nodeRole="image"
+              style={{}}
+            />
+          </tabStripItem>
         ))}
-      </flexboxLayout>
+      </tabStrip>
 
-      <flexboxLayout style={{ flexDirection: 'column', backgroundColor: "cyan", flexGrow: 1, width: "100%", height: "100%", ...contentStyle }}>
-        {descriptors[state.routes[state.index].key].render()}
-      </flexboxLayout>
-
-    </stackLayout>
+      {state.routes.map(route => (
+        <tabContentItem key={route.key} nodeRole="items">
+          {/* {descriptors[route[state.index].key].render()} */}
+          {descriptors[route.key].render()}
+        </tabContentItem>
+      ))}
+    </tabs>
   );
 }
 

@@ -43,7 +43,7 @@ function Second({}){
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "yellow",
+                backgroundColor: "orange",
             }}
         >
             <label fontSize={24} text={"You're viewing the second route!"}/>
