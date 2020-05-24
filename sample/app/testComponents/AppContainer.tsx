@@ -21,46 +21,32 @@ const AppContainer = () => (
 
 function First({}){
     return (
-        <flexboxLayout flexDirection={"row"} flexGrow={1} backgroundColor={"purple"}>
-            <flexboxLayout
-                backgroundColor={"green"}
-                flexDirection={"column"}
-                flexGrow={1}
-                paddingTop={7}
-                // position={"absolute"}
-                alignItems={"center"}
-            >
-                <label text={"LABEL"}/>
-            </flexboxLayout>
-            <flexboxLayout
-                backgroundColor={"blue"}
-                flexDirection={"column"}
-            >
-                <button text={"BUTTON"} className={""}/>
-            </flexboxLayout>
+        <flexboxLayout
+            style={{
+                flexGrow: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "yellow",
+            }}
+        >
+            <label fontSize={24} text={"You're viewing the first route!"}/>
         </flexboxLayout>
     );
 }
 
 function Second({}){
     return (
-        <flexboxLayout flexDirection={"row"} flexGrow={1} backgroundColor={"purple"}>
-            <flexboxLayout
-                backgroundColor={"orange"}
-                flexDirection={"column"}
-                flexGrow={1}
-                paddingTop={7}
-                // position={"absolute"}
-                alignItems={"center"}
-            >
-                <label text={"Some other label"}/>
-            </flexboxLayout>
-            <flexboxLayout
-                backgroundColor={"yellow"}
-                flexDirection={"column"}
-            >
-                <button text={"Another button"} className={""}/>
-            </flexboxLayout>
+        <flexboxLayout
+            style={{
+                flexGrow: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "yellow",
+            }}
+        >
+            <label fontSize={24} text={"You're viewing the second route!"}/>
         </flexboxLayout>
     );
 }
