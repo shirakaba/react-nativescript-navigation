@@ -1,24 +1,12 @@
 import * as React from 'react';
 import {} from "react-nativescript"; // Import just to get the TypeScript global types filled
-import type {
-  NavigationHelpersContext as NavigationHelpersContextT,
-  useNavigationBuilder as useNavigationBuilderT,
-  TabRouter as TabRouterT,
-  TabActions as TabActionsT,
-} from '@react-navigation/native/lib/typescript/src/index';
 
 import {
   NavigationHelpersContext,
   useNavigationBuilder,
   TabRouter,
   TabActions,
-} from '@react-navigation/native/lib/commonjs';
-
-const cjs = require('@react-navigation/native/lib/commonjs');
-const NavigationHelpersContext = cjs.NavigationHelpersContext as typeof NavigationHelpersContextT;
-const useNavigationBuilder = cjs.useNavigationBuilder as typeof useNavigationBuilderT;
-const TabRouter = cjs.TabRouter as typeof TabRouterT;
-const TabActions = cjs.TabActions as typeof TabActionsT;
+} from '@react-navigation/core';
 
 export function TabNavigator({
   initialRouteName,

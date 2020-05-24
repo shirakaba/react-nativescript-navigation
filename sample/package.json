@@ -18,9 +18,10 @@
   "repository": "<fill-your-repository-here>",
   "dependencies": {
     "@nativescript/theme": "2.2.1",
+    "@react-navigation/native": "^5.4.3",
     "react": "16.9.0",
-    "react-nativescript-navigation": "file:../react-nativescript-navigation",
     "react-nativescript": "file:../../react-nativescript/react-nativescript",
+    "react-nativescript-navigation": "file:../react-nativescript-navigation",
     "tns-core-modules": "~6.5.0"
   },
   "devDependencies": {

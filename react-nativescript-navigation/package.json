@@ -35,6 +35,7 @@
   "peerDependencies": {
     "@types/react": "16.9.34",
     "react": "^16.9.0",
+    "@react-navigation/native": "^5.4.3",
     "tns-core-modules": "^6.5.0"
   },
   "dependencies": {
