@@ -1,36 +1,77 @@
 import { hot } from 'react-hot-loader/root';
 import * as React from "react";
-import {
-    createNavigatorFactory,
-} from '@react-navigation/core';
-/* I get the same errors mentioning "can't resolve 'react-native'" regardless of how I import it :( */
-// const { createNavigatorFactory } = require('@react-navigation/native');
-import { TabNavigator } from "react-nativescript-navigation";
+import { BaseNavigationContainer } from '@react-navigation/core';
+// import { NavigationContainer } from '@react-navigation/native';
+import { default as tabNavigatorFactory } from "react-nativescript-navigation";
 
-const navigatorFactory = createNavigatorFactory(TabNavigator);
+const TabNavigator = tabNavigatorFactory();
 
 const AppContainer = () => (
-    <flexboxLayout flexDirection={"row"} height={40} backgroundColor={"purple"}>
-        <flexboxLayout
-            backgroundColor={"green"}
-            flexDirection={"column"}
-            flexGrow={1}
-            paddingTop={7}
-            // position={"absolute"}
-            alignItems={"center"}
-        >
-            <label text={"LABEL"}/>
-        </flexboxLayout>
-        <flexboxLayout
-            backgroundColor={"blue"}
-            flexDirection={"column"}
-        >
-            <button text={"BUTTON"} className={""}/>
-        </flexboxLayout>
-        {/* <button text={"BUTTON"} className={""}/> */}
-    </flexboxLayout>
+    <BaseNavigationContainer>
+        <TabNavigator.Navigator initialRouteName="first">
+            <TabNavigator.Screen name="first">
+                {renderFirst}
+            </TabNavigator.Screen>
+            <TabNavigator.Screen name="second">
+                {renderSecond}
+            </TabNavigator.Screen>
+        </TabNavigator.Navigator>
+    </BaseNavigationContainer>
 );
 
+function First({}){
+    return (
+        <flexboxLayout flexDirection={"row"} height={40} backgroundColor={"purple"}>
+            <flexboxLayout
+                backgroundColor={"green"}
+                flexDirection={"column"}
+                flexGrow={1}
+                paddingTop={7}
+                // position={"absolute"}
+                alignItems={"center"}
+            >
+                <label text={"LABEL"}/>
+            </flexboxLayout>
+            <flexboxLayout
+                backgroundColor={"blue"}
+                flexDirection={"column"}
+            >
+                <button text={"BUTTON"} className={""}/>
+            </flexboxLayout>
+        </flexboxLayout>
+    );
+}
+
+function Second({}){
+    return (
+        <flexboxLayout flexDirection={"row"} height={40} backgroundColor={"purple"}>
+            <flexboxLayout
+                backgroundColor={"orange"}
+                flexDirection={"column"}
+                flexGrow={1}
+                paddingTop={7}
+                // position={"absolute"}
+                alignItems={"center"}
+            >
+                <label text={"Some other label"}/>
+            </flexboxLayout>
+            <flexboxLayout
+                backgroundColor={"yellow"}
+                flexDirection={"column"}
+            >
+                <button text={"Another button"} className={""}/>
+            </flexboxLayout>
+        </flexboxLayout>
+    );
+}
+
+function renderFirst(){
+    return <First/>;
+}
+
+function renderSecond(){
+    return <Second/>;
+}
 
 export default hot(AppContainer);
 // export default AppContainer;
