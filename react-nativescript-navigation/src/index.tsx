@@ -51,12 +51,12 @@ function TabNavigator({
   console.log(`GOT ROUTES:`, state.routes);
 
   return (
-    <NavigationHelpersContext.Provider value={navigation}>
+    <stackLayout style={{ width: "100%", height: "100%", }}>
       <flexboxLayout style={{ flexGrow: 0, flexDirection: 'row', backgroundColor: "gold", ...tabBarStyle }}>
         {state.routes.map(route => (
-          <button
+          <label
             key={route.key}
-            style={{ flexGrow: 1, color: "black", backgroundColor: "purple" }}
+            style={{ flexGrow: 1, color: "black", backgroundColor: "purple", width: 200, height: 100, }}
             onTap={() => {
               const event = navigation.emit({
                 type: 'tabPress',
@@ -74,13 +74,15 @@ function TabNavigator({
             }}
           >
             {descriptors[route.key].options.title || route.name}
-          </button>
+          </label>
         ))}
       </flexboxLayout>
-      <flexboxLayout style={{ flexDirection: 'column', backgroundColor: "cyan", flexGrow: 1, ...contentStyle }}>
+
+      <flexboxLayout style={{ flexDirection: 'column', backgroundColor: "cyan", flexGrow: 1, width: "100%", height: "100%", ...contentStyle }}>
         {descriptors[state.routes[state.index].key].render()}
       </flexboxLayout>
-    </NavigationHelpersContext.Provider>
+
+    </stackLayout>
   );
 }
 

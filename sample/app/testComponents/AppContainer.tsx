@@ -21,7 +21,7 @@ const AppContainer = () => (
 
 function First({}){
     return (
-        <flexboxLayout flexDirection={"row"} height={40} backgroundColor={"purple"}>
+        <flexboxLayout flexDirection={"row"} flexGrow={1} backgroundColor={"purple"}>
             <flexboxLayout
                 backgroundColor={"green"}
                 flexDirection={"column"}
@@ -44,7 +44,7 @@ function First({}){
 
 function Second({}){
     return (
-        <flexboxLayout flexDirection={"row"} height={40} backgroundColor={"purple"}>
+        <flexboxLayout flexDirection={"row"} flexGrow={1} backgroundColor={"purple"}>
             <flexboxLayout
                 backgroundColor={"orange"}
                 flexDirection={"column"}
