@@ -1,8 +1,7 @@
 import { hot } from 'react-hot-loader/root';
 import * as React from "react";
 import { BaseNavigationContainer } from '@react-navigation/core';
-// import { NavigationContainer } from '@react-navigation/native';
-import { default as tabNavigatorFactory } from "react-nativescript-navigation";
+import { default as tabNavigatorFactory } from "react-nativescript-navigation/dist/TabNavigator";
 
 const TabNavigator = tabNavigatorFactory();
 
@@ -50,4 +49,3 @@ function Second({}){
 }
 
 export default hot(AppContainer);
-// export default AppContainer;
