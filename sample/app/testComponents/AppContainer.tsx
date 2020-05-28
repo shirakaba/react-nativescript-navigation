@@ -16,6 +16,7 @@ const AppContainer = () => (
 );
 
 function First({}){
+    console.log(`[First] render`);
     return (
         <flexboxLayout
             style={{
@@ -32,6 +33,7 @@ function First({}){
 }
 
 function Second({}){
+    console.log(`[Second] render`);
     return (
         <flexboxLayout
             style={{
@@ -39,7 +41,7 @@ function Second({}){
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "orange",
+                backgroundColor: "gold",
             }}
         >
             <label fontSize={24} text={"You're viewing the second route!"}/>
