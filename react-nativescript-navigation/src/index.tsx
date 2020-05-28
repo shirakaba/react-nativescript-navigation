@@ -48,31 +48,48 @@ function TabNavigator({
     initialRouteName,
   });
 
-  console.log(`GOT INDEX:`, state.index);
-  console.log(`GOT ROUTES:`, state.routes);
+  // console.log(`[TabNavigator] render`);
 
   return (
-    <tabs style={{ width: "100%", height: "100%", }} selectedIndex={state.index}>
+    <tabs
+      style={{ width: "100%", height: "100%", }}
+      selectedIndex={state.index}
+      // onSelectedIndexChange={(args) => {
+      //   console.log(`[Tabs.onSelectedIndexChange] ${args.oldValue} -> ${args.value}`);
+      // }}
+      /**
+       * Firing the navigation event upon onSelectedIndexChanged handles both the case of
+       * tapping the target TabStripItem and swiping between TabContentItems.
+       * 
+       * There is also onSelectedIndexChange (the Property change event) which fires afterward.
+       * I think either work fine; would have to closely inspect the implementation to say more.
+       */
+      onSelectedIndexChanged={(args) => {
+        // console.log(`[Tabs.onSelectedIndexChanged] ${args.oldIndex} -> ${args.newIndex}`);
+
+        const route = state.routes[args.newIndex];
+
+        const event = navigation.emit({
+          type: 'tabPress',
+          target: route.key,
+          canPreventDefault: true,
+        });
+        // console.log(`[Tabs.onSelectedIndexChanged] emitted event`, event);
+
+        // Can't figure out typings, but defaultPrevented is clearly a populated boolean.
+        if (!(event as any).defaultPrevented) {
+          navigation.dispatch({
+            ...TabActions.jumpTo(route.name),
+            target: state.key,
+          });
+        }
+      }}
+    >
       <tabStrip nodeRole="tabStrip">
         {state.routes.map(route => (
           <tabStripItem
             key={route.key}
             nodeRole="items"
-            onTap={() => {
-              const event = navigation.emit({
-                type: 'tabPress',
-                target: route.key,
-                canPreventDefault: true,
-              });
-
-              // @ts-ignore The docs said this should exist, so :shrug:
-              if (!event.defaultPrevented) {
-                navigation.dispatch({
-                  ...TabActions.jumpTo(route.name),
-                  target: state.key,
-                });
-              }
-            }}
           >
             <label
               nodeRole="label"
@@ -91,7 +108,6 @@ function TabNavigator({
 
       {state.routes.map(route => (
         <tabContentItem key={route.key} nodeRole="items">
-          {/* {descriptors[route[state.index].key].render()} */}
           {descriptors[route.key].render()}
         </tabContentItem>
       ))}
