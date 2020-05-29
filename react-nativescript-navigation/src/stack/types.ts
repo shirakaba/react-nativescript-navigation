@@ -108,7 +108,8 @@ export type Scene<T> = {
   // };
 };
 
-export type StackHeaderMode = 'float' | 'screen' | 'none';
+// export type StackHeaderMode = 'float' | 'screen' | 'none';
+export type StackHeaderMode = 'float' | 'none';
 
 export type StackCardMode = 'card' | 'modal';
 
@@ -353,7 +354,7 @@ export type StackNavigationConfig = {
   /**
    * @RNS Supports headerMode "none" and "float", but not "screen".
    */
-  headerMode?: Omit<StackHeaderMode, "screen">;
+  headerMode?: StackHeaderMode;
   /**
    * If `false`, the keyboard will NOT automatically dismiss when navigating to a new screen.
    * Defaults to `true`.

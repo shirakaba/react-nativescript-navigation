@@ -2,22 +2,23 @@
  * @see https://github.com/react-navigation/react-navigation/blob/master/packages/stack/src/views/Stack/StackView.tsx
  */
 import * as React from 'react';
-import { View, Platform, StyleSheet } from 'react-native';
-import { SafeAreaConsumer, EdgeInsets } from 'react-native-safe-area-context';
+// import { View, Platform, StyleSheet } from 'react-native';
+// import { SafeAreaConsumer, EdgeInsets } from 'react-native-safe-area-context';
 import {
   NavigationHelpersContext,
   StackActions,
   StackNavigationState,
   Route,
-} from '@react-navigation/native';
+} from '@react-navigation/core';
+type EdgeInsets = { left: number, top: number, bottom: number, right: number };
 
-import { GestureHandlerRootView } from '../GestureHandler';
+// import { GestureHandlerRootView } from '../GestureHandler';
 import CardStack from './CardStack';
-import KeyboardManager from '../KeyboardManager';
+// import KeyboardManager from '../KeyboardManager';
 import HeaderContainer, {
   Props as HeaderContainerProps,
 } from '../Header/HeaderContainer';
-import SafeAreaProviderCompat from '../SafeAreaProviderCompat';
+// import SafeAreaProviderCompat from '../SafeAreaProviderCompat';
 import {
   StackNavigationHelpers,
   StackNavigationConfig,
@@ -48,7 +49,7 @@ type State = {
   descriptors: StackDescriptorMap;
 };
 
-const GestureHandlerWrapper = GestureHandlerRootView ?? View;
+// const GestureHandlerWrapper = GestureHandlerRootView ?? View;
 
 /**
  * Compare two arrays with primitive values as the content.
@@ -422,7 +423,8 @@ export default class StackView extends React.Component<Props, State> {
       closingRouteKeys,
     } = this.state;
 
-    const headerMode = mode === 'card' && Platform.OS === 'ios' ? 'float' : 'screen';
+    // const headerMode = mode === 'card' && Platform.OS === 'ios' ? 'float' : 'screen';
+    const headerMode = 'float';
 
     // NativeScript doesn't have anything as convenient as SafeAreaProvider... yet.
     const insets = {

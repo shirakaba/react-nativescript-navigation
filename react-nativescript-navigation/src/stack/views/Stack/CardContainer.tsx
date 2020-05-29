@@ -190,7 +190,8 @@ function CardContainer({
       accessibilityElementsHidden={!focused}
       importantForAccessibility={focused ? 'auto' : 'no-hide-descendants'}
       // pointerEvents={active ? 'box-none' : pointerEvents}
-      pageOverflowEnabled={headerMode === 'screen' && mode === 'card'}
+      // pageOverflowEnabled={headerMode === 'screen' && mode === 'card'}
+      pageOverflowEnabled={false}
       containerStyle={
         headerMode === 'float' && !headerTransparent && headerShown !== false
           ? { marginTop: headerHeight }
