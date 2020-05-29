@@ -1,25 +1,26 @@
 import * as React from 'react';
-import {
-  Animated,
-  StyleSheet,
-  LayoutChangeEvent,
-  Dimensions,
-  Platform,
-} from 'react-native';
-import { EdgeInsets } from 'react-native-safe-area-context';
-import { Route, StackNavigationState } from '@react-navigation/native';
+// import {
+//   Animated,
+//   StyleSheet,
+//   LayoutChangeEvent,
+//   Dimensions,
+//   Platform,
+// } from 'react-native';
+// import { EdgeInsets } from 'react-native-safe-area-context';
+type EdgeInsets = { left: number, top: number, bottom: number, right: number };
+import { Route, StackNavigationState } from '@react-navigation/core';
 
-import { MaybeScreenContainer, MaybeScreen } from '../Screens';
-import { getDefaultHeaderHeight } from '../Header/HeaderSegment';
+// import { MaybeScreenContainer, MaybeScreen } from '../Screens';
+// import { getDefaultHeaderHeight } from '../Header/HeaderSegment';
 import { Props as HeaderContainerProps } from '../Header/HeaderContainer';
-import CardContainer from './CardContainer';
-import {
-  DefaultTransition,
-  ModalTransition,
-} from '../../TransitionConfigs/TransitionPresets';
-import { forNoAnimation as forNoAnimationHeader } from '../../TransitionConfigs/HeaderStyleInterpolators';
-import { forNoAnimation as forNoAnimationCard } from '../../TransitionConfigs/CardStyleInterpolators';
-import getDistanceForDirection from '../../utils/getDistanceForDirection';
+// import CardContainer from './CardContainer';
+// import {
+//   DefaultTransition,
+//   ModalTransition,
+// } from '../../TransitionConfigs/TransitionPresets';
+// import { forNoAnimation as forNoAnimationHeader } from '../../TransitionConfigs/HeaderStyleInterpolators';
+// import { forNoAnimation as forNoAnimationCard } from '../../TransitionConfigs/CardStyleInterpolators';
+// import getDistanceForDirection from '../../utils/getDistanceForDirection';
 import {
   Layout,
   StackHeaderMode,
@@ -386,10 +387,9 @@ export default class CardStack extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <MaybeScreenContainer
-          enabled={isScreensEnabled}
+        <stackLayout
           style={styles.container}
-          onLayout={this.handleLayout}
+          // onLayout={this.handleLayout}
         >
           {routes.map((route, index, self) => {
             const focused = focusedRoute.key === route.key;
@@ -486,9 +486,9 @@ export default class CardStack extends React.Component<Props, State> {
                 }
               }
             }
-
+            // A screen
             return (
-              <MaybeScreen
+              <stackLayout
                 key={route.key}
                 style={StyleSheet.absoluteFill}
                 enabled={isScreensEnabled}
@@ -534,10 +534,10 @@ export default class CardStack extends React.Component<Props, State> {
                   gestureVelocityImpact={gestureVelocityImpact}
                   {...transitionConfig}
                 />
-              </MaybeScreen>
+              </stackLayout>
             );
           })}
-        </MaybeScreenContainer>
+        </stackLayout>
         {headerMode === 'float'
           ? renderHeader({
               mode: 'float',
