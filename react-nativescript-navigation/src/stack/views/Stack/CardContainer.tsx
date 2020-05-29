@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Animated, View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { Route, useTheme } from '@react-navigation/native';
+// import { Animated, View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { Route } from '@react-navigation/core';
 import { Props as HeaderContainerProps } from '../Header/HeaderContainer';
 import Card from './Card';
-import HeaderHeightContext from '../../utils/HeaderHeightContext';
+import HeaderHeightContext from '../../../utils/HeaderHeightContext';
 import {
   Scene,
   Layout,
@@ -11,24 +11,28 @@ import {
   StackCardMode,
   TransitionPreset,
 } from '../../types';
+import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
 
-type Props = TransitionPreset & {
+type RNSStyle = ViewBaseAttributes["style"];
+type StyleProp<T> = T;
+
+type Props = /* TransitionPreset & */ {
   index: number;
   active: boolean;
   focused: boolean;
   closing: boolean;
   layout: Layout;
-  gesture: Animated.Value;
+  // gesture: Animated.Value;
   previousScene?: Scene<Route<string>>;
   scene: Scene<Route<string>>;
   safeAreaInsetTop: number;
   safeAreaInsetRight: number;
   safeAreaInsetBottom: number;
   safeAreaInsetLeft: number;
-  cardOverlay?: (props: { style: StyleProp<ViewStyle> }) => React.ReactNode;
+  cardOverlay?: (props: { style: StyleProp<RNSStyle> }) => React.ReactNode;
   cardOverlayEnabled?: boolean;
   cardShadowEnabled?: boolean;
-  cardStyle?: StyleProp<ViewStyle>;
+  cardStyle?: StyleProp<RNSStyle>;
   getPreviousRoute: (props: {
     route: Route<string>;
   }) => Route<string> | undefined;
@@ -69,12 +73,12 @@ function CardContainer({
   cardOverlay,
   cardOverlayEnabled,
   cardShadowEnabled,
-  cardStyle,
-  cardStyleInterpolator,
+  cardStyle = {},
+  // cardStyleInterpolator,
   closing,
-  gesture,
+  // gesture,
   focused,
-  gestureDirection,
+  // gestureDirection,
   gestureEnabled,
   gestureResponseDistance,
   gestureVelocityImpact,
@@ -83,7 +87,7 @@ function CardContainer({
   mode,
   headerMode,
   headerShown,
-  headerStyleInterpolator,
+  // headerStyleInterpolator,
   headerTransparent,
   headerHeight,
   onHeaderHeightChange,
@@ -104,7 +108,7 @@ function CardContainer({
   safeAreaInsetRight,
   safeAreaInsetTop,
   scene,
-  transitionSpec,
+  // transitionSpec,
 }: Props) {
   React.useEffect(() => {
     onPageChangeConfirm?.();
@@ -137,38 +141,38 @@ function CardContainer({
     left: safeAreaInsetLeft,
   };
 
-  const { colors } = useTheme();
+  // const { colors } = useTheme();
 
-  const [pointerEvents, setPointerEvents] = React.useState<'box-none' | 'none'>(
-    'box-none'
-  );
+  // const [pointerEvents, setPointerEvents] = React.useState<'box-none' | 'none'>(
+  //   'box-none'
+  // );
 
-  React.useEffect(() => {
-    // `addListener` may not exist on web and older versions of React Native
-    // @ts-ignore
-    const listener = scene.progress.next?.addListener?.(
-      ({ value }: { value: number }) => {
-        setPointerEvents(value <= EPSILON ? 'box-none' : 'none');
-      }
-    );
+  // React.useEffect(() => {
+  //   // `addListener` may not exist on web and older versions of React Native
+  //   // @ts-ignore
+  //   const listener = scene.progress.next?.addListener?.(
+  //     ({ value }: { value: number }) => {
+  //       setPointerEvents(value <= EPSILON ? 'box-none' : 'none');
+  //     }
+  //   );
 
-    return () => {
-      if (listener) {
-        // @ts-ignore
-        scene.progress.next?.removeListener?.(listener);
-      }
-    };
-  }, [pointerEvents, scene.progress.next]);
+  //   return () => {
+  //     if (listener) {
+  //       // @ts-ignore
+  //       scene.progress.next?.removeListener?.(listener);
+  //     }
+  //   };
+  // }, [pointerEvents, scene.progress.next]);
 
   return (
     <Card
       index={index}
-      gestureDirection={gestureDirection}
+      // gestureDirection={gestureDirection}
       layout={layout}
       insets={insets}
-      gesture={gesture}
-      current={scene.progress.current}
-      next={scene.progress.next}
+      // gesture={gesture}
+      // current={scene.progress.current}
+      // next={scene.progress.next}
       closing={closing}
       onOpen={handleOpen}
       onClose={handleClose}
@@ -181,39 +185,40 @@ function CardContainer({
       gestureEnabled={gestureEnabled}
       gestureResponseDistance={gestureResponseDistance}
       gestureVelocityImpact={gestureVelocityImpact}
-      transitionSpec={transitionSpec}
-      styleInterpolator={cardStyleInterpolator}
+      // transitionSpec={transitionSpec}
+      // styleInterpolator={cardStyleInterpolator}
       accessibilityElementsHidden={!focused}
       importantForAccessibility={focused ? 'auto' : 'no-hide-descendants'}
-      pointerEvents={active ? 'box-none' : pointerEvents}
+      // pointerEvents={active ? 'box-none' : pointerEvents}
       pageOverflowEnabled={headerMode === 'screen' && mode === 'card'}
       containerStyle={
         headerMode === 'float' && !headerTransparent && headerShown !== false
           ? { marginTop: headerHeight }
           : null
       }
-      contentStyle={[{ backgroundColor: colors.background }, cardStyle]}
-      style={StyleSheet.absoluteFill}
+      // contentStyle={[{ backgroundColor: colors.background }, cardStyle]}
+      contentStyle={cardStyle}
+      style={styles.fill}
     >
-      <View style={styles.container}>
-        <View style={styles.scene}>
-          <HeaderHeightContext.Provider value={headerHeight}>
-            {renderScene({ route: scene.route })}
-          </HeaderHeightContext.Provider>
-        </View>
-      </View>
+      {/* <flexboxLayout style={styles.scene}> */}
+        <HeaderHeightContext.Provider value={headerHeight}>
+          {renderScene({ route: scene.route })}
+        </HeaderHeightContext.Provider>
+      {/* </flexboxLayout> */}
     </Card>
   );
 }
 
 export default React.memo(CardContainer);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column-reverse',
-  },
+const styles = {
+  fill: {
+    width: "100%",
+    height: "100%",
+  } as RNSStyle,
   scene: {
-    flex: 1,
-  },
-});
+    flexGrow: 1,
+    width: "100%",
+    height: "100%",
+  } as RNSStyle,
+};

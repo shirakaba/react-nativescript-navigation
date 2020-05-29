@@ -31,6 +31,7 @@ import {
   StackDescriptor,
 } from '../../types';
 import { Screen, EventData, Frame, isIOS, isAndroid, Device } from "@nativescript/core";
+import CardContainer from './CardContainer';
 
 // type GestureValues = {
 //   [key: string]: Animated.Value;
