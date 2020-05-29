@@ -201,19 +201,6 @@ function CardContainer({
             {renderScene({ route: scene.route })}
           </HeaderHeightContext.Provider>
         </View>
-        {headerMode === 'screen'
-          ? renderHeader({
-              mode: 'screen',
-              layout,
-              insets,
-              scenes: [previousScene, scene],
-              getPreviousRoute,
-              getFocusedRoute,
-              gestureDirection,
-              styleInterpolator: headerStyleInterpolator,
-              onContentHeightChange: onHeaderHeightChange,
-            })
-          : null}
       </View>
     </Card>
   );
