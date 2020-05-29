@@ -388,28 +388,28 @@ export default class CardStack extends React.Component<Props, State> {
     return (
       <frame
         style={styles.container}
+        // TODO: investigate "always"
+        actionBarVisibility={headerMode === "none" ? "never" : "auto"}
         // onLayout={this.handleLayout}
       >
-        {headerMode === 'float'
-          ? renderHeader({
-              mode: 'float',
-              layout,
-              insets: { top, right, bottom, left },
-              scenes,
-              getPreviousRoute,
-              getFocusedRoute: this.getFocusedRoute,
-              onContentHeightChange: this.handleHeaderLayout,
-              gestureDirection:
-                focusedOptions.gestureDirection !== undefined
-                  ? focusedOptions.gestureDirection
-                  : defaultTransitionPreset.gestureDirection,
-              styleInterpolator:
-                focusedOptions.headerStyleInterpolator !== undefined
-                  ? focusedOptions.headerStyleInterpolator
-                  : defaultTransitionPreset.headerStyleInterpolator,
-              style: styles.floating,
-            })
-          : null
+        {renderHeader({
+            mode: "float",
+            layout,
+            insets: { top, right, bottom, left },
+            scenes,
+            getPreviousRoute,
+            getFocusedRoute: this.getFocusedRoute,
+            onContentHeightChange: this.handleHeaderLayout,
+            gestureDirection:
+              focusedOptions.gestureDirection !== undefined
+                ? focusedOptions.gestureDirection
+                : defaultTransitionPreset.gestureDirection,
+            styleInterpolator:
+              focusedOptions.headerStyleInterpolator !== undefined
+                ? focusedOptions.headerStyleInterpolator
+                : defaultTransitionPreset.headerStyleInterpolator,
+            style: styles.floating,
+          })
         }
 
         {routes.map((route, index, self) => {

@@ -348,7 +348,10 @@ export type StackNavigationOptions = StackHeaderOptions &
 
 export type StackNavigationConfig = {
   mode?: StackCardMode;
-  headerMode?: StackHeaderMode;
+  /**
+   * @RNS Supports headerMode "none" and "float", but not "screen".
+   */
+  headerMode?: Omit<StackHeaderMode, "screen">;
   /**
    * If `false`, the keyboard will NOT automatically dismiss when navigating to a new screen.
    * Defaults to `true`.
