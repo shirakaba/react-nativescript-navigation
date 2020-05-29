@@ -88,23 +88,24 @@ export type Scene<T> = {
   descriptor: StackDescriptor;
   /**
    * Animated nodes representing the progress of the animation.
+   * @RNS We won't be supporting this.
    */
-  progress: {
-    /**
-     * Progress value of the current screen.
-     */
-    current: Animated.AnimatedInterpolation;
-    /**
-     * Progress value for the screen after this one in the stack.
-     * This can be `undefined` in case the screen animating is the last one.
-     */
-    next?: Animated.AnimatedInterpolation;
-    /**
-     * Progress value for the screen before this one in the stack.
-     * This can be `undefined` in case the screen animating is the first one.
-     */
-    previous?: Animated.AnimatedInterpolation;
-  };
+  // progress: {
+  //   /**
+  //    * Progress value of the current screen.
+  //    */
+  //   current: Animated.AnimatedInterpolation;
+  //   /**
+  //    * Progress value for the screen after this one in the stack.
+  //    * This can be `undefined` in case the screen animating is the last one.
+  //    */
+  //   next?: Animated.AnimatedInterpolation;
+  //   /**
+  //    * Progress value for the screen before this one in the stack.
+  //    * This can be `undefined` in case the screen animating is the first one.
+  //    */
+  //   previous?: Animated.AnimatedInterpolation;
+  // };
 };
 
 export type StackHeaderMode = 'float' | 'screen' | 'none';
@@ -245,8 +246,9 @@ export type StackHeaderProps = {
   navigation: StackNavigationProp<ParamListBase>;
   /**
    * Interpolated styles for various elements in the header.
+   * @RNS We're not supporting this.
    */
-  styleInterpolator: StackHeaderStyleInterpolator;
+  // styleInterpolator: StackHeaderStyleInterpolator;
 };
 
 export type StackDescriptor = Descriptor<

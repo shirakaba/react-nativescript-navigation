@@ -19,11 +19,15 @@ type EdgeInsets = { left: number, top: number, bottom: number, right: number };
 import {
   Layout,
   Scene,
-  StackHeaderStyleInterpolator,
+  // StackHeaderStyleInterpolator,
   StackNavigationProp,
-  GestureDirection,
+  // GestureDirection,
 } from '../../types';
 import { ActionBarAttributes } from 'react-nativescript/dist/lib/react-nativescript-jsx';
+import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
+
+type RNSStyle = ViewBaseAttributes["style"];
+type StyleProp<T> = T;
 
 export type Props = {
   mode: 'float' | 'screen';
@@ -38,9 +42,9 @@ export type Props = {
     route: Route<string>;
     height: number;
   }) => void;
-  styleInterpolator: StackHeaderStyleInterpolator;
-  gestureDirection: GestureDirection;
-  style?: StyleProp<ViewStyle>;
+  // styleInterpolator: StackHeaderStyleInterpolator;
+  // gestureDirection: GestureDirection;
+  style?: StyleProp<RNSStyle>;
 };
 
 export default function HeaderContainer({
@@ -51,8 +55,8 @@ export default function HeaderContainer({
   getFocusedRoute,
   getPreviousRoute,
   onContentHeightChange,
-  gestureDirection,
-  styleInterpolator,
+  // gestureDirection,
+  // styleInterpolator,
   style,
 }: Props) {
   const focusedRoute = getFocusedRoute();
@@ -104,17 +108,17 @@ export default function HeaderContainer({
           navigation: scene.descriptor.navigation as StackNavigationProp<
             ParamListBase
           >,
-          styleInterpolator:
-            mode === 'float'
-              ? isHeaderStatic
-                ? gestureDirection === 'vertical' ||
-                  gestureDirection === 'vertical-inverted'
-                  ? forSlideUp
-                  : gestureDirection === 'horizontal-inverted'
-                  ? forSlideRight
-                  : forSlideLeft
-                : styleInterpolator
-              : forNoAnimation,
+        //   styleInterpolator:
+        //     mode === 'float'
+        //       ? isHeaderStatic
+        //         ? gestureDirection === 'vertical' ||
+        //           gestureDirection === 'vertical-inverted'
+        //           ? forSlideUp
+        //           : gestureDirection === 'horizontal-inverted'
+        //           ? forSlideRight
+        //           : forSlideLeft
+        //         : styleInterpolator
+        //       : forNoAnimation,
         };
 
         return (
