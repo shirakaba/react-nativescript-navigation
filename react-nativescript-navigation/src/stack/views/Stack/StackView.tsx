@@ -422,45 +422,186 @@ export default class StackView extends React.Component<Props, State> {
       closingRouteKeys,
     } = this.state;
 
-    const headerMode =
-      mode === 'card' && Platform.OS === 'ios' ? 'float' : 'screen';
+    const headerMode = mode === 'card' && Platform.OS === 'ios' ? 'float' : 'screen';
+
+    // NativeScript doesn't have anything as convenient as SafeAreaProvider... yet.
+    const insets = {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0
+    };
+
+    /******* End of the things that we pass from StackView down to CardStack. ********/
+    /******* Start of the data that CardStack synthesises from StackView's props. ********/
+
+    // const { scenes, layout, gestures, headerHeights } = this.state;
+
+    const focusedRoute = state.routes[state.index];
+    const focusedDescriptor = descriptors[focusedRoute.key];
+    const focusedOptions = focusedDescriptor ? focusedDescriptor.options : {};
+
+    let defaultTransitionPreset = mode === 'modal' ? ModalTransition : DefaultTransition;
+
+    if (headerMode === 'screen') {
+      defaultTransitionPreset = {
+        ...defaultTransitionPreset,
+        headerStyleInterpolator: forNoAnimationHeader,
+      };
+    }
+
+    const {
+      top = insets.top,
+      right = insets.right,
+      bottom = insets.bottom,
+      left = insets.left,
+    } = focusedOptions.safeAreaInsets || {};
+
+    // Screens is buggy on iOS and web, so we only enable it on Android
+    // For modals, usually we want the screen underneath to be visible, so also disable it there
+    const isScreensEnabled = Platform.OS !== 'ios' && mode !== 'modal';
 
     return (
-      <NavigationHelpersContext.Provider value={navigation}>
-        <GestureHandlerWrapper style={styles.container}>
-          <SafeAreaProviderCompat>
-            <SafeAreaConsumer>
-              {(insets) => (
-                <KeyboardManager enabled={keyboardHandlingEnabled !== false}>
-                  {(props) => (
-                    <CardStack
-                      mode={mode}
-                      insets={insets as EdgeInsets}
-                      getPreviousRoute={this.getPreviousRoute}
-                      getGesturesEnabled={this.getGesturesEnabled}
-                      routes={routes}
-                      openingRouteKeys={openingRouteKeys}
-                      closingRouteKeys={closingRouteKeys}
-                      onOpenRoute={this.handleOpenRoute}
-                      onCloseRoute={this.handleCloseRoute}
-                      onTransitionStart={this.handleTransitionStart}
-                      onTransitionEnd={this.handleTransitionEnd}
-                      renderHeader={this.renderHeader}
-                      renderScene={this.renderScene}
-                      headerMode={headerMode}
-                      state={state}
-                      descriptors={descriptors}
-                      {...rest}
-                      {...props}
-                    />
-                  )}
-                </KeyboardManager>
-              )}
-            </SafeAreaConsumer>
-          </SafeAreaProviderCompat>
-        </GestureHandlerWrapper>
-      </NavigationHelpersContext.Provider>
+      <stackLayout>
+        {routes.map((route, index, self) => {
+             const focused = focusedRoute.key === route.key;
+             const gesture = gestures[route.key];
+             const scene = scenes[index];
+ 
+             const isScreenActive = scene.progress.next
+               ? scene.progress.next.interpolate({
+                   inputRange: [0, 1 - EPSILON, 1],
+                   outputRange: [1, 1, 0],
+                   extrapolate: 'clamp',
+                 })
+               : 1;
+ 
+             const {
+               safeAreaInsets,
+               headerShown,
+               headerTransparent,
+               cardShadowEnabled,
+               cardOverlayEnabled,
+               cardOverlay,
+               cardStyle,
+               animationEnabled,
+               gestureResponseDistance,
+               gestureVelocityImpact,
+               gestureDirection = defaultTransitionPreset.gestureDirection,
+               transitionSpec = defaultTransitionPreset.transitionSpec,
+               cardStyleInterpolator = animationEnabled === false
+                 ? forNoAnimationCard
+                 : defaultTransitionPreset.cardStyleInterpolator,
+               headerStyleInterpolator = defaultTransitionPreset.headerStyleInterpolator,
+             } = scene.descriptor
+               ? scene.descriptor.options
+               : ({} as StackNavigationOptions);
+ 
+             let transitionConfig = {
+               gestureDirection,
+               transitionSpec,
+               cardStyleInterpolator,
+               headerStyleInterpolator,
+             };
+ 
+             // When a screen is not the last, it should use next screen's transition config
+             // Many transitions also animate the previous screen, so using 2 different transitions doesn't look right
+             // For example combining a slide and a modal transition would look wrong otherwise
+             // With this approach, combining different transition styles in the same navigator mostly looks right
+             // This will still be broken when 2 transitions have different idle state (e.g. modal presentation),
+             // but majority of the transitions look alright
+             if (index !== self.length - 1) {
+               const nextScene = scenes[index + 1];
+ 
+               if (nextScene) {
+                 const {
+                   animationEnabled,
+                   gestureDirection = defaultTransitionPreset.gestureDirection,
+                   transitionSpec = defaultTransitionPreset.transitionSpec,
+                   cardStyleInterpolator = animationEnabled === false
+                     ? forNoAnimationCard
+                     : defaultTransitionPreset.cardStyleInterpolator,
+                   headerStyleInterpolator = defaultTransitionPreset.headerStyleInterpolator,
+                 } = nextScene.descriptor
+                   ? nextScene.descriptor.options
+                   : ({} as StackNavigationOptions);
+ 
+                 transitionConfig = {
+                   gestureDirection,
+                   transitionSpec,
+                   cardStyleInterpolator,
+                   headerStyleInterpolator,
+                 };
+               }
+             }
+ 
+             const {
+               top: safeAreaInsetTop = insets.top,
+               right: safeAreaInsetRight = insets.right,
+               bottom: safeAreaInsetBottom = insets.bottom,
+               left: safeAreaInsetLeft = insets.left,
+             } = safeAreaInsets || {};
+ 
+             const previousRoute = getPreviousRoute({ route: scene.route });
+ 
+             let previousScene = scenes[index - 1];
+ 
+             if (previousRoute) {
+               // The previous scene will be shortly before the current scene in the array
+               // So loop back from current index to avoid looping over the full array
+               for (let j = index - 1; j >= 0; j--) {
+                 const s = scenes[j];
+ 
+                 if (s && s.route.key === previousRoute.key) {
+                   previousScene = s;
+                   break;
+                 }
+               }
+             }
+
+          return (
+
+          );
+        })}
+      </stackLayout>
     );
+
+    // return (
+    //   <NavigationHelpersContext.Provider value={navigation}>
+    //     <GestureHandlerWrapper style={styles.container}>
+    //       <SafeAreaProviderCompat>
+    //         <SafeAreaConsumer>
+    //           {(insets) => (
+    //             <KeyboardManager enabled={keyboardHandlingEnabled !== false}>
+    //               {(props) => (
+    //                 <CardStack
+    //                   mode={mode}
+    //                   insets={insets as EdgeInsets}
+    //                   getPreviousRoute={this.getPreviousRoute}
+    //                   getGesturesEnabled={this.getGesturesEnabled}
+    //                   routes={routes}
+    //                   openingRouteKeys={openingRouteKeys}
+    //                   closingRouteKeys={closingRouteKeys}
+    //                   onOpenRoute={this.handleOpenRoute}
+    //                   onCloseRoute={this.handleCloseRoute}
+    //                   onTransitionStart={this.handleTransitionStart}
+    //                   onTransitionEnd={this.handleTransitionEnd}
+    //                   renderHeader={this.renderHeader}
+    //                   renderScene={this.renderScene}
+    //                   headerMode={headerMode}
+    //                   state={state}
+    //                   descriptors={descriptors}
+    //                   {...rest}
+    //                   {...props}
+    //                 />
+    //               )}
+    //             </KeyboardManager>
+    //           )}
+    //         </SafeAreaConsumer>
+    //       </SafeAreaProviderCompat>
+    //     </GestureHandlerWrapper>
+    //   </NavigationHelpersContext.Provider>
+    // );
   }
 }
 
