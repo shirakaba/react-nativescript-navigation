@@ -404,21 +404,9 @@ export default class CardStack extends React.Component<Props, State> {
     console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: "${route.name}"; active: ${cardContainerActive}`);
     const closing: boolean = this.props.closingRouteKeys.includes(route.key);
 
-    /**
-     * @see CardContainer.tsx where these handlers were originally found.
-     */
-    const handleTransitionStart = ({ closing }: { closing: boolean }) => {
-      if (cardContainerActive && closing) {
-        this.props.onPageChangeConfirm?.();
-      } else {
-        this.props.onPageChangeCancel?.();
-      }
-  
-      this.props.onTransitionStart?.({ route }, closing);
-    };
-
     // We rename this prop "onTransitionStart" when passsing it into Card.
-    handleTransitionStart({ closing });
+    // handleTransitionStart({ closing });
+    this.handleTransitionStart(route, closing, cardContainerActive);
     // We rename this prop "onGestureBegin" when passsing it into Card.
     this.props.onPageChangeStart?.();
   };
@@ -430,6 +418,29 @@ export default class CardStack extends React.Component<Props, State> {
     //   [navigatedFrom] isBackNavigation: false; route: "first"; active: false
     console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: "${route.name}"; active: ${cardContainerActive}`);
     const closing: boolean = this.props.closingRouteKeys.includes(route.key);
+  };
+
+  /**
+   * @see CardContainer.tsx where these handlers were originally found.
+   */
+  private handleTransitionStart = (route: Route<string>, closing: boolean, cardContainerActive: boolean) => {
+    if (cardContainerActive && closing) {
+      this.props.onPageChangeConfirm?.();
+    } else {
+      this.props.onPageChangeCancel?.();
+    }
+
+    this.props.onTransitionStart?.({ route }, closing);
+  };
+
+  private handleOpen = (route: Route<string>) => {
+    this.props.onTransitionEnd?.({ route }, false);
+    this.props.onOpenRoute({ route });
+  };
+
+  private handleClose = (route: Route<string>) => {
+    this.props.onTransitionEnd?.({ route }, true);
+    this.props.onCloseRoute({ route });
   };
 
   /*
@@ -447,25 +458,12 @@ export default class CardStack extends React.Component<Props, State> {
     const closing: boolean = this.props.closingRouteKeys.includes(route.key);
 
     /**
-     * @see CardContainer.tsx where these handlers were originally found.
-     */
-    const handleOpen = () => {
-      this.props.onTransitionEnd?.({ route }, false);
-      this.props.onOpenRoute({ route });
-    };
-  
-    const handleClose = () => {
-      this.props.onTransitionEnd?.({ route }, true);
-      this.props.onCloseRoute({ route });
-    };
-
-    /**
      * @see Card.tsx in the animate function, where these handlers were originally found.
      */
     if(closing){
-      handleClose();
+      this.handleClose(route);
     } else {
-      handleOpen();
+      this.handleOpen(route);
     }
 
     // There is no this.props.onPageChangeEnd?(), so it's not missing by accident.
