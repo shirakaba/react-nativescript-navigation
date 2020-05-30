@@ -33,38 +33,49 @@ const AppContainer = () => (
     </BaseNavigationContainer>
 );
 
-function First({}){
-    console.log(`[First] render`);
+function First({ navigation }){
+    // console.log(`[First] render`);
+    function onButtonTap(){
+        navigation.navigate('second');
+    }
+
     return (
         <flexboxLayout
             style={{
                 flexGrow: 1,
                 width: "100%",
                 height: "100%",
-                flexDirection: "row",
+                flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
                 backgroundColor: "yellow",
             }}
         >
             <label fontSize={24} text={"You're viewing the first route!"}/>
+            <button onTap={onButtonTap} fontSize={24} text={"Go to next route"}/>
         </flexboxLayout>
     );
 }
 
-function Second({}){
-    console.log(`[Second] render`);
+function Second({ navigation }){
+    // console.log(`[Second] render`);
+
+    function onButtonTap(){
+        navigation.goBack();
+    }
+
     return (
         <flexboxLayout
             style={{
                 flexGrow: 1,
-                flexDirection: "row",
+                flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
                 backgroundColor: "gold",
             }}
         >
             <label fontSize={24} text={"You're viewing the second route!"}/>
+            <button onTap={onButtonTap} fontSize={24} text={"Go back"}/>
         </flexboxLayout>
     );
 }
