@@ -12,7 +12,7 @@ import { Route } from '@react-navigation/native';
 // import HeaderBackButton from './HeaderBackButton';
 // import HeaderBackground from './HeaderBackground';
 import memoize from '../../../utils/memoize';
-import { isIOS, isAndroid, Device } from "@nativescript/core";
+import { isIOS, isAndroid, Device, ActionItem } from "@nativescript/core";
 import {
   Layout,
   StackHeaderStyleInterpolator,
@@ -336,26 +336,33 @@ export default class HeaderSegment extends React.Component<Props, State> {
           )}
         </Animated.View> */}
         <Animated.View
-          pointerEvents="box-none"
-          style={[{ height, minHeight, maxHeight, opacity, transform }]}
+          // pointerEvents="box-none"
+          style={{
+            height,
+            minHeight,
+            // maxHeight,
+            opacity,
+            // transform
+          }}
         >
-          <View
+          {/* <View
             pointerEvents="none"
             style={{ height: headerStatusBarHeight }}
-          />
+          /> */}
           <View pointerEvents="box-none" style={styles.content}>
             {leftButton ? (
-              <Animated.View
-                pointerEvents="box-none"
-                style={[
-                  styles.left,
-                  { left: insets.left },
-                  leftButtonStyle,
-                  leftContainerStyle,
-                ]}
+              <actionItem
+                ios={{ position: "left" as const, systemIcon: undefined }}
+                android={{ position: "popup" as const, systemIcon: undefined }}
+                style={{
+                  ...styles.left,
+                  ...{ left: insets.left },
+                  ...leftButtonStyle,
+                  ...leftContainerStyle,
+                }}
               >
                 {leftButton}
-              </Animated.View>
+              </actionItem>
             ) : null}
             <Animated.View
               pointerEvents="box-none"
@@ -389,14 +396,14 @@ export default class HeaderSegment extends React.Component<Props, State> {
             </Animated.View>
             {rightButton ? (
               <actionItem
-                ios={{ position: "right" }}
-                android={{ position: "popup" }}
-                style={[
-                  styles.right,
-                  { right: insets.right },
-                  rightButtonStyle,
-                  rightContainerStyle,
-                ]}
+                ios={{ position: "right" as const, systemIcon: undefined }}
+                android={{ position: "popup" as const, systemIcon: undefined }}
+                style={{
+                  ...styles.right,
+                  ...{ right: insets.right },
+                  ...rightButtonStyle,
+                  ...rightContainerStyle,
+                }}
               >
                 {rightButton}
               </actionItem>
