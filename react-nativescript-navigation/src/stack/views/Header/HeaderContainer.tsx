@@ -107,6 +107,7 @@ export default function HeaderContainer({
   };
 
   return (
+    // TODO: set title on actionBar as default behaviour
     <actionBar style={style}>
       {
         ((mode === 'screen' && !isFinalScene) || !scene) ?
@@ -117,7 +118,7 @@ export default function HeaderContainer({
               value={scene.descriptor.navigation}
             >
               <NavigationRouteContext.Provider value={scene.route}>
-                <View
+                {/* <View
                   onLayout={
                     onContentHeightChange
                       ? (e) =>
@@ -139,7 +140,7 @@ export default function HeaderContainer({
                       ? styles.header
                       : null
                   }
-                >
+                > */}
                   {options.headerShown !== false ? (
                     options.header !== undefined ? (
                       options.header(props)
@@ -147,7 +148,7 @@ export default function HeaderContainer({
                       <Header {...props} />
                     )
                   ) : null}
-                </View>
+                {/* </View> */}
               </NavigationRouteContext.Provider>
             </NavigationContext.Provider>
           )
