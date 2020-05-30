@@ -392,8 +392,16 @@ export default class CardStack extends React.Component<Props, State> {
   private onPageNavigatingFrom = (args: NavigatedData, scene: Scene<Route<string>>, cardContainerActive: boolean) => {
     const route = scene.route;
     // In a forward navigation from "first" -> "second", this'll say:
-    //   [navigatingFrom] isBackNavigation: false; route: first; active: false
-    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: ${route.name}; active: ${cardContainerActive}`);
+    //   [navigatingFrom] isBackNavigation: false; route: "first"; active: false
+    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: "${route.name}"; active: ${cardContainerActive}`);
+    const closing: boolean = this.props.closingRouteKeys.includes(route.key);
+  };
+
+  private onPageNavigatingTo = (args: NavigatedData, scene: Scene<Route<string>>, cardContainerActive: boolean) => {
+    const route = scene.route;
+    // In a forward navigation from "first" -> "second", this'll say:
+    //   [navigatingTo] isBackNavigation: false; route: "second"; active: true
+    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: "${route.name}"; active: ${cardContainerActive}`);
     const closing: boolean = this.props.closingRouteKeys.includes(route.key);
 
     /**
@@ -414,21 +422,14 @@ export default class CardStack extends React.Component<Props, State> {
     // We rename this prop "onGestureBegin" when passsing it into Card.
     this.props.onPageChangeStart?.();
   };
-  
-
-  private onPageNavigatingTo = (args: NavigatedData, scene: Scene<Route<string>>, cardContainerActive: boolean) => {
-    const route = scene.route;
-    // In a forward navigation from "first" -> "second", this'll say:
-    //   [navigatingTo] isBackNavigation: false; route: second; active: true
-    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: ${route.name}; active: ${cardContainerActive}`);
-  };
 
 
   private onPageNavigatedFrom = (args: NavigatedData, scene: Scene<Route<string>>, cardContainerActive: boolean) => {
     const route = scene.route;
     // In a forward navigation from "first" -> "second", this'll say:
-    //   [navigatedFrom] isBackNavigation: false; route: first; active: false
-    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: ${route.name}; active: ${cardContainerActive}`);
+    //   [navigatedFrom] isBackNavigation: false; route: "first"; active: false
+    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: "${route.name}"; active: ${cardContainerActive}`);
+    const closing: boolean = this.props.closingRouteKeys.includes(route.key);
   };
 
   /*
@@ -441,8 +442,8 @@ export default class CardStack extends React.Component<Props, State> {
   private onPageNavigatedTo = (args: NavigatedData, scene: Scene<Route<string>>, cardContainerActive: boolean) => {
     const route = scene.route;
     // In a forward navigation from "first" -> "second", this'll say:
-    //   [navigatedTo] isBackNavigation: false; route: second; active: true
-    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: ${route.name}; active: ${cardContainerActive}`);
+    //   [navigatedTo] isBackNavigation: false; route: "second"; active: true
+    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: "${route.name}"; active: ${cardContainerActive}`);
     const closing: boolean = this.props.closingRouteKeys.includes(route.key);
 
     /**
