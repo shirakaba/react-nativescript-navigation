@@ -380,6 +380,29 @@ export default class CardStack extends React.Component<Props, State> {
   };
 
   /**
+   * @see CardContainer.tsx where these handlers were originally found.
+   */
+  private handleTransitionStart = (route: Route<string>, closing: boolean, cardContainerActive: boolean) => {
+    if (cardContainerActive && closing) {
+      this.props.onPageChangeConfirm?.();
+    } else {
+      this.props.onPageChangeCancel?.();
+    }
+
+    this.props.onTransitionStart?.({ route }, closing);
+  };
+
+  private handleOpen = (route: Route<string>) => {
+    this.props.onTransitionEnd?.({ route }, false);
+    this.props.onOpenRoute({ route });
+  };
+
+  private handleClose = (route: Route<string>) => {
+    this.props.onTransitionEnd?.({ route }, true);
+    this.props.onCloseRoute({ route });
+  };
+
+  /**
    * NativeScript does not fired any events on starting or cancelling a Page change - it only fires events
    * once the user has commited to the navigation.
    * 
@@ -395,6 +418,12 @@ export default class CardStack extends React.Component<Props, State> {
     //   [navigatingFrom] isBackNavigation: false; route: "first"; active: false
     console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: "${route.name}"; active: ${cardContainerActive}`);
     const closing: boolean = this.props.closingRouteKeys.includes(route.key);
+
+    // We rename this prop "onTransitionStart" when passsing it into Card.
+    // handleTransitionStart({ closing });
+    this.handleTransitionStart(route, closing, cardContainerActive);
+    // We rename this prop "onGestureBegin" when passsing it into Card.
+    this.props.onPageChangeStart?.();
   };
 
   private onPageNavigatingTo = (args: NavigatedData, scene: Scene<Route<string>>, cardContainerActive: boolean) => {
@@ -418,29 +447,17 @@ export default class CardStack extends React.Component<Props, State> {
     //   [navigatedFrom] isBackNavigation: false; route: "first"; active: false
     console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: "${route.name}"; active: ${cardContainerActive}`);
     const closing: boolean = this.props.closingRouteKeys.includes(route.key);
-  };
 
-  /**
-   * @see CardContainer.tsx where these handlers were originally found.
-   */
-  private handleTransitionStart = (route: Route<string>, closing: boolean, cardContainerActive: boolean) => {
-    if (cardContainerActive && closing) {
-      this.props.onPageChangeConfirm?.();
+    /**
+     * @see Card.tsx in the animate function, where these handlers were originally found.
+     */
+    if(closing){
+      this.handleClose(route);
     } else {
-      this.props.onPageChangeCancel?.();
+      this.handleOpen(route);
     }
 
-    this.props.onTransitionStart?.({ route }, closing);
-  };
-
-  private handleOpen = (route: Route<string>) => {
-    this.props.onTransitionEnd?.({ route }, false);
-    this.props.onOpenRoute({ route });
-  };
-
-  private handleClose = (route: Route<string>) => {
-    this.props.onTransitionEnd?.({ route }, true);
-    this.props.onCloseRoute({ route });
+    // There is no this.props.onPageChangeEnd?(), so it's not missing by accident.
   };
 
   /*
