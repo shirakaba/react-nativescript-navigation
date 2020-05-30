@@ -335,7 +335,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
             <HeaderBackground style={safeStyles} />
           )}
         </Animated.View> */}
-        <Animated.View
+        {/* <Animated.View
           // pointerEvents="box-none"
           style={{
             height,
@@ -344,12 +344,12 @@ export default class HeaderSegment extends React.Component<Props, State> {
             opacity,
             // transform
           }}
-        >
+        > */}
           {/* <View
             pointerEvents="none"
             style={{ height: headerStatusBarHeight }}
           /> */}
-          <View pointerEvents="box-none" style={styles.content}>
+          {/* <View pointerEvents="box-none" style={styles.content}> */}
             {leftButton ? (
               <actionItem
                 nodeRole={"actionItems"}
@@ -363,6 +363,10 @@ export default class HeaderSegment extends React.Component<Props, State> {
                   ...leftContainerStyle,
                 }}
               >
+                {/*
+                  * TODO: decide whether it is the consumer's responsibility to set nodeRole={"actionView"} for this!
+                  *       For ActionItem, addChildFromBuilder and removeView both act upon actionView, so it's not strict.
+                  */}
                 {leftButton}
               </actionItem>
             ) : null}
@@ -408,11 +412,15 @@ export default class HeaderSegment extends React.Component<Props, State> {
                   ...rightContainerStyle,
                 }}
               >
+                {/*
+                  * TODO: decide whether it is the consumer's responsibility to set nodeRole={"actionView"} for this!
+                  *       For ActionItem, addChildFromBuilder and removeView both act upon actionView, so it's not strict.
+                  */}
                 {rightButton}
               </actionItem>
             ) : null}
-          </View>
-        </Animated.View>
+          {/* </View> */}
+        {/* </Animated.View> */}
       </React.Fragment>
     );
   }
