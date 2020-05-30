@@ -424,26 +424,6 @@ export default class CardStack extends React.Component<Props, State> {
         actionBarVisibility={headerMode === "none" ? "never" : "auto"}
         onLayoutChanged={this.handleLayout}
       >
-        {renderHeader({
-            mode: "float",
-            layout,
-            insets: { top, right, bottom, left },
-            scenes,
-            getPreviousRoute,
-            getFocusedRoute: this.getFocusedRoute,
-            onContentHeightChange: this.handleHeaderLayout,
-            // gestureDirection:
-            //   focusedOptions.gestureDirection !== undefined
-            //     ? focusedOptions.gestureDirection
-            //     : defaultTransitionPreset.gestureDirection,
-            // styleInterpolator:
-            //   focusedOptions.headerStyleInterpolator !== undefined
-            //     ? focusedOptions.headerStyleInterpolator
-            //     : defaultTransitionPreset.headerStyleInterpolator,
-            style: styles.floating,
-          })
-        }
-
         {routes.map((route, index, self) => {
           const focused = focusedRoute.key === route.key;
           // const gesture = gestures[route.key];
@@ -548,6 +528,26 @@ export default class CardStack extends React.Component<Props, State> {
               // active={isScreenActive}
               // pointerEvents="box-none"
             >
+              {renderHeader({
+                  mode: "float",
+                  layout,
+                  insets: { top, right, bottom, left },
+                  scenes,
+                  getPreviousRoute,
+                  getFocusedRoute: this.getFocusedRoute,
+                  onContentHeightChange: this.handleHeaderLayout,
+                  // gestureDirection:
+                  //   focusedOptions.gestureDirection !== undefined
+                  //     ? focusedOptions.gestureDirection
+                  //     : defaultTransitionPreset.gestureDirection,
+                  // styleInterpolator:
+                  //   focusedOptions.headerStyleInterpolator !== undefined
+                  //     ? focusedOptions.headerStyleInterpolator
+                  //     : defaultTransitionPreset.headerStyleInterpolator,
+                  style: styles.floating,
+                })
+              }
+              
               <CardContainer
                 index={index}
                 active={index === self.length - 1}
