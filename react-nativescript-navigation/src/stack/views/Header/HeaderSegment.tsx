@@ -9,7 +9,7 @@ import * as React from 'react';
 // } from 'react-native';
 // import { EdgeInsets } from 'react-native-safe-area-context';
 import { Route } from '@react-navigation/native';
-// import HeaderBackButton from './HeaderBackButton';
+import HeaderBackButton from './HeaderBackButton';
 // import HeaderBackground from './HeaderBackground';
 import memoize from '../../../utils/memoize';
 import { isIOS, isAndroid, Device, ActionItem } from "@nativescript/core";
