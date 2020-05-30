@@ -24,7 +24,6 @@ const AppContainer = () => (
             initialRouteName="first"
             screenOptions={{
                 headerShown: true,
-                // headerMode: "float" as const
             }}
         >
             <StackNavigator.Screen name="first" component={First}/>

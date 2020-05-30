@@ -30,7 +30,7 @@ import {
   StackNavigationOptions,
   StackDescriptor,
 } from '../../types';
-import { Screen, EventData, Frame, isIOS, isAndroid, Device } from "@nativescript/core";
+import { Screen, EventData, Frame, isIOS, isAndroid, Device, NavigatedData } from "@nativescript/core";
 import CardContainer from './CardContainer';
 
 // type GestureValues = {
@@ -379,6 +379,97 @@ export default class CardStack extends React.Component<Props, State> {
     return state.routes[state.index];
   };
 
+  /**
+   * NativeScript does not fired any events on starting or cancelling a Page change - it only fires events
+   * once the user has commited to the navigation.
+   * 
+   * So this is not the most correct place to call these handlers, but still the best available.
+   * 
+   * These Page navigation event handlers are listed in order of when they'll be called.
+   * 
+   * @see https://docs.nativescript.org/ui/components/page#page-events
+   */
+  private onPageNavigatingFrom = (args: NavigatedData, scene: Scene<Route<string>>, cardContainerActive: boolean) => {
+    const route = scene.route;
+    // In a forward navigation from "first" -> "second", this'll say:
+    //   [navigatingFrom] isBackNavigation: false; route: first; active: false
+    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: ${route.name}; active: ${cardContainerActive}`);
+    const closing: boolean = this.props.closingRouteKeys.includes(route.key);
+
+    /**
+     * @see CardContainer.tsx where these handlers were originally found.
+     */
+    const handleTransitionStart = ({ closing }: { closing: boolean }) => {
+      if (cardContainerActive && closing) {
+        this.props.onPageChangeConfirm?.();
+      } else {
+        this.props.onPageChangeCancel?.();
+      }
+  
+      this.props.onTransitionStart?.({ route }, closing);
+    };
+
+    // We rename this prop "onTransitionStart" when passsing it into Card.
+    handleTransitionStart({ closing });
+    // We rename this prop "onGestureBegin" when passsing it into Card.
+    this.props.onPageChangeStart?.();
+  };
+  
+
+  private onPageNavigatingTo = (args: NavigatedData, scene: Scene<Route<string>>, cardContainerActive: boolean) => {
+    const route = scene.route;
+    // In a forward navigation from "first" -> "second", this'll say:
+    //   [navigatingTo] isBackNavigation: false; route: second; active: true
+    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: ${route.name}; active: ${cardContainerActive}`);
+  };
+
+
+  private onPageNavigatedFrom = (args: NavigatedData, scene: Scene<Route<string>>, cardContainerActive: boolean) => {
+    const route = scene.route;
+    // In a forward navigation from "first" -> "second", this'll say:
+    //   [navigatedFrom] isBackNavigation: false; route: first; active: false
+    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: ${route.name}; active: ${cardContainerActive}`);
+  };
+
+  /*
+   * this.props.onPageChangeConfirm will be called upon CardContainer finding that cardContainerActive
+   * has changed value.
+  */
+  
+  // There is no concept of cancellation, so no place to put this.props.onPageChangeCancel
+  
+  private onPageNavigatedTo = (args: NavigatedData, scene: Scene<Route<string>>, cardContainerActive: boolean) => {
+    const route = scene.route;
+    // In a forward navigation from "first" -> "second", this'll say:
+    //   [navigatedTo] isBackNavigation: false; route: second; active: true
+    console.log(`[${args.eventName}] isBackNavigation: ${args.isBackNavigation}; route: ${route.name}; active: ${cardContainerActive}`);
+    const closing: boolean = this.props.closingRouteKeys.includes(route.key);
+
+    /**
+     * @see CardContainer.tsx where these handlers were originally found.
+     */
+    const handleOpen = () => {
+      this.props.onTransitionEnd?.({ route }, false);
+      this.props.onOpenRoute({ route });
+    };
+  
+    const handleClose = () => {
+      this.props.onTransitionEnd?.({ route }, true);
+      this.props.onCloseRoute({ route });
+    };
+
+    /**
+     * @see Card.tsx in the animate function, where these handlers were originally found.
+     */
+    if(closing){
+      handleClose();
+    } else {
+      handleOpen();
+    }
+
+    // There is no this.props.onPageChangeEnd?(), so it's not missing by accident.
+  };
+
   render() {
     const {
       mode,
@@ -541,6 +632,7 @@ export default class CardStack extends React.Component<Props, State> {
 
           const nextScene = scenes[index + 1];
 
+          const cardContainerActive: boolean = index === self.length - 1;
 
           // A screen
           return (
@@ -548,6 +640,11 @@ export default class CardStack extends React.Component<Props, State> {
               key={route.key}
               style={styles.fill}
               actionBarHidden={!headerShown}
+              onNavigatingTo={(args: NavigatedData) => this.onPageNavigatingTo(args, scene, cardContainerActive)}
+              onNavigatedTo={(args: NavigatedData) => this.onPageNavigatedTo(args, scene, cardContainerActive)}
+              onNavigatedFrom={(args: NavigatedData) => this.onPageNavigatedFrom(args, scene, cardContainerActive)}
+              onNavigatingFrom={(args: NavigatedData) => this.onPageNavigatingFrom(args, scene, cardContainerActive)}
+              
               // enabled={isScreensEnabled}
               // active={isScreenActive}
               // pointerEvents="box-none"
@@ -579,7 +676,7 @@ export default class CardStack extends React.Component<Props, State> {
 
               <CardContainer
                 index={index}
-                active={index === self.length - 1}
+                active={cardContainerActive}
                 focused={isFocused}
                 closing={closingRouteKeys.includes(route.key)}
                 layout={layout}
@@ -608,6 +705,7 @@ export default class CardStack extends React.Component<Props, State> {
                 headerTransparent={headerTransparent}
                 renderHeader={renderHeader}
                 renderScene={renderScene}
+                // TODO: remove these event handlers from CardContainr if it turns out that only Page needs them.
                 onOpenRoute={onOpenRoute}
                 onCloseRoute={onCloseRoute}
                 onTransitionStart={onTransitionStart}
