@@ -540,7 +540,7 @@ export default class CardStack extends React.Component<Props, State> {
                   previousScene,
                   scene,
                   nextScene,
-                  isLastScene: index === scenes.length - 1,
+                  isFinalScene: index === scenes.length - 1,
                   // sceneIndex: index,
                   // scenes,
                   getPreviousRoute,

@@ -36,7 +36,7 @@ export type Props = {
   previousScene: (Scene<Route<string>> | undefined);
   scene: (Scene<Route<string>> | undefined);
   nextScene: (Scene<Route<string>> | undefined);
-  isLastScene: boolean;
+  isFinalScene: boolean;
 
   // sceneIndex: number;
   // scenes: (Scene<Route<string>> | undefined)[];
@@ -59,7 +59,7 @@ export default function HeaderContainer({
   previousScene,
   scene,
   nextScene,
-  isLastScene,
+  isFinalScene,
   layout,
   insets,
   getFocusedRoute,
@@ -109,7 +109,7 @@ export default function HeaderContainer({
   return (
     <actionBar style={style}>
       {
-        ((mode === 'screen' && !isLastScene) || !scene) ?
+        ((mode === 'screen' && !isFinalScene) || !scene) ?
           null :
           (
             <NavigationContext.Provider
