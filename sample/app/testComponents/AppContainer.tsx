@@ -20,7 +20,13 @@ const StackNavigator = stackNavigatorFactory();
 
 const AppContainer = () => (
     <BaseNavigationContainer>
-        <StackNavigator.Navigator initialRouteName="first">
+        <StackNavigator.Navigator
+            initialRouteName="first"
+            screenOptions={{
+                headerShown: true,
+                // headerMode: "float" as const
+            }}
+        >
             <StackNavigator.Screen name="first" component={First}/>
             <StackNavigator.Screen name="second" component={Second}/>
         </StackNavigator.Navigator>
@@ -33,6 +39,8 @@ function First({}){
         <flexboxLayout
             style={{
                 flexGrow: 1,
+                width: "100%",
+                height: "100%",
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",

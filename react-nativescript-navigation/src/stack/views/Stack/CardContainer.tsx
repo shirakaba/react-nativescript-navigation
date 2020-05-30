@@ -194,9 +194,10 @@ function CardContainer({
       // pageOverflowEnabled={headerMode === 'screen' && mode === 'card'}
       pageOverflowEnabled={false}
       containerStyle={
-        headerMode === 'float' && !headerTransparent && headerShown !== false
-          ? { marginTop: headerHeight }
-          : null
+        {}
+        // headerMode === 'float' && !headerTransparent && headerShown !== false
+        //   ? { marginTop: headerHeight }
+        //   : null
       }
       // contentStyle={[{ backgroundColor: colors.background }, cardStyle]}
       contentStyle={cardStyle}

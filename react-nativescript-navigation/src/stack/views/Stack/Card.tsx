@@ -451,7 +451,7 @@ export default class Card extends React.Component<Props> {
       gestureDirection,
       pageOverflowEnabled,
       children,
-      containerStyle: customContainerStyle,
+      containerStyle: customContainerStyle = {},
       contentStyle,
       ...rest
     } = this.props;
@@ -511,6 +511,9 @@ export default class Card extends React.Component<Props> {
     //       new Color(backgroundColor).a === 0 :
     //       (backgroundColor as Color).a === 0
     //   );
+
+    console.log(`containerStyle`, containerStyle);
+    console.log(`customContainerStyle`, customContainerStyle);
 
     return (
       // <CardAnimationContext.Provider value={animationContext}>
@@ -575,6 +578,8 @@ const styles = {
     height: "100%",
   },
   container: {
+    width: "100%",
+    height: "100%",
     flexGrow: 1,
   },
   overlay: {
