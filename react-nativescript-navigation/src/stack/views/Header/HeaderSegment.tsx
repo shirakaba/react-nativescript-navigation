@@ -352,6 +352,8 @@ export default class HeaderSegment extends React.Component<Props, State> {
           <View pointerEvents="box-none" style={styles.content}>
             {leftButton ? (
               <actionItem
+                nodeRole={"actionItems"}
+                // Note: Android does not support actionItems on left, to my understanding.
                 ios={{ position: "left" as const, systemIcon: undefined }}
                 android={{ position: "popup" as const, systemIcon: undefined }}
                 style={{
@@ -396,6 +398,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
             </Animated.View>
             {rightButton ? (
               <actionItem
+                nodeRole={"actionItems"}
                 ios={{ position: "right" as const, systemIcon: undefined }}
                 android={{ position: "popup" as const, systemIcon: undefined }}
                 style={{
