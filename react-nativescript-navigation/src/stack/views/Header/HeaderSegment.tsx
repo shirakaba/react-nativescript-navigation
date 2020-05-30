@@ -370,12 +370,13 @@ export default class HeaderSegment extends React.Component<Props, State> {
                 {leftButton}
               </actionItem>
             ) : null}
-            <Animated.View
-              pointerEvents="box-none"
-              style={[
-                headerTitleAlign === 'left'
+            <flexboxLayout
+              // pointerEvents="box-none"
+              style={{
+                flexDirection: "column",
+                ...(headerTitleAlign === 'left'
                   ? {
-                      position: 'absolute',
+                      position: 'absolute', // NativeScript Core doesn't support absolute positioning without introducing another element...
                       left: (leftButton ? 72 : 16) + insets.left,
                       right: (rightButton ? 72 : 16) + insets.right,
                     }
@@ -386,10 +387,10 @@ export default class HeaderSegment extends React.Component<Props, State> {
                           ? 40
                           : 0) +
                         Math.max(insets.left, insets.right),
-                    },
-                titleStyle,
-                titleContainerStyle,
-              ]}
+                    }),
+                ...titleStyle,
+                ...titleContainerStyle,
+              }}
             >
               {/* TODO: decide whether it is the consumer's responsibility to set nodeRole={"titleView"} for this! */}
               {headerTitle({
@@ -399,7 +400,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
                 tintColor: headerTintColor,
                 style: customTitleStyle,
               })}
-            </Animated.View>
+            </flexboxLayout>
             {rightButton ? (
               <actionItem
                 nodeRole={"actionItems"}
