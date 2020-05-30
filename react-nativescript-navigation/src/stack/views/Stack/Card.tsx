@@ -11,31 +11,32 @@ import * as React from 'react';
 // } from 'react-native';
 // import { EdgeInsets } from 'react-native-safe-area-context';
 type EdgeInsets = { left: number, top: number, bottom: number, right: number };
-import Color from 'color';
+// import Color from 'color';
 
 import CardSheet from './CardSheet';
-import {
-  PanGestureHandler,
-  GestureState,
-  PanGestureHandlerGestureEvent,
-} from '../GestureHandler';
-import CardAnimationContext from '../../utils/CardAnimationContext';
-import getDistanceForDirection from '../../utils/getDistanceForDirection';
-import getInvertedMultiplier from '../../utils/getInvertedMultiplier';
-import memoize from '../../utils/memoize';
+// import {
+//   PanGestureHandler,
+//   GestureState,
+//   PanGestureHandlerGestureEvent,
+// } from '../GestureHandler';
+// import CardAnimationContext from '../../utils/CardAnimationContext';
+// import getDistanceForDirection from '../../utils/getDistanceForDirection';
+// import getInvertedMultiplier from '../../utils/getInvertedMultiplier';
+import memoize from '../../../utils/memoize';
 import {
   TransitionSpec,
   StackCardStyleInterpolator,
   GestureDirection,
   Layout,
 } from '../../types';
+import { FlexboxLayout, isIOS, Color } from "@nativescript/core";
 import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
 import { ViewAttributes } from 'react-nativescript/dist/lib/react-nativescript-jsx';
 
 type RNSStyle = ViewBaseAttributes["style"];
 type StyleProp<T> = T;
 
-type Props = ViewAttributes & {
+type Props = typeof Card.defaultProps & ViewAttributes & {
   index: number;
   closing: boolean;
 //   next?: Animated.AnimatedInterpolation;
@@ -53,7 +54,7 @@ type Props = ViewAttributes & {
   onGestureEnd?: () => void;
   children: React.ReactNode;
   overlay: (props: {
-    style: Animated.WithAnimatedValue<StyleProp<RNSStyle>>;
+    style: StyleProp<RNSStyle>;
   }) => React.ReactNode;
   overlayEnabled: boolean;
   shadowEnabled: boolean;
@@ -74,35 +75,36 @@ type Props = ViewAttributes & {
 
 const GESTURE_VELOCITY_IMPACT = 0.3;
 
-const TRUE = 1;
-const FALSE = 0;
+// const TRUE = 1;
+// const FALSE = 0;
 
 /**
  * The distance of touch start from the edge of the screen where the gesture will be recognized
  */
-const GESTURE_RESPONSE_DISTANCE_HORIZONTAL = 50;
-const GESTURE_RESPONSE_DISTANCE_VERTICAL = 135;
+// const GESTURE_RESPONSE_DISTANCE_HORIZONTAL = 50;
+// const GESTURE_RESPONSE_DISTANCE_VERTICAL = 135;
 
-const useNativeDriver = Platform.OS !== 'web';
+// const useNativeDriver = Platform.OS !== 'web';
+
 
 export default class Card extends React.Component<Props> {
   static defaultProps = {
-    overlayEnabled: Platform.OS !== 'ios',
+    overlayEnabled: !isIOS,
     shadowEnabled: true,
     gestureEnabled: true,
     gestureVelocityImpact: GESTURE_VELOCITY_IMPACT,
     overlay: ({
       style,
     }: {
-      style: Animated.WithAnimatedValue<StyleProp<RNSStyle>>;
+      style: StyleProp<any>; // TypeScript doesn't like inferring RNSStyle here.
     }) =>
       style ? (
-        <Animated.View pointerEvents="none" style={[styles.overlay, style]} />
+        <flexboxLayout style={{ ...styles.overlay, ...style }} />
       ) : null,
   };
 
   componentDidMount() {
-    this.animate({ closing: this.props.closing });
+    // this.animate({ closing: this.props.closing });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -110,31 +112,31 @@ export default class Card extends React.Component<Props> {
     const { width, height } = layout;
 
     if (width !== prevProps.layout.width) {
-      this.layout.width.setValue(width);
+      this.layout.width = width;
     }
 
     if (height !== prevProps.layout.height) {
-      this.layout.height.setValue(height);
+      this.layout.height = height;
     }
 
-    if (gestureDirection !== prevProps.gestureDirection) {
-      this.inverted.setValue(getInvertedMultiplier(gestureDirection));
-    }
+    // if (gestureDirection !== prevProps.gestureDirection) {
+    //   this.inverted.setValue(getInvertedMultiplier(gestureDirection));
+    // }
 
-    if (
-      this.getAnimateToValue(this.props) !== this.getAnimateToValue(prevProps)
-    ) {
-      // We need to trigger the animation when route was closed
-      // Thr route might have been closed by a `POP` action or by a gesture
-      // When route was closed due to a gesture, the animation would've happened already
-      // It's still important to trigger the animation so that `onClose` is called
-      // If `onClose` is not called, cleanup step won't be performed for gestures
-      this.animate({ closing });
-    }
+    // if (
+    //   this.getAnimateToValue(this.props) !== this.getAnimateToValue(prevProps)
+    // ) {
+    //   // We need to trigger the animation when route was closed
+    //   // Thr route might have been closed by a `POP` action or by a gesture
+    //   // When route was closed due to a gesture, the animation would've happened already
+    //   // It's still important to trigger the animation so that `onClose` is called
+    //   // If `onClose` is not called, cleanup step won't be performed for gestures
+    //   this.animate({ closing });
+    // }
   }
 
   componentWillUnmount() {
-    this.handleEndInteraction();
+    // this.handleEndInteraction();
   }
 
   // private isClosing = new Animated.Value(FALSE);
@@ -143,10 +145,10 @@ export default class Card extends React.Component<Props> {
   //   getInvertedMultiplier(this.props.gestureDirection)
   // );
 
-  // private layout = {
-  //   width: new Animated.Value(this.props.layout.width),
-  //   height: new Animated.Value(this.props.layout.height),
-  // };
+  private layout = {
+    width: this.props.layout.width,
+    height: this.props.layout.height,
+  };
 
   // private isSwiping = new Animated.Value(FALSE);
 
@@ -206,21 +208,21 @@ export default class Card extends React.Component<Props> {
   //   });
   // };
 
-  private getAnimateToValue = ({
-    closing,
-    layout,
-    gestureDirection,
-  }: {
-    closing?: boolean;
-    layout: Layout;
-    gestureDirection: GestureDirection;
-  }) => {
-    if (!closing) {
-      return 0;
-    }
+  // private getAnimateToValue = ({
+  //   closing,
+  //   layout,
+  //   gestureDirection,
+  // }: {
+  //   closing?: boolean;
+  //   layout: Layout;
+  //   gestureDirection: GestureDirection;
+  // }) => {
+  //   if (!closing) {
+  //     return 0;
+  //   }
 
-    return getDistanceForDirection(layout, gestureDirection);
-  };
+  //   return getDistanceForDirection(layout, gestureDirection);
+  // };
 
   // private setPointerEventsEnabled = (enabled: boolean) => {
   //   const pointerEvents = enabled ? 'box-none' : 'none';
@@ -431,7 +433,7 @@ export default class Card extends React.Component<Props> {
   //   }
   // }
 
-  private contentRef = React.createRef<View>();
+  private contentRef = React.createRef<FlexboxLayout>();
 
   render() {
     const {
@@ -499,10 +501,16 @@ export default class Card extends React.Component<Props> {
     //     )
     //   : undefined;
 
-    const { backgroundColor } = contentStyle || {};
-    const isTransparent = backgroundColor
-      ? Color(backgroundColor).alpha() === 0
-      : false;
+    
+    // const { backgroundColor } = contentStyle || {};
+
+    // const isTransparent: boolean = typeof backgroundColor === "undefined" ?
+    //   false :
+    //   (
+    //     typeof backgroundColor === "string" ? 
+    //       new Color(backgroundColor).a === 0 :
+    //       (backgroundColor as Color).a === 0
+    //   );
 
     return (
       // <CardAnimationContext.Provider value={animationContext}>
@@ -526,7 +534,7 @@ export default class Card extends React.Component<Props> {
               onHandlerStateChange={this.handleGestureStateChange}
               {...this.gestureActivationCriteria()}
             > */}
-              <Animated.View style={[styles.container, cardStyle]}>
+              {/* <Animated.View style={[styles.container, cardStyle]}>
                 {shadowEnabled && shadowStyle && !isTransparent ? (
                   <Animated.View
                     style={[
@@ -543,7 +551,7 @@ export default class Card extends React.Component<Props> {
                     ]}
                     pointerEvents="none"
                   />
-                ) : null}
+                ) : null} */}
                 <CardSheet
                   ref={this.contentRef}
                   enabled={pageOverflowEnabled}
@@ -552,7 +560,7 @@ export default class Card extends React.Component<Props> {
                 >
                   {children}
                 </CardSheet>
-              </Animated.View>
+              {/* </Animated.View> */}
             {/* </PanGestureHandler> */}
           </flexboxLayout>
         </absoluteLayout>
