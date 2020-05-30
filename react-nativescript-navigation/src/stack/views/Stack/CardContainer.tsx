@@ -176,6 +176,7 @@ function CardContainer({
       closing={closing}
       onOpen={handleOpen}
       onClose={handleClose}
+      // @ts-ignore 
       overlay={cardOverlay}
       overlayEnabled={cardOverlayEnabled}
       shadowEnabled={cardShadowEnabled}
