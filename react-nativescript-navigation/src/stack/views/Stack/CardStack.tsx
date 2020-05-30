@@ -524,11 +524,13 @@ export default class CardStack extends React.Component<Props, State> {
 
           const nextScene = scenes[index + 1];
 
+
           // A screen
           return (
             <page
               key={route.key}
               style={styles.fill}
+              actionBarHidden={!headerShown}
               // enabled={isScreensEnabled}
               // active={isScreenActive}
               // pointerEvents="box-none"
