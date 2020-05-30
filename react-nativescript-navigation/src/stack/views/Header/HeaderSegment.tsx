@@ -8,7 +8,7 @@ import * as React from 'react';
 //   ViewStyle,
 // } from 'react-native';
 // import { EdgeInsets } from 'react-native-safe-area-context';
-import { Route } from '@react-navigation/native';
+import { Route } from '@react-navigation/core';
 import HeaderBackButton from './HeaderBackButton';
 // import HeaderBackground from './HeaderBackground';
 import memoize from '../../../utils/memoize';

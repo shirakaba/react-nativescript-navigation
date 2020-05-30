@@ -5,7 +5,7 @@ import {
   NavigationRouteContext,
   Route,
   ParamListBase,
-} from '@react-navigation/native';
+} from '@react-navigation/core';
 // import { EdgeInsets } from 'react-native-safe-area-context';
 type EdgeInsets = { left: number, top: number, bottom: number, right: number };
 

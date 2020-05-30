@@ -8,7 +8,7 @@ import * as React from 'react';
 //   StyleSheet,
 //   LayoutChangeEvent,
 // } from 'react-native';
-// import { useTheme } from '@react-navigation/native';
+// import { useTheme } from '@react-navigation';
 // import MaskedView from '../MaskedView';
 // import { TouchableItem } from '../TouchableItem';
 import { StackHeaderLeftButtonProps } from '../../types';
