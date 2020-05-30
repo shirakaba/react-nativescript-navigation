@@ -13,7 +13,7 @@ export default React.memo(function Header(props: StackHeaderProps) {
     layout,
     insets,
     navigation,
-    // styleInterpolator,
+    styleInterpolator,
   } = props;
   const { options } = scene.descriptor;
   const title =
@@ -68,7 +68,7 @@ export default React.memo(function Header(props: StackHeaderProps) {
           : options.headerTitle
       }
       onGoBack={previous ? goBack : undefined}
-      // styleInterpolator={styleInterpolator}
+      styleInterpolator={styleInterpolator}
     />
   );
 });

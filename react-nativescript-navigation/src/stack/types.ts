@@ -251,9 +251,9 @@ export type StackHeaderProps = {
   navigation: StackNavigationProp<ParamListBase>;
   /**
    * Interpolated styles for various elements in the header.
-   * @RNS We're not supporting this.
+   * @RNS I've hard-coded this as the forNoAnimation interpolator.
    */
-  // styleInterpolator: StackHeaderStyleInterpolator;
+  styleInterpolator: StackHeaderStyleInterpolator;
 };
 
 export type StackDescriptor = Descriptor<

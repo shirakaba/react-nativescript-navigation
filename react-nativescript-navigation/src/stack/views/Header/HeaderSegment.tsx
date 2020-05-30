@@ -47,7 +47,7 @@ type Props = StackHeaderOptions & {
   title?: string;
   leftLabel?: string;
   scene: Scene<Route<string>>;
-  // styleInterpolator: StackHeaderStyleInterpolator;
+  styleInterpolator: StackHeaderStyleInterpolator;
 };
 
 type State = {
@@ -170,7 +170,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
         : undefined,
       headerTransparent,
       headerTintColor,
-      headerBackground,
+      // headerBackground,
       headerRight: right,
       headerBackImage: backImage,
       headerBackTitle: leftLabel,
@@ -186,7 +186,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
       headerTitleContainerStyle: titleContainerStyle,
       headerStyle: customHeaderStyle,
       headerStatusBarHeight = insets.top,
-      // styleInterpolator,
+      styleInterpolator,
     } = this.props;
 
     const { leftLabelLayout, titleLayout } = this.state;
@@ -294,8 +294,10 @@ export default class HeaderSegment extends React.Component<Props, State> {
     } = this.getInterpolatedStyle(
       styleInterpolator,
       layout,
-      scene.progress.current,
-      scene.progress.next,
+      // scene.progress.current,
+      // scene.progress.next,
+      0,
+      0,
       titleLayout,
       previousTitle ? leftLabelLayout : undefined,
       typeof height === 'number' ? height : defaultHeight
@@ -310,7 +312,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
           labelVisible: headerBackTitleVisible,
           label: leftLabel !== undefined ? leftLabel : previousTitle,
           truncatedLabel,
-          labelStyle: [leftLabelStyle, customLeftLabelStyle],
+          labelStyle: { ...leftLabelStyle, ...customLeftLabelStyle },
           onLabelLayout: this.handleLeftLabelLayout,
           screenLayout: layout,
           titleLayout,

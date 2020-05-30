@@ -93,6 +93,11 @@ export default function HeaderContainer({
     navigation: scene.descriptor.navigation as StackNavigationProp<
       ParamListBase
     >,
+    /**
+     * Equivalent to forNoAnimation.
+     * @see https://github.com/react-navigation/react-navigation/blob/9305bfa93901c2a45ecd8b1c17b62883a54b415b/packages/stack/src/TransitionConfigs/HeaderStyleInterpolators.tsx#L265
+     */
+    styleInterpolator: () => ({})
     // styleInterpolator:
     //   mode === 'float'
     //     ? isHeaderStatic
