@@ -425,7 +425,7 @@ export default class CardStack extends React.Component<Props, State> {
         onLayoutChanged={this.handleLayout}
       >
         {routes.map((route, index, self) => {
-          const focused = focusedRoute.key === route.key;
+          const isFocused = focusedRoute.key === route.key;
           // const gesture = gestures[route.key];
           const scene = scenes[index];
 
@@ -438,9 +438,11 @@ export default class CardStack extends React.Component<Props, State> {
           //   : 1;
 
           const {
+            headerShown, // <-
+            header, // <-
+            headerTransparent, // <-
+
             safeAreaInsets,
-            headerShown,
-            headerTransparent,
             cardShadowEnabled,
             cardOverlayEnabled,
             cardOverlay,
@@ -519,6 +521,9 @@ export default class CardStack extends React.Component<Props, State> {
               }
             }
           }
+
+          const nextScene = scenes[index + 1];
+
           // A screen
           return (
             <page
@@ -532,7 +537,12 @@ export default class CardStack extends React.Component<Props, State> {
                   mode: "float",
                   layout,
                   insets: { top, right, bottom, left },
-                  scenes,
+                  previousScene,
+                  scene,
+                  nextScene,
+                  isLastScene: index === scenes.length - 1,
+                  // sceneIndex: index,
+                  // scenes,
                   getPreviousRoute,
                   getFocusedRoute: this.getFocusedRoute,
                   onContentHeightChange: this.handleHeaderLayout,
@@ -547,11 +557,11 @@ export default class CardStack extends React.Component<Props, State> {
                   style: styles.floating,
                 })
               }
-              
+
               <CardContainer
                 index={index}
                 active={index === self.length - 1}
-                focused={focused}
+                focused={isFocused}
                 closing={closingRouteKeys.includes(route.key)}
                 layout={layout}
                 // gesture={gesture}
