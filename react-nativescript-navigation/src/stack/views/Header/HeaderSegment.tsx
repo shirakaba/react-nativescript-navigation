@@ -370,7 +370,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
                 {leftButton}
               </actionItem>
             ) : null}
-            <flexboxLayout
+            {/* <flexboxLayout
               // pointerEvents="box-none"
               style={{
                 flexDirection: "column",
@@ -391,7 +391,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
                 ...titleStyle,
                 ...titleContainerStyle,
               }}
-            >
+            > */}
               {/* TODO: decide whether it is the consumer's responsibility to set nodeRole={"titleView"} for this! */}
               {headerTitle({
                 children: currentTitle,
@@ -400,7 +400,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
                 tintColor: headerTintColor,
                 style: customTitleStyle,
               })}
-            </flexboxLayout>
+            {/* </flexboxLayout> */}
             {rightButton ? (
               <actionItem
                 nodeRole={"actionItems"}
