@@ -438,9 +438,9 @@ export default class CardStack extends React.Component<Props, State> {
           //   : 1;
 
           const {
-            headerShown, // <-
-            header, // <-
-            headerTransparent, // <-
+            headerShown,
+            header,
+            headerTransparent,
 
             safeAreaInsets,
             cardShadowEnabled,

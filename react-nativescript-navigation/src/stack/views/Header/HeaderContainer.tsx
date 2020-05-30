@@ -9,7 +9,7 @@ import {
 // import { EdgeInsets } from 'react-native-safe-area-context';
 type EdgeInsets = { left: number, top: number, bottom: number, right: number };
 
-// import Header from './Header';
+import Header from './Header';
 // import {
 //   forSlideLeft,
 //   forSlideUp,
@@ -106,9 +106,10 @@ export default function HeaderContainer({
     //     : forNoAnimation,
   };
 
+  const optionalTitle = typeof options.headerTitle === "string" ? { title: options.headerTitle } : {};
+
   return (
-    // TODO: set title on actionBar as default behaviour
-    <actionBar style={style}>
+    <actionBar style={style} {...optionalTitle}>
       {
         ((mode === 'screen' && !isFinalScene) || !scene) ?
           null :
