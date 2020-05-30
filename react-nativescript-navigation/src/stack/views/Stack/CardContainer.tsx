@@ -16,7 +16,7 @@ import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJ
 type RNSStyle = ViewBaseAttributes["style"];
 type StyleProp<T> = T;
 
-type Props = /* TransitionPreset & */ {
+type Props = TransitionPreset & {
   index: number;
   active: boolean;
   focused: boolean;
@@ -74,7 +74,7 @@ function CardContainer({
   cardOverlayEnabled,
   cardShadowEnabled,
   cardStyle = {},
-  // cardStyleInterpolator,
+  cardStyleInterpolator,
   closing,
   // gesture,
   focused,
@@ -187,7 +187,7 @@ function CardContainer({
       gestureResponseDistance={gestureResponseDistance}
       gestureVelocityImpact={gestureVelocityImpact}
       // transitionSpec={transitionSpec}
-      // styleInterpolator={cardStyleInterpolator}
+      styleInterpolator={cardStyleInterpolator}
       accessibilityElementsHidden={!focused}
       importantForAccessibility={focused ? 'auto' : 'no-hide-descendants'}
       // pointerEvents={active ? 'box-none' : pointerEvents}

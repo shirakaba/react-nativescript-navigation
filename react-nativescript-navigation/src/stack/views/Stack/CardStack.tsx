@@ -178,6 +178,18 @@ const getHeaderHeights = (
 //   });
 // };
 
+const TransitionIOSSpec = {
+  animation: 'spring' as const,
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 10,
+    restSpeedThreshold: 10,
+  },
+};
+
 export default class CardStack extends React.Component<Props, State> {
   static getDerivedStateFromProps(props: Props, state: State) {
     if (
@@ -460,12 +472,17 @@ export default class CardStack extends React.Component<Props, State> {
             ? scene.descriptor.options
             : ({} as StackNavigationOptions);
 
-          // let transitionConfig = {
-          //   gestureDirection,
-          //   transitionSpec,
-          //   cardStyleInterpolator,
-          //   headerStyleInterpolator,
-          // };
+          // The transitionConfig is largely going to be ignored, so we any values will do.
+          let transitionConfig = {
+            gestureDirection: "horizontal" as const,
+            // Hard-coded TransitionIOSSpec
+            transitionSpec: {
+              open: TransitionIOSSpec,
+              close: TransitionIOSSpec,
+            },
+            cardStyleInterpolator: () => ({}),
+            headerStyleInterpolator: () => ({}),
+          };
 
           // When a screen is not the last, it should use next screen's transition config
           // Many transitions also animate the previous screen, so using 2 different transitions doesn't look right
@@ -597,7 +614,7 @@ export default class CardStack extends React.Component<Props, State> {
                 onTransitionEnd={onTransitionEnd}
                 gestureEnabled={index !== 0 && getGesturesEnabled({ route })}
                 gestureVelocityImpact={gestureVelocityImpact}
-                // {...transitionConfig}
+                {...transitionConfig}
               />
             </page>
           );
