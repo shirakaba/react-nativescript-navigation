@@ -107,9 +107,10 @@ export default function HeaderContainer({
   };
 
   const optionalTitle = typeof options.headerTitle === "string" ? { title: options.headerTitle } : {};
+  const optionalTintColor = typeof options.headerTintColor !== "undefined" ? { backgroundColor: options.headerTintColor } : {};
 
   return (
-    <actionBar style={style} {...optionalTitle}>
+    <actionBar style={style} {...optionalTitle} {...optionalTintColor}>
       {
         ((mode === 'screen' && !isFinalScene) || !scene) ?
           null :

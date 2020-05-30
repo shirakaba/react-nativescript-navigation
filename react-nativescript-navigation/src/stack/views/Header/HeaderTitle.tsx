@@ -15,6 +15,7 @@ export default function HeaderTitle({ tintColor, style, ...rest }: Props) {
 
   return (
     <label
+      nodeRole={"titleView"}
       // accessibilityRole="header"
       // numberOfLines={1}
       {...rest}

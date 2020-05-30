@@ -9,9 +9,9 @@ import * as React from 'react';
 // } from 'react-native';
 // import { EdgeInsets } from 'react-native-safe-area-context';
 import { Route } from '@react-navigation/native';
-import HeaderBackButton from './HeaderBackButton';
-import HeaderBackground from './HeaderBackground';
-import memoize from '../../utils/memoize';
+// import HeaderBackButton from './HeaderBackButton';
+// import HeaderBackground from './HeaderBackground';
+import memoize from '../../../utils/memoize';
 import { isIOS, isAndroid, Device } from "@nativescript/core";
 import {
   Layout,
@@ -323,7 +323,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <Animated.View
+        {/* <Animated.View
           pointerEvents="box-none"
           style={[StyleSheet.absoluteFill, { zIndex: 0 }, backgroundStyle]}
         >
@@ -332,7 +332,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
           ) : headerTransparent ? null : (
             <HeaderBackground style={safeStyles} />
           )}
-        </Animated.View>
+        </Animated.View> */}
         <Animated.View
           pointerEvents="box-none"
           style={[{ height, minHeight, maxHeight, opacity, transform }]}
@@ -376,6 +376,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
                 titleContainerStyle,
               ]}
             >
+              {/* TODO: decide whether it is the consumer's responsibility to set nodeRole={"titleView"} for this! */}
               {headerTitle({
                 children: currentTitle,
                 onLayout: this.handleTitleLayout,
@@ -385,8 +386,9 @@ export default class HeaderSegment extends React.Component<Props, State> {
               })}
             </Animated.View>
             {rightButton ? (
-              <Animated.View
-                pointerEvents="box-none"
+              <actionItem
+                ios={{ position: "right" }}
+                android={{ position: "popup" }}
                 style={[
                   styles.right,
                   { right: insets.right },
@@ -395,7 +397,7 @@ export default class HeaderSegment extends React.Component<Props, State> {
                 ]}
               >
                 {rightButton}
-              </Animated.View>
+              </actionItem>
             ) : null}
           </View>
         </Animated.View>

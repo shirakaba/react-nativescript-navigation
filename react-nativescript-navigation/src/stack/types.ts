@@ -22,7 +22,7 @@ type LayoutChangeEvent = any;
 
 declare namespace Animated {
     type AnimatedInterpolation = any;
-    type WithAnimatedValue<T> = any;
+    type WithAnimatedValue<T> = T;
     type AnimationConfig = any;
     type SpringAnimationConfig = any;
     type TimingAnimationConfig = any;
@@ -119,6 +119,7 @@ export type StackHeaderOptions = {
    * Defaults to scene `title`.
    * It receives `allowFontScaling`, `onLayout`, `style` and `children` in the options object as an argument.
    * The title string is passed in `children`.
+   * @RNS Used in HeaderSegment.tsx. This *must* have nodeRole={titleView} set!
    */
   headerTitle?: string | ((props: StackHeaderTitleProps) => React.ReactNode);
   /**
@@ -129,7 +130,7 @@ export type StackHeaderOptions = {
   /**
    * Style object for the title component.
    */
-  headerTitleStyle?: React.ComponentProps<typeof Animated.Text>['style'];
+  headerTitleStyle?: React.ComponentProps<"label">['style'];
   /**
    * Style object for the container of the `headerTitle` component, for example to add padding.
    * By default, `headerTitleContainerStyle` is with an absolute position style and offsets both `left` and `right`.
@@ -197,10 +198,13 @@ export type StackHeaderOptions = {
    * Function which returns a React Element to render as the background of the header.
    * This is useful for using backgrounds such as an image or a gradient.
    * You can use this with `headerTransparent` to render a blur view, for example, to create a translucent header.
+   * @RNS NativeScript Core doesn't support this, so RNS can't either. The only styling supported for the header is
+   *      background-color and color. TODO: expose those in headerStyle or headerTintColor or something.
+   * @see https://docs.nativescript.org/ui/action-bar#styling
    */
-  headerBackground?: (props: {
-    style: StyleProp<ViewStyle>;
-  }) => React.ReactNode;
+  // headerBackground?: (props: {
+  //   style: StyleProp<ViewStyle>;
+  // }) => React.ReactNode;
   /**
    * Style object for the header. You can specify a custom background color here, for example.
    */
