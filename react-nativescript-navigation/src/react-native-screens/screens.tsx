@@ -178,23 +178,25 @@ export class NativeScreen extends React.Component<ScreenProps> {
    * Whether this is a forward or backward navigation, it fires on the page that is being dismissed.
    */
   private readonly onNavigatingFrom = (args: NavigatedData) => {
-      this.props.onDismissed && this.props.onDismissed(args, "willDismiss");
+      this.props.onDismissed && this.props.onDismissed(args, "willDismiss"); // I will start to be dismissed
   };
   
   /**
-   * #2
-   * Whether this is a forward or backward navigation, it fires on the page that is appearing in place of this one.
+   * #2 forward navigation
+   * I emit this event when I've began dismissing the page before me.
    */
   private readonly onNavigatingTo = (args: NavigatedData) => {
-    this.props.onDismissed && this.props.onDismissed(args, "didDismiss");
+    // this.props.onDismissed && this.props.onDismissed(args, "didDismiss"); // I've dismissed the page before me
+    this.props.onAppear && this.props.onAppear(args, "willAppear"); // I will appear
   };
   
   /**
    * #3
-   * Whether this is a forward or backward navigation, it fires on the page that is ___.
+   * I emit this event when my replacement is appearing.
    */
   private readonly onNavigatedFrom = (args: NavigatedData) => {
-    this.props.onAppear && this.props.onAppear(args, "willAppear");
+    // this.props.onAppear && this.props.onAppear(args, "willAppear"); // I will let another page begin to appear in my place
+    this.props.onDismissed && this.props.onDismissed(args, "didDismiss"); // I have been fully dismissed
   };
   
   /**
@@ -202,7 +204,7 @@ export class NativeScreen extends React.Component<ScreenProps> {
    * Whether this is a forward or backward navigation, it fires on the page that has appeared.
    */
   private readonly onNavigatedTo = (args: NavigatedData) => {
-      this.props.onAppear && this.props.onAppear(args, "didAppear");
+      this.props.onAppear && this.props.onAppear(args, "didAppear"); // I have appeared fully
   };
 
   render(){
