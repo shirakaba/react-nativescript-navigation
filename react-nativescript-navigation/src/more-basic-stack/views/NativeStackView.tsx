@@ -35,7 +35,7 @@ export default function NativeStackView({
 
   return (
     <ScreenStack style={styles.container}>
-      {state.routes.map((route) => {
+      {state.routes.map((route, index, self) => {
         const { options, render: renderScene } = descriptors[route.key];
         const {
           gestureEnabled,
@@ -45,10 +45,14 @@ export default function NativeStackView({
           headerShown,
         } = options;
 
+        const active: boolean = index === self.length - 1;
+
         return (
           <Screen
             key={route.key}
+            active={active ? 1 : 0}
             style={styles.fill}
+            backgroundColor={"red"}
             actionBarHidden={!headerShown}
             gestureEnabled={isAndroid ? false : gestureEnabled}
             stackPresentation={stackPresentation}
