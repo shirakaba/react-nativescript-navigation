@@ -1,8 +1,8 @@
 import * as React from 'react';
 // import { StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
 import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
-import { FlexboxLayoutAttributes, NavigationButtonAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
-import { ImageSource, Image } from "@nativescript/core";
+import { NavigationButtonAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
+import { ImageSource, Color } from "@nativescript/core";
 import { ScreenProps } from '../react-native-screens/screens';
 import {
   DefaultNavigatorOptions,
@@ -12,8 +12,8 @@ import {
   ParamListBase,
   StackNavigationState,
   StackRouterOptions,
-  Color,
 } from '@react-navigation/core';
+
 type RNSStyle = ViewBaseAttributes["style"];
 type StyleProp<T> = T;
 type TextStyle = RNSStyle;
@@ -129,18 +129,18 @@ export type NativeStackNavigationOptions = {
   // headerLargeTitle?: boolean;
   /**
    * Function which returns a React Element to display on the right side of the header.
+   * @RNS Recommended that you set this nodeRole={"actionView"} on this.
    */
-  headerRight?: (props: { tintColor?: string }) => React.ReactNode;
+  headerRight?: (props: { tintColor?: string|Color }) => React.ReactNode;
   /**
    * Function which returns a React Element to display on the left side of the header.
    * @RNS Recommended that you set this nodeRole={"actionView"} on this.
    */
-  headerLeft?: (props: { tintColor?: string }) => React.ReactNode;
+  headerLeft?: (props: { tintColor?: string|Color }) => React.ReactNode;
   /**
    * Function which returns a React Element to display in the center of the header.
-   * @RNS Recommended that you set this nodeRole={"actionView"} on this.
    */
-  headerCenter?: (props: { tintColor?: string }) => React.ReactNode;
+  headerCenter?: (props: { tintColor?: string|Color }) => React.ReactNode;
   /**
    * Tint color for the header. Changes the color of back button and title.
    */
