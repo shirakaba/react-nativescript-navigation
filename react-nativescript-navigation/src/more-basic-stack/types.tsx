@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import { StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
 import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
-import { FlexboxLayoutAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
+import { FlexboxLayoutAttributes, NavigationButtonAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
 import { ImageSource, Image } from "@nativescript/core";
 import { ScreenProps } from '../react-native-screens/screens';
 import {
@@ -85,7 +85,8 @@ export type NativeStackNavigationOptions = {
    * Image to display in the header as the back button.
    * Defaults to back icon image for the platform (a chevron on iOS and an arrow on Android).
    */
-  backButtonImage?: ImageSourcePropType;
+  // backButtonImage?: ImageSourcePropType;
+  backButtonImage?: NavigationButtonAttributes["icon"];
   /**
    * Title to display in the back button.
    * Only supported on iOS.
@@ -104,17 +105,17 @@ export type NativeStackNavigationOptions = {
    * Whether to show the header.
    */
   headerShown?: boolean;
-  /**
-   * Whether to show the back button with custom left side of the header.
-   */
-  backButtonInCustomView?: boolean;
-  /**
-   * Boolean indicating whether the navigation bar is translucent.
-   * Only supported on iOS.
-   *
-   * @platform ios
-   */
-  headerTranslucent?: boolean;
+  // /**
+  //  * Whether to show the back button with custom left side of the header.
+  //  */
+  // backButtonInCustomView?: boolean;
+  // /**
+  //  * Boolean indicating whether the navigation bar is translucent.
+  //  * Only supported on iOS.
+  //  *
+  //  * @platform ios
+  //  */
+  // headerTranslucent?: boolean;
   /**
    * Boolean to set native property to prefer large title header (like in iOS setting).
    * For large title to collapse on scroll, the content of the screen should be wrapped in a scrollable view such as `ScrollView` or `FlatList`.
@@ -140,21 +141,21 @@ export type NativeStackNavigationOptions = {
    * Tint color for the header. Changes the color of back button and title.
    */
   headerTintColor?: string;
-  /**
-   * Boolean indicating whether to hide the back button in header.
-   * Only supported on Android.
-   *
-   * @platform android
-   */
-  headerHideBackButton?: boolean;
-  /**
-   * Boolean indicating whether to hide the elevation shadow or the bottom border on the header.
-   */
-  headerHideShadow?: boolean;
-  /**
-   * Boolean that allows for disabling drop shadow under navigation header when the edge of any scrollable content reaches the matching edge of the navigation bar.
-   */
-  headerLargeTitleHideShadow?: boolean;
+  // /**
+  //  * Boolean indicating whether to hide the back button in header.
+  //  * Only supported on Android.
+  //  *
+  //  * @platform android
+  //  */
+  // headerHideBackButton?: boolean;
+  // /**
+  //  * Boolean indicating whether to hide the elevation shadow or the bottom border on the header.
+  //  */
+  // headerHideShadow?: boolean;
+  // /**
+  //  * Boolean that allows for disabling drop shadow under navigation header when the edge of any scrollable content reaches the matching edge of the navigation bar.
+  //  */
+  // headerLargeTitleHideShadow?: boolean;
   /**
    * Style object for header title. Supported properties:
    * - backgroundColor

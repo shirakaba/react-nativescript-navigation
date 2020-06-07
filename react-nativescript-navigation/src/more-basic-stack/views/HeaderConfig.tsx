@@ -5,7 +5,7 @@ import {
   ScreenStackHeaderRightView,
   ScreenStackHeaderLeftView,
   ScreenStackHeaderCenterView,
-} from 'react-native-screens';
+} from '../../react-native-screens/screens';
 import { Route, useTheme } from '@react-navigation/native';
 import { NativeStackNavigationOptions } from '../types';
 
@@ -25,29 +25,29 @@ export default function HeaderConfig(props: Props) {
     headerBackTitle,
     headerBackTitleVisible = true,
     backButtonImage,
-    headerHideBackButton,
-    headerHideShadow,
-    headerLargeTitleHideShadow,
+    // headerHideBackButton,
+    // headerHideShadow,
+    // headerLargeTitleHideShadow,
     headerTintColor,
     headerLargeTitle,
-    headerTranslucent,
+    // headerTranslucent,
     headerStyle = {},
     headerLargeStyle = {},
     headerTitleStyle = {},
     headerLargeTitleStyle = {},
     headerBackTitleStyle = {},
     headerShown,
-    backButtonInCustomView,
+    // backButtonInCustomView,
   } = props;
 
   return (
     <ScreenStackHeaderConfig
-      hidden={headerShown === false}
-      backButtonInCustomView={backButtonInCustomView}
-      translucent={headerTranslucent === true}
-      hideShadow={headerHideShadow}
-      largeTitleHideShadow={headerLargeTitleHideShadow}
-      hideBackButton={headerHideBackButton}
+      // hidden={headerShown === false}
+      // backButtonInCustomView={backButtonInCustomView}
+      // translucent={headerTranslucent === true}
+      // hideShadow={headerHideShadow}
+      // largeTitleHideShadow={headerLargeTitleHideShadow}
+      // hideBackButton={headerHideBackButton}
       title={
         headerTitle !== undefined
           ? headerTitle
@@ -84,7 +84,8 @@ export default function HeaderConfig(props: Props) {
         </ScreenStackHeaderRightView>
       ) : null}
       {backButtonImage !== undefined ? (
-        <ScreenStackHeaderBackButtonImage key="backImage" source={backButtonImage} />
+        // TODO: pass isEnabled={!disabled}
+        <ScreenStackHeaderBackButtonImage key="backImage" icon={backButtonImage} />
       ) : null}
       {headerLeft !== undefined ? (
         <ScreenStackHeaderLeftView>

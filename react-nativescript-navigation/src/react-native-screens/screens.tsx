@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
-import { PageAttributes, FlexboxLayoutAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
-import { NavigatedData } from "@nativescript/core";
+import { PageAttributes, FlexboxLayoutAttributes, NavigationButtonAttributes, ActionBarAttributes, ActionItemAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
+import { NavigatedData, Color } from "@nativescript/core";
 type RNSStyle = ViewBaseAttributes["style"];
 type StyleProp<T> = T;
 type TextStyle = RNSStyle;
@@ -212,6 +212,165 @@ export function NativeScreen(props: ScreenProps){
         ...rest
       }}
     />
+  );
+}
+
+const styles = {
+  headerSubview: {
+    // position: 'absolute',
+    // top: 0,
+    // right: 0,
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+  },
+  content: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  left: {
+    // position: 'absolute',
+    // left: 0,
+    // top: 0,
+    // bottom: 0,
+    // justifyContent: 'center',
+    // alignItems: 'flex-start',
+  },
+  right: {
+    // position: 'absolute',
+    // right: 0,
+    // top: 0,
+    // bottom: 0,
+    // justifyContent: 'center',
+    // alignItems: 'flex-end',
+  },
+  headerCenterView: {
+    width: "100%",
+    height: "100%",
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+};
+
+interface StackHeaderConfigProps extends PropsWithChildren<ActionBarAttributes> {
+  titleFontFamily?: string,
+  titleFontSize?: number,
+  titleColor?: string|Color,
+}
+
+export const ScreenStackHeaderConfig = (props: StackHeaderConfigProps) => {
+  const {
+
+  } = props;
+
+  return (
+    <actionBar
+      nodeRole={"actionBar"}
+      // style={styles.left}
+      {...props}
+    />
+  );
+};
+
+// It's unclear whether NavigationButtons accept children, but I might as well not block it.
+interface ScreenStackHeaderBackButtonImageProps extends PropsWithChildren<NavigationButtonAttributes> {
+  titleFontFamily?: string,
+  titleFontSize?: number,
+  titleColor?: string|Color,
+}
+
+/**
+ * TODO: pass isEnabled={!disabled}
+ */
+export const ScreenStackHeaderBackButtonImage = (props: ScreenStackHeaderBackButtonImageProps) => {
+  const {
+
+  } = props;
+
+  return (
+    <navigationButton
+      nodeRole={"navigationButton"}
+      // style={styles.left}
+      {...props}
+    />
+  );
+}
+
+interface ScreenStackHeaderRightViewProps extends PropsWithChildren<ActionItemAttributes> {
+}
+export const ScreenStackHeaderRightView = (props: ScreenStackHeaderRightViewProps) => {
+  const {
+    children,
+  } = props;
+
+  return (
+    <actionItem
+      nodeRole={"actionItems"}
+      ios={{ position: "right" as const, systemIcon: undefined }}
+      android={{ position: "popup" as const, systemIcon: undefined }}
+      // style={{
+      //   ...styles.right,
+      //   // ...{ right: insets.right },
+      //   // ...rightButtonStyle,
+      //   // ...rightContainerStyle,
+      // }}
+    >
+      {/*
+        * TODO: decide whether it is the consumer's responsibility to set nodeRole={"actionView"} for this!
+        *       For ActionItem, addChildFromBuilder and removeView both act upon actionView, so it's not strict.
+        */}
+      {children}
+    </actionItem>
+  );
+}
+
+interface ScreenStackHeaderLeftViewProps extends PropsWithChildren<ActionItemAttributes> {
+}
+export const ScreenStackHeaderLeftView = (props: ScreenStackHeaderLeftViewProps) => {
+  const {
+    children,
+  } = props;
+
+  return (
+    <actionItem
+      nodeRole={"actionItems"}
+      ios={{ position: "left" as const, systemIcon: undefined }}
+      // Note: Android does not support actionItems on left, to my understanding.
+      android={{ position: "popup" as const, systemIcon: undefined }}
+      // style={{
+      //   ...styles.right,
+      //   // ...{ right: insets.right },
+      //   // ...rightButtonStyle,
+      //   // ...rightContainerStyle,
+      // }}
+    >
+      {/*
+        * TODO: decide whether it is the consumer's responsibility to set nodeRole={"actionView"} for this!
+        *       For ActionItem, addChildFromBuilder and removeView both act upon actionView, so it's not strict.
+        */}
+      {children}
+    </actionItem>
+  );
+}
+
+interface ScreenStackHeaderCenterViewProps extends PropsWithChildren<FlexboxLayoutAttributes> {
+}
+export const ScreenStackHeaderCenterView = (props: ScreenStackHeaderCenterViewProps) => {
+  const {
+    children
+  } = props;
+
+  return (
+    <flexboxLayout
+      {...props}
+      style={styles.headerCenterView}
+    >
+      {children}
+    </flexboxLayout>
   );
 }
 
