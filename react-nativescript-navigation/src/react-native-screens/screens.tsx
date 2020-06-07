@@ -172,48 +172,52 @@ export interface ScreenStackHeaderConfigProps extends FlexboxLayoutAttributes {
  * @see https://github.com/software-mansion/react-native-screens/blob/master/src/screens.web.js
  * @see https://docs.nativescript.org/ui/components/page#page-events
  */
-export function NativeScreen(props: ScreenProps){
-  const { active, style, ...rest } = props;
-
+export class NativeScreen extends React.Component<ScreenProps> {
   // 1
-  const onNavigatingFrom = (args: NavigatedData) => {
-    props.onDismissed && props.onDismissed(args, "willDismiss");
+  private readonly onNavigatingFrom = (args: NavigatedData) => {
+    this.props.onDismissed && this.props.onDismissed(args, "willDismiss");
   };
   
   // 2
-  const onNavigatingTo = (args: NavigatedData) => {
-    props.onDismissed && props.onDismissed(args, "didDismiss");
+  private readonly onNavigatingTo = (args: NavigatedData) => {
+    this.props.onDismissed && this.props.onDismissed(args, "didDismiss");
   };
   
   // 3
-  const onNavigatedFrom = (args: NavigatedData) => {
-    props.onAppear && props.onAppear(args, "willAppear");
+  private readonly onNavigatedFrom = (args: NavigatedData) => {
+    this.props.onAppear && this.props.onAppear(args, "willAppear");
   };
   
   // 4
-  const onNavigatedTo = (args: NavigatedData) => {
-    props.onAppear && props.onAppear(args, "didAppear");
+  private readonly onNavigatedTo = (args: NavigatedData) => {
+    this.props.onAppear && this.props.onAppear(args, "didAppear");
   };
 
-  return (
-    <page
-      onNavigatingTo={onNavigatingTo}
-      onNavigatedTo={onNavigatedTo}
-      onNavigatedFrom={onNavigatedFrom}
-      onNavigatingFrom={onNavigatingFrom}
-      style={{
-        ...style,
-        ...(
-          ENABLE_SCREENS && !active ? 
-            {
-              visibility: 'collapse' // Because `display: 'none'` doesn't exist in NativeScript
-            } : 
-            {}
-        ),
-        ...rest
-      }}
-    />
-  );
+  render(){
+    const { active, style, ...rest } = this.props;
+
+    // console.log(`[NativeScreen] ENABLE_SCREENS && !active ${ENABLE_SCREENS && !active}`);
+
+    return (
+      <page
+        onNavigatingTo={this.onNavigatingTo}
+        onNavigatedTo={this.onNavigatedTo}
+        onNavigatedFrom={this.onNavigatedFrom}
+        onNavigatingFrom={this.onNavigatingFrom}
+        style={{
+          ...style,
+          ...(
+            ENABLE_SCREENS && !active ? 
+              {
+                visibility: 'collapse' // Because `display: 'none'` doesn't exist in NativeScript
+              } : 
+              {}
+          ),
+        }}
+        {...rest}
+      />
+    );
+  }
 }
 
 const styles = {
