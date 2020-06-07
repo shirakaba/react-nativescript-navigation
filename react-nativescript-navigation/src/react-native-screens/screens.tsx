@@ -169,26 +169,24 @@ export interface ScreenStackHeaderConfigProps extends FlexboxLayoutAttributes {
 /**
  * @see https://github.com/software-mansion/react-native-screens/blob/master/src/screens.web.js
  */
-export class NativeScreen extends React.Component<ScreenProps> {
-  render() {
-    const { active, style, ...rest } = this.props;
+export function NativeScreen(props: ScreenProps){
+  const { active, style, ...rest } = props;
 
-    return (
-      <page
-        style={{
-          ...style,
-          ...(
-            ENABLE_SCREENS && !active ? 
-              {
-                visibility: 'collapse' // Because `display: 'none'` doesn't exist in NativeScript
-              } : 
-              {}
-          ),
-          ...rest
-        }}
-      />
-    );
-  }
+  return (
+    <page
+      style={{
+        ...style,
+        ...(
+          ENABLE_SCREENS && !active ? 
+            {
+              visibility: 'collapse' // Because `display: 'none'` doesn't exist in NativeScript
+            } : 
+            {}
+        ),
+        ...rest
+      }}
+    />
+  );
 }
 
 export const Screen = NativeScreen;
