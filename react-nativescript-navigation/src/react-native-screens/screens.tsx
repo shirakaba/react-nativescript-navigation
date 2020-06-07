@@ -1,6 +1,6 @@
 import React from 'react';
 import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
-import { FlexboxLayoutAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
+import { PageAttributes, FlexboxLayoutAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
 type RNSStyle = ViewBaseAttributes["style"];
 type StyleProp<T> = T;
 type TextStyle = RNSStyle;
@@ -26,7 +26,7 @@ export type StackPresentationTypes =
 | 'formSheet';
 export type StackAnimationTypes = 'default' | 'fade' | 'flip' | 'none';
 
-export interface ScreenProps extends FlexboxLayoutAttributes {
+export interface ScreenProps extends PageAttributes {
   active?: 0 | 1;
   onComponentRef?: (view: any) => void;
   children?: React.ReactNode;
@@ -174,7 +174,7 @@ export class NativeScreen extends React.Component<ScreenProps> {
     const { active, style, ...rest } = this.props;
 
     return (
-      <flexboxLayout
+      <page
         style={{
           ...style,
           ...(
@@ -196,3 +196,6 @@ export const Screen = NativeScreen;
 export const ScreenContainer: React.ElementType<JSX.IntrinsicElements["flexboxLayout"]> = "flexboxLayout";
 
 export const NativeScreenContainer: React.ElementType<JSX.IntrinsicElements["flexboxLayout"]> = "flexboxLayout";
+
+// ScreenStack contains any number of Screen components.
+export const ScreenStack: React.ElementType<JSX.IntrinsicElements["frame"]> = "frame";

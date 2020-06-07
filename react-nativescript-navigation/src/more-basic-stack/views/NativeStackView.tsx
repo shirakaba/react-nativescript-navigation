@@ -1,20 +1,21 @@
 import * as React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+// import { View, StyleSheet, Platform } from 'react-native';
 import {
   ScreenStack,
   Screen as ScreenComponent,
   ScreenProps,
-} from 'react-native-screens';
+} from '../../react-native-screens/screens';
 import {
   StackNavigationState,
   StackActions,
-  useTheme,
-} from '@react-navigation/native';
+  // useTheme,
+} from '@react-navigation/core';
 import HeaderConfig from './HeaderConfig';
 import {
   NativeStackNavigationHelpers,
   NativeStackDescriptorMap,
 } from '../types';
+import { isAndroid } from "@nativescript/core";
 
 const Screen = (ScreenComponent as unknown) as React.ComponentType<ScreenProps>;
 
@@ -29,7 +30,7 @@ export default function NativeStackView({
   navigation,
   descriptors,
 }: Props) {
-  const { colors } = useTheme();
+  // const { colors } = useTheme();
 
   return (
     <ScreenStack style={styles.container}>
@@ -45,8 +46,8 @@ export default function NativeStackView({
         return (
           <Screen
             key={route.key}
-            style={StyleSheet.absoluteFill}
-            gestureEnabled={Platform.OS === 'android' ? false : gestureEnabled}
+            style={styles.fill}
+            gestureEnabled={isAndroid ? false : gestureEnabled}
             stackPresentation={stackPresentation}
             stackAnimation={stackAnimation}
             onAppear={() => {
@@ -68,19 +69,20 @@ export default function NativeStackView({
               });
             }}>
             <HeaderConfig {...options} route={route} />
-            <View
-              style={[
-                styles.container,
-                {
-                  backgroundColor:
-                    stackPresentation !== 'transparentModal'
-                      ? colors.background
-                      : undefined,
-                },
-                contentStyle,
-              ]}>
+            <flexboxLayout
+              nodeRole={"content"}
+              style={{
+                ...styles.flexContainer,
+                // ...{
+                //   backgroundColor:
+                //     stackPresentation !== 'transparentModal'
+                //       ? colors.background
+                //       : undefined,
+                // },
+                ...contentStyle,
+              }}>
               {renderScene()}
-            </View>
+            </flexboxLayout>
           </Screen>
         );
       })}
@@ -88,8 +90,19 @@ export default function NativeStackView({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+const styles = {
+  fill: {
+    width: "100%",
+    height: "100%",
   },
-});
+  container: {
+    width: "100%",
+    height: "100%",
+  },
+  flexContainer: {
+    flexGrow: 1,
+    flexDirection: "column", // In line with React Native
+    width: "100%",
+    height: "100%",
+  },
+};
