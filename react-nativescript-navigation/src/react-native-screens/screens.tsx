@@ -1,4 +1,5 @@
-import React, { PropsWithChildren } from 'react';
+import * as React from 'react';
+import { PropsWithChildren } from 'react';
 import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
 import { PageAttributes, FlexboxLayoutAttributes, NavigationButtonAttributes, ActionBarAttributes, ActionItemAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
 import { NavigatedData, Color } from "@nativescript/core";
