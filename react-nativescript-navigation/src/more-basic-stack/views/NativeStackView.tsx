@@ -58,32 +58,33 @@ export default function NativeStackView({
             stackPresentation={stackPresentation}
             stackAnimation={stackAnimation}
             onDismissed={(args: NavigatedData, mode: "willDismiss"|"didDismiss") => {
-              console.log(`[Screen.${route.key} ${args.object}] ${mode} ${mode === "didDismiss" ? "" : "emitting 'dismiss' event."}`);
-              if(mode === "didDismiss"){
-                return;
+              if(mode === "willDismiss"){
+                console.log(`[Screen.${route.key} ${args.object}] ${mode}; emitting 'dismiss' event.`);
+
+                navigation.emit({
+                  type: 'dismiss',
+                  target: route.key,
+                });
+  
+                navigation.dispatch({
+                  ...StackActions.pop(),
+                  source: route.key,
+                  target: state.key,
+                });
+              } else {
+                console.log(`[Screen.${route.key} ${args.object}] ${mode}; no-op.`);
               }
-
-              navigation.emit({
-                type: 'dismiss',
-                target: route.key,
-              });
-
-              navigation.dispatch({
-                ...StackActions.pop(),
-                source: route.key,
-                target: state.key,
-              });
             }}
             onAppear={(args: NavigatedData, mode: "willAppear"|"didAppear") => {
-              console.log(`[Screen.${route.key} ${args.object}] ${mode} ${mode === "willAppear" ? "" : "emitting 'appear' event."}`);
-              if(mode === "willAppear"){
-                return;
+              if(mode === "didAppear"){
+                console.log(`[Screen.${route.key} ${args.object}] ${mode}; emitting 'appear' event.`);
+                navigation.emit({
+                  type: 'appear',
+                  target: route.key,
+                });
+              } else {
+                console.log(`[Screen.${route.key} ${args.object}] ${mode}; no-op.`);
               }
-              
-              navigation.emit({
-                type: 'appear',
-                target: route.key,
-              });
             }}
             >
             <HeaderConfig {...options} route={route} />
