@@ -257,17 +257,18 @@ const styles = {
 };
 
 interface StackHeaderConfigProps extends PropsWithChildren<ActionBarAttributes> {
+  style?: RNSStyle;
 }
 
 export const ScreenStackHeaderConfig = (props: StackHeaderConfigProps) => {
   const {
-
+    style,
   } = props;
 
   return (
     <actionBar
       nodeRole={"actionBar"}
-      // style={styles.left}
+      style={style}
       {...props}
     />
   );
@@ -275,28 +276,33 @@ export const ScreenStackHeaderConfig = (props: StackHeaderConfigProps) => {
 
 // It's unclear whether NavigationButtons accept children, but I might as well not block it.
 interface ScreenStackHeaderBackButtonImageProps extends PropsWithChildren<NavigationButtonAttributes> {
-  titleFontFamily?: string,
-  titleFontSize?: number,
-  titleColor?: string|Color,
+  // titleFontFamily?: string,
+  // titleFontSize?: number,
+  // titleColor?: string|Color,
+  style?: RNSStyle;
 }
 export const ScreenStackHeaderBackButtonImage = (props: ScreenStackHeaderBackButtonImageProps) => {
   const {
-
+    style,
   } = props;
 
   return (
     <navigationButton
       nodeRole={"navigationButton"}
-      // style={styles.left}
+      style={style}
       {...props}
     />
   );
 }
 
 interface ScreenStackHeaderRightViewProps extends PropsWithChildren<ActionItemAttributes> {
+  tintColor?: string|Color,
+  style?: RNSStyle;
 }
 export const ScreenStackHeaderRightView = (props: ScreenStackHeaderRightViewProps) => {
   const {
+    tintColor,
+    style,
     children,
   } = props;
 
@@ -305,6 +311,10 @@ export const ScreenStackHeaderRightView = (props: ScreenStackHeaderRightViewProp
       nodeRole={"actionItems"}
       ios={{ position: "right" as const, systemIcon: undefined }}
       android={{ position: "popup" as const, systemIcon: undefined }}
+      style={{
+        ...style,
+        backgroundColor: tintColor,
+      }}
       // style={{
       //   ...styles.right,
       //   // ...{ right: insets.right },
@@ -322,9 +332,13 @@ export const ScreenStackHeaderRightView = (props: ScreenStackHeaderRightViewProp
 }
 
 interface ScreenStackHeaderLeftViewProps extends PropsWithChildren<ActionItemAttributes> {
+  tintColor?: string|Color,
+  style?: RNSStyle;
 }
 export const ScreenStackHeaderLeftView = (props: ScreenStackHeaderLeftViewProps) => {
   const {
+    tintColor,
+    style,
     children,
   } = props;
 
@@ -334,6 +348,10 @@ export const ScreenStackHeaderLeftView = (props: ScreenStackHeaderLeftViewProps)
       ios={{ position: "left" as const, systemIcon: undefined }}
       // Note: Android does not support actionItems on left, to my understanding.
       android={{ position: "popup" as const, systemIcon: undefined }}
+      style={{
+        ...style,
+        backgroundColor: tintColor,
+      }}
       // style={{
       //   ...styles.right,
       //   // ...{ right: insets.right },
@@ -351,9 +369,13 @@ export const ScreenStackHeaderLeftView = (props: ScreenStackHeaderLeftViewProps)
 }
 
 interface ScreenStackHeaderCenterViewProps extends PropsWithChildren<FlexboxLayoutAttributes> {
+  tintColor?: string|Color,
+  style?: RNSStyle;
 }
 export const ScreenStackHeaderCenterView = (props: ScreenStackHeaderCenterViewProps) => {
   const {
+    tintColor,
+    style,
     children,
   } = props;
 
@@ -361,7 +383,11 @@ export const ScreenStackHeaderCenterView = (props: ScreenStackHeaderCenterViewPr
     <flexboxLayout
       nodeRole={"titleView"}
       {...props}
-      style={styles.headerCenterView}
+      style={{
+        ...styles.headerCenterView,
+        ...style,
+        backgroundColor: tintColor,
+      }}
     >
       {children}
     </flexboxLayout>

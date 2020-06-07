@@ -6,7 +6,10 @@ import {
   ScreenStackHeaderLeftView,
   ScreenStackHeaderCenterView,
 } from '../../react-native-screens/screens';
-import { Route, useTheme } from '@react-navigation/native';
+import {
+  Route,
+  // useTheme
+} from '@react-navigation/core';
 import { NativeStackNavigationOptions } from '../types';
 
 type Props = NativeStackNavigationOptions & {
@@ -14,7 +17,7 @@ type Props = NativeStackNavigationOptions & {
 };
 
 export default function HeaderConfig(props: Props) {
-  const { colors } = useTheme();
+  // const { colors } = useTheme();
   const {
     route,
     title,
@@ -70,7 +73,12 @@ export default function HeaderConfig(props: Props) {
       // backTitle={headerBackTitleVisible ? headerBackTitle : ' '}
       // backTitleFontFamily={headerBackTitleStyle.fontFamily}
       // backTitleFontSize={headerBackTitleStyle.fontSize}
-      color={headerTintColor !== undefined ? headerTintColor : colors.primary}
+      color={
+        headerTintColor !== undefined ? 
+          headerTintColor : 
+          // colors.primary
+          undefined
+      }
       // largeTitle={headerLargeTitle}
       // largeTitleFontFamily={headerLargeTitleStyle.fontFamily}
       // largeTitleFontSize={headerLargeTitleStyle.fontSize}
@@ -78,13 +86,18 @@ export default function HeaderConfig(props: Props) {
       backgroundColor={
         headerStyle.backgroundColor !== undefined
           ? headerStyle.backgroundColor
-          : colors.card
+          // : colors.card
+          : undefined
       }
       // largeTitleBackgroundColor={headerLargeStyle.backgroundColor}
     >
       {headerRight !== undefined ? (
         <ScreenStackHeaderRightView>
-          {headerRight({ tintColor: headerTintColor ?? colors.primary })}
+          {headerRight({
+            tintColor: headerTintColor ??
+              // colors.primary
+              undefined
+          })}
         </ScreenStackHeaderRightView>
       ) : null}
       {backButtonImage !== undefined ? (
@@ -97,12 +110,20 @@ export default function HeaderConfig(props: Props) {
       ) : null}
       {headerLeft !== undefined ? (
         <ScreenStackHeaderLeftView>
-          {headerLeft({ tintColor: headerTintColor ?? colors.primary })}
+          {headerLeft({
+            tintColor: headerTintColor ??
+              // colors.primary
+              undefined
+          })}
         </ScreenStackHeaderLeftView>
       ) : null}
       {headerCenter !== undefined ? (
         <ScreenStackHeaderCenterView>
-          {headerCenter({ tintColor: headerTintColor ?? colors.primary })}
+          {headerCenter({
+            tintColor: headerTintColor ??
+            // colors.primary
+            undefined
+          })}
         </ScreenStackHeaderCenterView>
       ) : null}
     </ScreenStackHeaderConfig>
