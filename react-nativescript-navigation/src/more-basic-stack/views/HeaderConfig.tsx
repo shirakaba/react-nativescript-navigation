@@ -26,16 +26,16 @@ export default function HeaderConfig(props: Props) {
     headerBackTitleVisible = true,
     backButtonImage,
     // headerHideBackButton,
-    // headerHideShadow,
+    headerHideShadow,
     // headerLargeTitleHideShadow,
     headerTintColor,
-    headerLargeTitle,
-    // headerTranslucent,
+    // headerLargeTitle,
+    headerTranslucent,
     headerStyle = {},
-    headerLargeStyle = {},
-    headerTitleStyle = {},
-    headerLargeTitleStyle = {},
-    headerBackTitleStyle = {},
+    // headerLargeStyle = {},
+    // headerTitleStyle = {},
+    // headerLargeTitleStyle = {},
+    // headerBackTitleStyle = {},
     headerShown,
     // backButtonInCustomView,
   } = props;
@@ -44,40 +44,44 @@ export default function HeaderConfig(props: Props) {
     <ScreenStackHeaderConfig
       // hidden={headerShown === false}
       // backButtonInCustomView={backButtonInCustomView}
-      // translucent={headerTranslucent === true}
+      flat={!headerTranslucent && headerHideShadow}
       // hideShadow={headerHideShadow}
       // largeTitleHideShadow={headerLargeTitleHideShadow}
       // hideBackButton={headerHideBackButton}
       title={
-        headerTitle !== undefined
-          ? headerTitle
-          : title !== undefined
-          ? title
-          : route.name
+        // headerCenter (a custom titleView) takes priority over title.
+        headerCenter !== undefined ?
+          undefined :
+          headerTitle !== undefined
+            ? headerTitle
+            : title !== undefined
+            ? title
+            : route.name
       }
-      titleFontFamily={headerTitleStyle.fontFamily}
-      titleFontSize={headerTitleStyle.fontSize}
-      titleColor={
-        headerTitleStyle.color !== undefined
-          ? headerTitleStyle.color
-          : headerTintColor !== undefined
-          ? headerTintColor
-          : colors.text
-      }
-      backTitle={headerBackTitleVisible ? headerBackTitle : ' '}
-      backTitleFontFamily={headerBackTitleStyle.fontFamily}
-      backTitleFontSize={headerBackTitleStyle.fontSize}
+      // titleFontFamily={headerTitleStyle.fontFamily}
+      // titleFontSize={headerTitleStyle.fontSize}
+      // titleColor={
+      //   headerTitleStyle.color !== undefined
+      //     ? headerTitleStyle.color
+      //     : headerTintColor !== undefined
+      //     ? headerTintColor
+      //     : colors.text
+      // }
+      // backTitle={headerBackTitleVisible ? headerBackTitle : ' '}
+      // backTitleFontFamily={headerBackTitleStyle.fontFamily}
+      // backTitleFontSize={headerBackTitleStyle.fontSize}
       color={headerTintColor !== undefined ? headerTintColor : colors.primary}
-      largeTitle={headerLargeTitle}
-      largeTitleFontFamily={headerLargeTitleStyle.fontFamily}
-      largeTitleFontSize={headerLargeTitleStyle.fontSize}
-      largeTitleColor={headerLargeTitleStyle.color}
+      // largeTitle={headerLargeTitle}
+      // largeTitleFontFamily={headerLargeTitleStyle.fontFamily}
+      // largeTitleFontSize={headerLargeTitleStyle.fontSize}
+      // largeTitleColor={headerLargeTitleStyle.color}
       backgroundColor={
         headerStyle.backgroundColor !== undefined
           ? headerStyle.backgroundColor
           : colors.card
       }
-      largeTitleBackgroundColor={headerLargeStyle.backgroundColor}>
+      // largeTitleBackgroundColor={headerLargeStyle.backgroundColor}
+    >
       {headerRight !== undefined ? (
         <ScreenStackHeaderRightView>
           {headerRight({ tintColor: headerTintColor ?? colors.primary })}
@@ -85,7 +89,11 @@ export default function HeaderConfig(props: Props) {
       ) : null}
       {backButtonImage !== undefined ? (
         // TODO: pass isEnabled={!disabled}
-        <ScreenStackHeaderBackButtonImage key="backImage" icon={backButtonImage} />
+        <ScreenStackHeaderBackButtonImage
+          key="backImage"
+          icon={backButtonImage}
+          text={headerBackTitle}
+        />
       ) : null}
       {headerLeft !== undefined ? (
         <ScreenStackHeaderLeftView>

@@ -12,6 +12,7 @@ import {
   ParamListBase,
   StackNavigationState,
   StackRouterOptions,
+  Color,
 } from '@react-navigation/core';
 type RNSStyle = ViewBaseAttributes["style"];
 type StyleProp<T> = T;
@@ -109,38 +110,41 @@ export type NativeStackNavigationOptions = {
   //  * Whether to show the back button with custom left side of the header.
   //  */
   // backButtonInCustomView?: boolean;
+  /**
+   * Boolean indicating whether the navigation bar is translucent.
+   * Only supported on iOS.
+   *
+   * @platform ios
+   * @RNS For this to take effect, headerHideShadow must also be true.
+   */
+  headerTranslucent?: boolean;
   // /**
-  //  * Boolean indicating whether the navigation bar is translucent.
+  //  * Boolean to set native property to prefer large title header (like in iOS setting).
+  //  * For large title to collapse on scroll, the content of the screen should be wrapped in a scrollable view such as `ScrollView` or `FlatList`.
+  //  * If the scrollable area doesn't fill the screen, the large title won't collapse on scroll.
   //  * Only supported on iOS.
   //  *
   //  * @platform ios
   //  */
-  // headerTranslucent?: boolean;
-  /**
-   * Boolean to set native property to prefer large title header (like in iOS setting).
-   * For large title to collapse on scroll, the content of the screen should be wrapped in a scrollable view such as `ScrollView` or `FlatList`.
-   * If the scrollable area doesn't fill the screen, the large title won't collapse on scroll.
-   * Only supported on iOS.
-   *
-   * @platform ios
-   */
-  headerLargeTitle?: boolean;
+  // headerLargeTitle?: boolean;
   /**
    * Function which returns a React Element to display on the right side of the header.
    */
   headerRight?: (props: { tintColor?: string }) => React.ReactNode;
   /**
    * Function which returns a React Element to display on the left side of the header.
+   * @RNS Recommended that you set this nodeRole={"actionView"} on this.
    */
   headerLeft?: (props: { tintColor?: string }) => React.ReactNode;
   /**
    * Function which returns a React Element to display in the center of the header.
+   * @RNS Recommended that you set this nodeRole={"actionView"} on this.
    */
   headerCenter?: (props: { tintColor?: string }) => React.ReactNode;
   /**
    * Tint color for the header. Changes the color of back button and title.
    */
-  headerTintColor?: string;
+  headerTintColor?: string|Color;
   // /**
   //  * Boolean indicating whether to hide the back button in header.
   //  * Only supported on Android.
@@ -148,10 +152,11 @@ export type NativeStackNavigationOptions = {
   //  * @platform android
   //  */
   // headerHideBackButton?: boolean;
-  // /**
-  //  * Boolean indicating whether to hide the elevation shadow or the bottom border on the header.
-  //  */
-  // headerHideShadow?: boolean;
+  /**
+   * Boolean indicating whether to hide the elevation shadow or the bottom border on the header.
+   * @RNS For this to take effect, headerTranslucent must also be false.
+   */
+  headerHideShadow?: boolean;
   // /**
   //  * Boolean that allows for disabling drop shadow under navigation header when the edge of any scrollable content reaches the matching edge of the navigation bar.
   //  */
@@ -161,55 +166,56 @@ export type NativeStackNavigationOptions = {
    * - backgroundColor
    */
   headerStyle?: {
-    backgroundColor?: string;
+    backgroundColor?: string|Color;
+    color?: string|Color;
   };
-  /**
-   * Controls the style of the navigation header when the edge of any scrollable content reaches the matching edge of the navigation bar. Supported properties:
-   * - backgroundColor
-   *
-   * @platform ios
-   */
-  headerLargeStyle?: {
-    backgroundColor?: string;
-  };
+  // /**
+  //  * Controls the style of the navigation header when the edge of any scrollable content reaches the matching edge of the navigation bar. Supported properties:
+  //  * - backgroundColor
+  //  *
+  //  * @platform ios
+  //  */
+  // headerLargeStyle?: {
+  //   backgroundColor?: string;
+  // };
   /**
    * Style object for header title. Supported properties:
    * - fontFamily
    * - fontSize
    * - color
    */
-  headerTitleStyle?: {
-    fontFamily?: string;
-    fontSize?: number;
-    color?: string;
-  };
-  /**
-   * Style object for header large title. Supported properties:
-   * - fontFamily
-   * - fontSize
-   *
-   * Only supported on iOS.
-   *
-   * @platform ios
-   */
-  headerLargeTitleStyle?: {
-    fontFamily?: string;
-    fontSize?: number;
-    color?: string;
-  };
-  /**
-   * Style object for header back title. Supported properties:
-   * - fontFamily
-   * - fontSize
-   *
-   * Only supported on iOS.
-   *
-   * @platform ios
-   */
-  headerBackTitleStyle?: {
-    fontFamily?: string;
-    fontSize?: number;
-  };
+  // headerTitleStyle?: {
+  //   fontFamily?: string;
+  //   fontSize?: number;
+  //   color?: string;
+  // };
+  // /**
+  //  * Style object for header large title. Supported properties:
+  //  * - fontFamily
+  //  * - fontSize
+  //  *
+  //  * Only supported on iOS.
+  //  *
+  //  * @platform ios
+  //  */
+  // headerLargeTitleStyle?: {
+  //   fontFamily?: string;
+  //   fontSize?: number;
+  //   color?: string;
+  // };
+  // /**
+  //  * Style object for header back title. Supported properties:
+  //  * - fontFamily
+  //  * - fontSize
+  //  *
+  //  * Only supported on iOS.
+  //  *
+  //  * @platform ios
+  //  */
+  // headerBackTitleStyle?: {
+  //   fontFamily?: string;
+  //   fontSize?: number;
+  // };
   /**
    * Style object for the scene content.
    */

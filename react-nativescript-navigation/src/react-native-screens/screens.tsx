@@ -257,9 +257,6 @@ const styles = {
 };
 
 interface StackHeaderConfigProps extends PropsWithChildren<ActionBarAttributes> {
-  titleFontFamily?: string,
-  titleFontSize?: number,
-  titleColor?: string|Color,
 }
 
 export const ScreenStackHeaderConfig = (props: StackHeaderConfigProps) => {
@@ -282,10 +279,6 @@ interface ScreenStackHeaderBackButtonImageProps extends PropsWithChildren<Naviga
   titleFontSize?: number,
   titleColor?: string|Color,
 }
-
-/**
- * TODO: pass isEnabled={!disabled}
- */
 export const ScreenStackHeaderBackButtonImage = (props: ScreenStackHeaderBackButtonImageProps) => {
   const {
 
@@ -361,11 +354,12 @@ interface ScreenStackHeaderCenterViewProps extends PropsWithChildren<FlexboxLayo
 }
 export const ScreenStackHeaderCenterView = (props: ScreenStackHeaderCenterViewProps) => {
   const {
-    children
+    children,
   } = props;
 
   return (
     <flexboxLayout
+      nodeRole={"titleView"}
       {...props}
       style={styles.headerCenterView}
     >
