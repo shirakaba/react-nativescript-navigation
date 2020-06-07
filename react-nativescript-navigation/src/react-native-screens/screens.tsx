@@ -267,7 +267,7 @@ interface StackHeaderConfigProps extends PropsWithChildren<ActionBarAttributes> 
 
 export const ScreenStackHeaderConfig = (props: StackHeaderConfigProps) => {
   const {
-    style,
+    style = {},
   } = props;
 
   return (
@@ -288,7 +288,7 @@ interface ScreenStackHeaderBackButtonImageProps extends PropsWithChildren<Naviga
 }
 export const ScreenStackHeaderBackButtonImage = (props: ScreenStackHeaderBackButtonImageProps) => {
   const {
-    style,
+    style = {},
   } = props;
 
   return (
@@ -307,7 +307,7 @@ interface ScreenStackHeaderRightViewProps extends PropsWithChildren<ActionItemAt
 export const ScreenStackHeaderRightView = (props: ScreenStackHeaderRightViewProps) => {
   const {
     tintColor,
-    style,
+    style = {},
     children,
   } = props;
 
@@ -343,7 +343,7 @@ interface ScreenStackHeaderLeftViewProps extends PropsWithChildren<ActionItemAtt
 export const ScreenStackHeaderLeftView = (props: ScreenStackHeaderLeftViewProps) => {
   const {
     tintColor,
-    style,
+    style = {},
     children,
   } = props;
 
@@ -380,7 +380,7 @@ interface ScreenStackHeaderCenterViewProps extends PropsWithChildren<FlexboxLayo
 export const ScreenStackHeaderCenterView = (props: ScreenStackHeaderCenterViewProps) => {
   const {
     tintColor,
-    style,
+    style = {},
     children,
   } = props;
 
