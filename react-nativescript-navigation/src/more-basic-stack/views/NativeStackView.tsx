@@ -57,17 +57,6 @@ export default function NativeStackView({
             gestureEnabled={isAndroid ? false : gestureEnabled}
             stackPresentation={stackPresentation}
             stackAnimation={stackAnimation}
-            onAppear={(args: NavigatedData, mode: "willAppear"|"didAppear") => {
-              console.log(`[Screen.${route.key} ${args.object}] ${mode} ${mode === "willAppear" ? "" : "emitting 'appear' event."}`);
-              if(mode === "willAppear"){
-                return;
-              }
-              
-              navigation.emit({
-                type: 'appear',
-                target: route.key,
-              });
-            }}
             onDismissed={(args: NavigatedData, mode: "willDismiss"|"didDismiss") => {
               console.log(`[Screen.${route.key} ${args.object}] ${mode} ${mode === "didDismiss" ? "" : "emitting 'dismiss' event."}`);
               if(mode === "didDismiss"){
@@ -83,6 +72,17 @@ export default function NativeStackView({
                 ...StackActions.pop(),
                 source: route.key,
                 target: state.key,
+              });
+            }}
+            onAppear={(args: NavigatedData, mode: "willAppear"|"didAppear") => {
+              console.log(`[Screen.${route.key} ${args.object}] ${mode} ${mode === "willAppear" ? "" : "emitting 'appear' event."}`);
+              if(mode === "willAppear"){
+                return;
+              }
+              
+              navigation.emit({
+                type: 'appear',
+                target: route.key,
               });
             }}
             >
