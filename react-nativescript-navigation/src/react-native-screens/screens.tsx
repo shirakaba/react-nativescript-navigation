@@ -173,24 +173,36 @@ export interface ScreenStackHeaderConfigProps extends FlexboxLayoutAttributes {
  * @see https://docs.nativescript.org/ui/components/page#page-events
  */
 export class NativeScreen extends React.Component<ScreenProps> {
-  // 1
+  /**
+   * #1 *
+   * Whether this is a forward or backward navigation, it fires on the page that is being dismissed.
+   */
   private readonly onNavigatingFrom = (args: NavigatedData) => {
-    this.props.onDismissed && this.props.onDismissed(args, "willDismiss");
+      this.props.onDismissed && this.props.onDismissed(args, "willDismiss");
   };
   
-  // 2
+  /**
+   * #2
+   * Whether this is a forward or backward navigation, it fires on the page that is appearing in place of this one.
+   */
   private readonly onNavigatingTo = (args: NavigatedData) => {
     this.props.onDismissed && this.props.onDismissed(args, "didDismiss");
   };
   
-  // 3
+  /**
+   * #3
+   * Whether this is a forward or backward navigation, it fires on the page that is ___.
+   */
   private readonly onNavigatedFrom = (args: NavigatedData) => {
     this.props.onAppear && this.props.onAppear(args, "willAppear");
   };
   
-  // 4
+  /**
+   * #4 *
+   * Whether this is a forward or backward navigation, it fires on the page that has appeared.
+   */
   private readonly onNavigatedTo = (args: NavigatedData) => {
-    this.props.onAppear && this.props.onAppear(args, "didAppear");
+      this.props.onAppear && this.props.onAppear(args, "didAppear");
   };
 
   render(){

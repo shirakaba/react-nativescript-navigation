@@ -58,6 +58,7 @@ export default function NativeStackView({
             stackPresentation={stackPresentation}
             stackAnimation={stackAnimation}
             onAppear={(args: NavigatedData, mode: "willAppear"|"didAppear") => {
+              console.log(`[Screen.${route.key} ${args.object}] ${mode} ${mode === "willAppear" ? "" : "emitting 'appear' event."}`);
               if(mode === "willAppear"){
                 return;
               }
@@ -68,7 +69,8 @@ export default function NativeStackView({
               });
             }}
             onDismissed={(args: NavigatedData, mode: "willDismiss"|"didDismiss") => {
-              if(mode === "willDismiss"){
+              console.log(`[Screen.${route.key} ${args.object}] ${mode} ${mode === "didDismiss" ? "" : "emitting 'dismiss' event."}`);
+              if(mode === "didDismiss"){
                 return;
               }
 
@@ -82,7 +84,8 @@ export default function NativeStackView({
                 source: route.key,
                 target: state.key,
               });
-            }}>
+            }}
+            >
             <HeaderConfig {...options} route={route} />
             <flexboxLayout
               nodeRole={"content"}
