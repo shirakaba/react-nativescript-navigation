@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
-import { ScreenProps } from 'react-native-screens';
+// import { StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
+import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
+import { FlexboxLayoutAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
+import { ImageSource, Image } from "@nativescript/core";
+import { ScreenProps } from '../react-native-screens/screens';
 import {
   DefaultNavigatorOptions,
   Descriptor,
@@ -9,7 +12,14 @@ import {
   ParamListBase,
   StackNavigationState,
   StackRouterOptions,
-} from '@react-navigation/native';
+} from '@react-navigation/core';
+type RNSStyle = ViewBaseAttributes["style"];
+type StyleProp<T> = T;
+type TextStyle = RNSStyle;
+type ViewStyle = RNSStyle;
+type NativeSyntheticEvent<T> = any;
+type NativeTouchEvent = any;
+type ImageSourcePropType = ImageSource;
 
 export type NativeStackNavigationEventMap = {
   /**
