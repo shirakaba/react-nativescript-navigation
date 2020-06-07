@@ -16,6 +16,7 @@ import {
   NativeStackDescriptorMap,
 } from '../types';
 import { isAndroid } from "@nativescript/core";
+import { NavigatedData } from "@nativescript/core";
 
 const Screen = (ScreenComponent as unknown) as React.ComponentType<ScreenProps>;
 
@@ -41,22 +42,32 @@ export default function NativeStackView({
           stackPresentation = 'push',
           stackAnimation,
           contentStyle,
+          headerShown,
         } = options;
 
         return (
           <Screen
             key={route.key}
             style={styles.fill}
+            actionBarHidden={!headerShown}
             gestureEnabled={isAndroid ? false : gestureEnabled}
             stackPresentation={stackPresentation}
             stackAnimation={stackAnimation}
-            onAppear={() => {
+            onAppear={(args: NavigatedData, mode: "willAppear"|"didAppear") => {
+              if(mode === "willAppear"){
+                return;
+              }
+              
               navigation.emit({
                 type: 'appear',
                 target: route.key,
               });
             }}
-            onDismissed={() => {
+            onDismissed={(args: NavigatedData, mode: "willDismiss"|"didDismiss") => {
+              if(mode === "willDismiss"){
+                return;
+              }
+
               navigation.emit({
                 type: 'dismiss',
                 target: route.key,

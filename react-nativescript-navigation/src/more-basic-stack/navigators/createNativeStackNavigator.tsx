@@ -7,12 +7,12 @@ import {
   StackNavigationState,
   StackRouterOptions,
   StackActions,
-} from '@react-navigation/native';
+} from '@react-navigation/core';
 
 import {
   screensEnabled,
   // eslint-disable-next-line import/no-unresolved
-} from 'react-native-screens';
+} from '../../react-native-screens/screens';
 import NativeStackView from '../views/NativeStackView';
 import {
   NativeStackNavigatorProps,

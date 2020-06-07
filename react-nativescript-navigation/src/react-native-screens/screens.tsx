@@ -1,6 +1,7 @@
 import React from 'react';
 import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
 import { PageAttributes, FlexboxLayoutAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
+import { NavigatedData } from "@nativescript/core";
 type RNSStyle = ViewBaseAttributes["style"];
 type StyleProp<T> = T;
 type TextStyle = RNSStyle;
@@ -33,11 +34,11 @@ export interface ScreenProps extends PageAttributes {
   /**
    *@description A callback that gets called when the current screen appears.
    */
-  onAppear?: (e: NativeSyntheticEvent<NativeTouchEvent>) => void;
+  onAppear?: (args: NavigatedData, mode: "willAppear"|"didAppear") => void;
   /**
    *@description A callback that gets called when the current screen is dismissed by hardware back (on Android) or dismiss gesture (swipe back or down). The callback takes no arguments.
    */
-  onDismissed?: (e: NativeSyntheticEvent<NativeTouchEvent>) => void;
+  onDismissed?: (args: NavigatedData, mode: "willDismiss"|"didDismiss") => void;
   /**
    * @type "push" – the new screen will be pushed onto a stack which on iOS means that the default animation will be slide from the side, the animation on Android may vary depending on the OS version and theme.
    * @type "modal" – the new screen will be presented modally. In addition this allow for a nested stack to be rendered inside such screens
@@ -168,12 +169,37 @@ export interface ScreenStackHeaderConfigProps extends FlexboxLayoutAttributes {
 
 /**
  * @see https://github.com/software-mansion/react-native-screens/blob/master/src/screens.web.js
+ * @see https://docs.nativescript.org/ui/components/page#page-events
  */
 export function NativeScreen(props: ScreenProps){
   const { active, style, ...rest } = props;
 
+  // 1
+  const onNavigatingFrom = (args: NavigatedData) => {
+    props.onDismissed && props.onDismissed(args, "willDismiss");
+  };
+  
+  // 2
+  const onNavigatingTo = (args: NavigatedData) => {
+    props.onDismissed && props.onDismissed(args, "didDismiss");
+  };
+  
+  // 3
+  const onNavigatedFrom = (args: NavigatedData) => {
+    props.onAppear && props.onAppear(args, "willAppear");
+  };
+  
+  // 4
+  const onNavigatedTo = (args: NavigatedData) => {
+    props.onAppear && props.onAppear(args, "didAppear");
+  };
+
   return (
     <page
+      onNavigatingTo={onNavigatingTo}
+      onNavigatedTo={onNavigatedTo}
+      onNavigatedFrom={onNavigatedFrom}
+      onNavigatingFrom={onNavigatingFrom}
       style={{
         ...style,
         ...(
