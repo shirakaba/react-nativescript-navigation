@@ -58,7 +58,7 @@ export default function NativeStackView({
             stackPresentation={stackPresentation}
             stackAnimation={stackAnimation}
             onDismissed={(args: NavigatedData, mode: "willDismiss"|"didDismiss") => {
-              if(mode === "willDismiss"){
+              if(mode === "didDismiss"){
                 console.log(`[Screen.${route.key} ${args.object}] ${mode}; emitting 'dismiss' event.`);
 
                 navigation.emit({
@@ -76,7 +76,7 @@ export default function NativeStackView({
               }
             }}
             onAppear={(args: NavigatedData, mode: "willAppear"|"didAppear") => {
-              if(mode === "willAppear"){
+              if(mode === "didAppear"){
                 console.log(`[Screen.${route.key} ${args.object}] ${mode}; emitting 'appear' event.`);
                 navigation.emit({
                   type: 'appear',

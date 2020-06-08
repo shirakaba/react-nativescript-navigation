@@ -175,47 +175,24 @@ export interface ScreenStackHeaderConfigProps extends FlexboxLayoutAttributes {
 export class NativeScreen extends React.Component<ScreenProps> {
   private readonly pageRef = React.createRef();
 
-  /**
-   * #1 *
-   * Fired by self.
-   * Means "I will start to be dismissed."
-   */
+  // 1
   private readonly onNavigatingFrom = (args: NavigatedData) => {
-    console.log(`[onNavigatingFrom] ref; ${this.pageRef.current}; args.object: ${args.object}`)
-
-    // Exactly the same lifecycle whether backwards or forwards navigation.
-    this.props.onDismissed && this.props.onDismissed(args, "willDismiss"); // <- best place.
+    this.props.onDismissed && this.props.onDismissed(args, "willDismiss");
   };
   
-  /**
-   * #2 forward navigation
-   * Only fires for the target page (that is being navigated to), so is of little interest here.
-   * Means "I've dismissed the page before me".
-   */
+  // 2
   private readonly onNavigatingTo = (args: NavigatedData) => {
-    console.log(`[onNavigatingTo] ref; ${this.pageRef.current}; args.object: ${args.object}`)
-    // this.props.onDismissed && this.props.onDismissed(args, "didDismiss"); // I've dismissed the page before me
-    // this.props.onAppear && this.props.onAppear(args, "willAppear"); // I will appear
+    this.props.onDismissed && this.props.onDismissed(args, "didDismiss");
   };
   
-  /**
-   * #3
-   * Fired by self.
-   * Means "I will let another page begin to appear in my place".
-   */
+  // 3
   private readonly onNavigatedFrom = (args: NavigatedData) => {
-    console.log(`[onNavigatedFrom] ref; ${this.pageRef.current}; args.object: ${args.object}`);
-    // Exactly the same lifecycle whether backwards or forwards navigation.
-    this.props.onAppear && this.props.onAppear(args, "willAppear"); // I will let another page begin to appear in my place
+    this.props.onAppear && this.props.onAppear(args, "willAppear");
   };
   
-  /**
-   * #4 *
-   * Only fires for the target page (that is being navigated to), so is of little interest here.
-   */
+  // 4
   private readonly onNavigatedTo = (args: NavigatedData) => {
-    console.log(`[onNavigatedTo] ref; ${this.pageRef.current}; args.object: ${args.object}`)
-      // this.props.onAppear && this.props.onAppear(args, "didAppear"); // I have appeared fully
+    this.props.onAppear && this.props.onAppear(args, "didAppear");
   };
 
   render(){
@@ -225,7 +202,7 @@ export class NativeScreen extends React.Component<ScreenProps> {
 
     return (
       <page
-        ref={this.pageRef}
+        ref={this.pageRef as any}
         onNavigatingTo={this.onNavigatingTo}
         onNavigatedTo={this.onNavigatedTo}
         onNavigatedFrom={this.onNavigatedFrom}
