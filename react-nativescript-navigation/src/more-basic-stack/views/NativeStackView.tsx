@@ -76,7 +76,7 @@ export default function NativeStackView({
               }
             }}
             onAppear={(args: NavigatedData, mode: "willAppear"|"didAppear") => {
-              if(mode === "didAppear"){
+              if(mode === "willAppear"){
                 console.log(`[Screen.${route.key} ${args.object}] ${mode}; emitting 'appear' event.`);
                 navigation.emit({
                   type: 'appear',
