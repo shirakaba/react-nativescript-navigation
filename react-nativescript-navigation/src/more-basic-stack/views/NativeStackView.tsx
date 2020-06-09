@@ -69,11 +69,11 @@ export default function NativeStackView({
                 target: route.key,
               });
 
-              navigation.dispatch({
-                ...StackActions.pop(),
-                source: route.key,
-                target: state.key,
-              });
+              // navigation.dispatch({
+              //   ...StackActions.pop(),
+              //   source: route.key,
+              //   target: state.key,
+              // });
             }}
             onWillAppear={(args: NavigatedData) => {
               console.log(`[Screen.${route.key} ${args.object}] 'willAppear'.`);
