@@ -34,6 +34,7 @@ export default function NativeStackView({
   // const { colors } = useTheme();
 
   return (
+    // Frame
     <ScreenStack style={styles.container}>
       {state.routes.map((route, index, self) => {
         const { options, render: renderScene } = descriptors[route.key];
@@ -48,6 +49,7 @@ export default function NativeStackView({
         const active: boolean = index === self.length - 1;
 
         return (
+          // Page
           <Screen
             key={route.key}
             active={active ? 1 : 0}
@@ -69,6 +71,32 @@ export default function NativeStackView({
                 target: route.key,
               });
 
+              /**
+               * When navigation.navigate('second') is called, a route is pushed to state.routes.
+               * This causes RNS to call parent.insert(child), which involves frame.navigate({ create(): return page });
+               * 
+               * When navigation.goBack() is called, a route is popped from state.routes.
+               * This causes RNS to call parent.remove(child), which involves frame.goBack();
+               * 
+               * So, in those two cases, there's no need to dispatch a "POP" action to bring state.routes back in sync
+               * with the stack maintained by the Frame. Because the ReactChildren are driving the navigation state.
+               * 
+               * The worrying cases come from Frame's side:
+               * – Android back button (pop)
+               * – Right swipe (pop)
+               * – Press "back" navigation button (pop)
+               * 
+               * If this were purely RNS (no React Navigation), we'd need to capture (and more importantly, discern) these
+               * events and manually pop the necessary Page(s) off our Frame's array of ReactChildren.
+               * 
+               * The same goes for React Navigation, with the subtlety that said array (state.routes) is managed internally
+               * by React Navigation. To pop from it, we must dispatch a "POP" action.
+               * 
+               * However, we will also need to rely on some implicit behaviour in the RNS registry. If ever
+               * parent.remove(child) is called for a child that is not the currentPage of the frame, we must be careful
+               * _not_ to call frame.goBack() (because it has already been done); instead, we must simply no-op.
+               * 
+               */
               // navigation.dispatch({
               //   ...StackActions.pop(),
               //   source: route.key,
