@@ -57,34 +57,26 @@ export default function NativeStackView({
             gestureEnabled={isAndroid ? false : gestureEnabled}
             stackPresentation={stackPresentation}
             stackAnimation={stackAnimation}
-            onDismissed={(args: NavigatedData, mode: "willDismiss"|"didDismiss") => {
-              if(mode === "didDismiss"){
-                console.log(`[Screen.${route.key} ${args.object}] ${mode}; emitting 'dismiss' event.`);
+            onDidDisappear={(args: NavigatedData) => {
+              console.log(`[Screen.${route.key} ${args.object}] 'didDisappear'.`);
 
-                navigation.emit({
-                  type: 'dismiss',
-                  target: route.key,
-                });
-  
-                navigation.dispatch({
-                  ...StackActions.pop(),
-                  source: route.key,
-                  target: state.key,
-                });
-              } else {
-                console.log(`[Screen.${route.key} ${args.object}] ${mode}; no-op.`);
-              }
+              navigation.emit({
+                type: 'dismiss',
+                target: route.key,
+              });
+
+              navigation.dispatch({
+                ...StackActions.pop(),
+                source: route.key,
+                target: state.key,
+              });
             }}
-            onAppear={(args: NavigatedData, mode: "willAppear"|"didAppear") => {
-              if(mode === "didAppear"){
-                console.log(`[Screen.${route.key} ${args.object}] ${mode}; emitting 'appear' event.`);
-                navigation.emit({
-                  type: 'appear',
-                  target: route.key,
-                });
-              } else {
-                console.log(`[Screen.${route.key} ${args.object}] ${mode}; no-op.`);
-              }
+            onDidAppear={(args: NavigatedData) => {
+              console.log(`[Screen.${route.key} ${args.object}] 'didAppear'.`);
+              navigation.emit({
+                type: 'appear',
+                target: route.key,
+              });
             }}
             >
             <HeaderConfig {...options} route={route} />

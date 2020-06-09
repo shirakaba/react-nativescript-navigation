@@ -33,13 +33,21 @@ export interface ScreenProps extends PageAttributes {
   onComponentRef?: (view: any) => void;
   children?: React.ReactNode;
   /**
-   *@description A callback that gets called when the current screen appears.
+   *@description A callback that gets called when this screen begins to be dismissed by hardware back (on Android) or dismiss gesture (swipe back or down).
    */
-  onAppear?: (args: NavigatedData, mode: "willAppear"|"didAppear") => void;
+  onWillDisappear?: (args: NavigatedData) => void;
   /**
-   *@description A callback that gets called when the current screen is dismissed by hardware back (on Android) or dismiss gesture (swipe back or down). The callback takes no arguments.
+   *@description A callback that gets called when this screen disappears completely.
    */
-  onDismissed?: (args: NavigatedData, mode: "willDismiss"|"didDismiss") => void;
+  onDidDisappear?: (args: NavigatedData) => void;
+  /**
+   *@description A callback that gets called when this screen begins to be appear.
+   */
+  onWillAppear?: (args: NavigatedData) => void;
+  /**
+   *@description A callback that gets called when this screen appears completely.
+   */
+  onDidAppear?: (args: NavigatedData) => void;
   /**
    * @type "push" – the new screen will be pushed onto a stack which on iOS means that the default animation will be slide from the side, the animation on Android may vary depending on the OS version and theme.
    * @type "modal" – the new screen will be presented modally. In addition this allow for a nested stack to be rendered inside such screens
@@ -177,22 +185,22 @@ export class NativeScreen extends React.Component<ScreenProps> {
 
   // 1
   private readonly onNavigatingFrom = (args: NavigatedData) => {
-    this.props.onDismissed && this.props.onDismissed(args, "willDismiss");
+    this.props.onWillDisappear && this.props.onWillDisappear(args);
   };
   
   // 2
   private readonly onNavigatingTo = (args: NavigatedData) => {
-    this.props.onDismissed && this.props.onDismissed(args, "didDismiss");
+    this.props.onWillAppear && this.props.onWillAppear(args);
   };
   
   // 3
   private readonly onNavigatedFrom = (args: NavigatedData) => {
-    this.props.onAppear && this.props.onAppear(args, "willAppear");
+    this.props.onDidDisappear && this.props.onDidDisappear(args);
   };
   
   // 4
   private readonly onNavigatedTo = (args: NavigatedData) => {
-    this.props.onAppear && this.props.onAppear(args, "didAppear");
+    this.props.onDidAppear && this.props.onDidAppear(args);
   };
 
   render(){
