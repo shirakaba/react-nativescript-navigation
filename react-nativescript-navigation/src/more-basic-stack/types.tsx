@@ -26,11 +26,11 @@ export type NativeStackNavigationEventMap = {
   /**
    * Event which fires when the screen appears.
    */
-  appear: { data: undefined };
+  didAppear: { data: undefined };
   /**
    * Event which fires when the current screen is dismissed by hardware back (on Android) or dismiss gesture (swipe back or down).
    */
-  dismiss: { data: undefined };
+  didDisappear: { data: undefined };
 };
 
 export type NativeStackNavigationProp<

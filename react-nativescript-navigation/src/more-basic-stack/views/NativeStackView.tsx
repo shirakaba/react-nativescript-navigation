@@ -61,7 +61,7 @@ export default function NativeStackView({
               console.log(`[Screen.${route.key} ${args.object}] 'didDisappear'.`);
 
               navigation.emit({
-                type: 'dismiss',
+                type: 'didDisappear',
                 target: route.key,
               });
 
@@ -74,7 +74,7 @@ export default function NativeStackView({
             onDidAppear={(args: NavigatedData) => {
               console.log(`[Screen.${route.key} ${args.object}] 'didAppear'.`);
               navigation.emit({
-                type: 'appear',
+                type: 'didAppear',
                 target: route.key,
               });
             }}
