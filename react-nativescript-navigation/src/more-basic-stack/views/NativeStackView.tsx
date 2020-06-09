@@ -57,6 +57,10 @@ export default function NativeStackView({
             gestureEnabled={isAndroid ? false : gestureEnabled}
             stackPresentation={stackPresentation}
             stackAnimation={stackAnimation}
+            onWillDisappear={(args: NavigatedData) => {
+              console.log(`[Screen.${route.key} ${args.object}] 'willDisappear'.`);
+
+            }}
             onDidDisappear={(args: NavigatedData) => {
               console.log(`[Screen.${route.key} ${args.object}] 'didDisappear'.`);
 
@@ -70,6 +74,9 @@ export default function NativeStackView({
                 source: route.key,
                 target: state.key,
               });
+            }}
+            onWillAppear={(args: NavigatedData) => {
+              console.log(`[Screen.${route.key} ${args.object}] 'willAppear'.`);
             }}
             onDidAppear={(args: NavigatedData) => {
               console.log(`[Screen.${route.key} ${args.object}] 'didAppear'.`);
