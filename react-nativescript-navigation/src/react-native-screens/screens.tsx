@@ -175,27 +175,32 @@ export interface ScreenStackHeaderConfigProps extends FlexboxLayoutAttributes {
   children?: React.ReactNode;
 }
 
+interface NativeScreenState {
+  onscreen: boolean,
+}
 
 /**
  * @see https://github.com/software-mansion/react-native-screens/blob/master/src/screens.web.js
  * @see https://docs.nativescript.org/ui/components/page#page-events
  */
-export class NativeScreen extends React.Component<ScreenProps> {
+export class NativeScreen extends React.Component<ScreenProps, NativeScreenState> {
   private readonly pageRef = React.createRef();
 
   // 1
   private readonly onNavigatingFrom = (args: NavigatedData) => {
-    this.props.onWillDisappear && this.props.onWillDisappear(args);
+    this.props.onWillDisappear && this.props.onWillDisappear(args); // √
   };
   
   // 2
   private readonly onNavigatingTo = (args: NavigatedData) => {
+    this.setState({ onscreen: true });
     this.props.onWillAppear && this.props.onWillAppear(args);
   };
   
   // 3
   private readonly onNavigatedFrom = (args: NavigatedData) => {
     this.props.onDidDisappear && this.props.onDidDisappear(args);
+    this.setState({ onscreen: false });
   };
   
   // 4
@@ -218,7 +223,7 @@ export class NativeScreen extends React.Component<ScreenProps> {
         style={{
           ...style,
           ...(
-            ENABLE_SCREENS && !active ? 
+            ENABLE_SCREENS && !active && !this.state.onscreen ? 
               {
                 visibility: 'collapse' // Because `display: 'none'` doesn't exist in NativeScript
               } : 
