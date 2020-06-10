@@ -16,7 +16,20 @@ import {
   NativeStackDescriptorMap,
 } from '../types';
 import { isAndroid } from "@nativescript/core";
-import { NavigatedData } from "@nativescript/core";
+import {
+  NavigatedData, Page, Frame,
+  NavigationContext as NavigationContext,
+  NavigationEntry as NavigationEntry,
+  BackstackEntry as BackstackEntry,
+} from "@nativescript/core";
+
+type TNSFramePrivate = Frame & {
+  _navigationQueue: NavigationContext[],
+  _backStack: BackstackEntry[], // backStack just returns a copy.
+  _currentEntry: BackstackEntry|undefined,
+  isCurrent: (entry: BackstackEntry) => boolean,
+  _removeEntry: (entry: BackstackEntry) => void,
+};
 
 const Screen = (ScreenComponent as unknown) as React.ComponentType<ScreenProps>;
 
@@ -32,6 +45,7 @@ export default function NativeStackView({
   descriptors,
 }: Props) {
   // const { colors } = useTheme();
+  console.log(`[NativeStackView] ${JSON.stringify(state.routes.map(route => route.key))}`);
 
   return (
     // Frame
@@ -64,7 +78,16 @@ export default function NativeStackView({
 
             }}
             onDidDisappear={(args: NavigatedData) => {
-              console.log(`[Screen.${route.key} ${args.object}] 'didDisappear'.`);
+              const page = args.object as Page;
+              const frame = page.frame as TNSFramePrivate;
+              if(frame && frame._currentEntry && frame._currentEntry.resolvedPage === page){
+                console.log(`[Screen.${route.key} ${args.object}] 'didDisappear'. Still currentPage.`);
+                // "First" screen fires this upon disappearing when navigating forward to "Second" via React Navigation.
+                // "Second" screen fires this upon disappearing when navigating backward to "First" via React Navigation.
+                // "Second" screen fires this upon disappearing when navigating backward to "First" via user.
+              } else {
+                console.log(`[Screen.${route.key} ${args.object}] 'didDisappear'. No longer currentPage.`);
+              }
 
               navigation.emit({
                 type: 'didDisappear',
@@ -73,7 +96,7 @@ export default function NativeStackView({
 
               /**
                * When navigation.navigate('second') is called, a route is pushed to state.routes.
-               * This causes RNS to call parent.insert(child), which involves frame.navigate({ create(): return page });
+               * This causes RNS to call parent.insert(child), which involves frame.navigate({ create(): { return page; } });
                * 
                * When navigation.goBack() is called, a route is popped from state.routes.
                * This causes RNS to call parent.remove(child), which involves frame.goBack();
@@ -96,6 +119,8 @@ export default function NativeStackView({
                * parent.remove(child) is called for a child that is not the currentPage of the frame, we must be careful
                * _not_ to call frame.goBack() (because it has already been done); instead, we must simply no-op.
                * 
+               * 
+               * 
                */
               // navigation.dispatch({
               //   ...StackActions.pop(),
@@ -107,7 +132,16 @@ export default function NativeStackView({
               console.log(`[Screen.${route.key} ${args.object}] 'willAppear'.`);
             }}
             onDidAppear={(args: NavigatedData) => {
-              console.log(`[Screen.${route.key} ${args.object}] 'didAppear'.`);
+              const page = args.object as Page;
+              const frame = page.frame as TNSFramePrivate;
+              if(frame && frame._currentEntry && frame._currentEntry.resolvedPage === page){
+                // "Second" screen fires this upon appearing when being navigating forward to from "First" via React Navigation.
+                // "First" screen fires this upon appearing when being navigating backward to from "Second" via React Navigation.
+                // "First" screen fires this upon appearing when being navigating backward to from "Second" via user.
+                console.log(`[Screen.${route.key} ${args.object}] 'didAppear', becoming currentPage.`);
+              } else {
+                console.log(`[Screen.${route.key} ${args.object}] 'didAppear', but not becoming currentPage.`);
+              }
               navigation.emit({
                 type: 'didAppear',
                 target: route.key,
