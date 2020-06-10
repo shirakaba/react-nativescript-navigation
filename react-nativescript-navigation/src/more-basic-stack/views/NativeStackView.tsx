@@ -57,7 +57,7 @@ export default function NativeStackView({
       {state.routes.map((route, index, self) => {
         const { options, render: renderScene } = descriptors[route.key];
         const {
-          gestureEnabled,
+          gestureEnabled = true,
           stackPresentation = 'push',
           stackAnimation,
           contentStyle,
