@@ -184,6 +184,14 @@ interface NativeScreenState {
  * @see https://docs.nativescript.org/ui/components/page#page-events
  */
 export class NativeScreen extends React.Component<ScreenProps, NativeScreenState> {
+  constructor(props: ScreenProps){
+    super(props);
+
+    this.state = {
+      onscreen: props.active === 1,
+    };
+  }
+
   private readonly pageRef = React.createRef();
 
   // 1
@@ -200,7 +208,7 @@ export class NativeScreen extends React.Component<ScreenProps, NativeScreenState
   // 3
   private readonly onNavigatedFrom = (args: NavigatedData) => {
     this.props.onDidDisappear && this.props.onDidDisappear(args);
-    this.setState({ onscreen: false });
+    // this.setState({ onscreen: false }); // Can't perform state update on unmounted component.
   };
   
   // 4
