@@ -39,6 +39,10 @@ type Props = {
   descriptors: NativeStackDescriptorMap;
 };
 
+/**
+ * 
+ * @see https://github.com/software-mansion/react-native-screens/blob/73959abc975b5718e683d39f1452ec0bb4d5f475/native-stack/views/NativeStackView.tsx#L27
+ */
 export default function NativeStackView({
   state,
   navigation,
@@ -75,7 +79,6 @@ export default function NativeStackView({
             stackAnimation={stackAnimation}
             onWillDisappear={(args: NavigatedData) => {
               console.log(`[Screen.${route.key} ${args.object}] 'willDisappear'.`);
-
             }}
             onDidDisappear={(args: NavigatedData) => {
               const page = args.object as Page;
@@ -122,30 +125,36 @@ export default function NativeStackView({
                * 
                * 
                */
-              // navigation.dispatch({
-              //   ...StackActions.pop(),
-              //   source: route.key,
-              //   target: state.key,
-              // });
             }}
             onWillAppear={(args: NavigatedData) => {
               console.log(`[Screen.${route.key} ${args.object}] 'willAppear'.`);
             }}
             onDidAppear={(args: NavigatedData) => {
-              const page = args.object as Page;
-              const frame = page.frame as TNSFramePrivate;
-              if(frame && frame._currentEntry && frame._currentEntry.resolvedPage === page){
-                // "Second" screen fires this upon appearing when being navigating forward to from "First" via React Navigation.
-                // "First" screen fires this upon appearing when being navigating backward to from "Second" via React Navigation.
-                // "First" screen fires this upon appearing when being navigating backward to from "Second" via user.
-                console.log(`[Screen.${route.key} ${args.object}] 'didAppear', becoming currentPage.`);
-              } else {
-                console.log(`[Screen.${route.key} ${args.object}] 'didAppear', but not becoming currentPage.`);
-              }
+              // Software Mansion's NativeStackView chooses to emit before the dispatch.
               navigation.emit({
                 type: 'didAppear',
                 target: route.key,
               });
+
+              const page = args.object as Page;
+              const frame = page.frame as TNSFramePrivate;
+
+              if(frame && frame._currentEntry && frame._currentEntry.resolvedPage === page){
+                // "Second" screen fires this upon appearing when being navigating forward to from "First" via React Navigation.
+                // "First" screen fires this upon appearing when being navigating backward to from "Second" via React Navigation.
+                // "First" screen fires this upon appearing when being navigating backward to from "Second" via user.
+                console.log(`[Screen.${route.key} ${args.object}] 'didAppear', becoming currentPage. active: ${active}`);
+                if(!active){
+                  const topRoute = state.routes[state.routes.length - 1];
+                  navigation.dispatch({
+                    ...StackActions.pop(),
+                    source: topRoute.key,
+                    target: state.key,
+                  });
+                }
+              } else {
+                console.log(`[Screen.${route.key} ${args.object}] 'didAppear', but not becoming currentPage.`);
+              }
             }}
             >
             <HeaderConfig {...options} route={route} />
