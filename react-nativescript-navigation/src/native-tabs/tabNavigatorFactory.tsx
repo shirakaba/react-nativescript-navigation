@@ -12,7 +12,6 @@ import {
     TabNavigationState,
     EventMapBase,
 } from '@react-navigation/core';
-import { NavigationState } from '@react-navigation/routers';
 
 // Props accepted by the view
 type TabNavigationConfig = {
