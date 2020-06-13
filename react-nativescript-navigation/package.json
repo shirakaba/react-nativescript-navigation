@@ -35,11 +35,9 @@
   "peerDependencies": {
     "@types/react": "16.9.34",
     "react": "^16.9.0",
+    "react-nativescript": "^1.0.0",
     "@react-navigation/native": "^5.4.3",
     "tns-core-modules": "^6.5.0"
-  },
-  "dependencies": {
-    "react-nativescript": "file:../../react-nativescript/react-nativescript"
   },
   "devDependencies": {
     "@react-navigation/native": "^5.4.3",
@@ -47,6 +45,7 @@
     "patch-package": "^6.2.2",
     "prettier": "1.18.2",
     "react": "16.9.0",
+    "react-nativescript": "file:../../react-nativescript/react-nativescript",
     "tns-core-modules": "6.5.0",
     "typescript": "^3.9.3"
   }
