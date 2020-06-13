@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root';
 import * as React from "react";
 import { BaseNavigationContainer } from '@react-navigation/core';
 // import { default as stackNavigatorFactory } from "react-nativescript-navigation/dist/stack/stackNavigatorFactory";
@@ -77,4 +76,4 @@ function Second({ navigation }){
     );
 }
 
-export default hot(AppContainer);
+export default AppContainer;
