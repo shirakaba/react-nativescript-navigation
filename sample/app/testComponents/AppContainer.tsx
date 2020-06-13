@@ -2,8 +2,7 @@ import { hot } from 'react-hot-loader/root';
 import * as React from "react";
 import { BaseNavigationContainer } from '@react-navigation/core';
 // import { default as stackNavigatorFactory } from "react-nativescript-navigation/dist/stack/stackNavigatorFactory";
-import { createNativeStackNavigator as stackNavigatorFactory } from "react-nativescript-navigation/dist/more-basic-stack";
-import { default as tabNavigatorFactory } from "react-nativescript-navigation/dist/tabNavigatorFactory";
+import { stackNavigatorFactory, tabNavigatorFactory } from "react-nativescript-navigation";
 
 const TabNavigator = tabNavigatorFactory();
 const StackNavigator = stackNavigatorFactory();
