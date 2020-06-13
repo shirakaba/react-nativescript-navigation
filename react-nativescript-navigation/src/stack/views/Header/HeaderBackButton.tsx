@@ -157,7 +157,7 @@ export default function HeaderBackButton({
       onTap={disabled ? undefined : handlePress}
       text={label}
       // ios-specific options not applicable to navigationButton.
-      android={{ position: "actionBar", systemIcon: "ic_menu_back" as const }}
+      android={{ position: "actionBar" as const, systemIcon: "ic_menu_back" as const }}
     >
       {/* {renderBackImage()}
       {renderLabel()} */}
