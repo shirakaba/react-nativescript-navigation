@@ -34,7 +34,6 @@ const AppContainer = () => (
 );
 
 function First({ navigation }){
-    // console.log(`[First] render`);
     function onButtonTap(){
         navigation.navigate('second');
     }
@@ -58,7 +57,6 @@ function First({ navigation }){
 }
 
 function Second({ navigation }){
-    // console.log(`[Second] render`);
 
     function onButtonTap(){
         navigation.goBack();
