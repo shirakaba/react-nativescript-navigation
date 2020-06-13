@@ -1,39 +1,97 @@
-# `react-nativescript`
+# `react-nativescript-navigation`
 
-**React NativeScript** is a JavaScript library that enables you to build NativeScript UIs using the industry-standard UI-building framework, React. In other words, it is a 'React renderer' for NativeScript.
+React NativeScript Navigation is the official navigation library for React NativeScript.
 
-**Note:** by default, `react-nativescript` will **not** be in development mode, meaning that it will hide debug logs and any warnings about common mistakes. To switch to development mode, set `(global as any).__DEV__ = true;` early in your startup process (e.g. before calling `ReactNativeScript.start()`).
+For implementing the native stack view, we re-implement the same APIs that `react-native-screens` implement for React Native, but for NativeScript (and have thus renamed it `react-nativescript-screens` to reduce bewilderment).
 
-## Example Usage
+For implementing the native tabs, I've simply followed the React Navigation docs; no Screens library was needed.
 
-Here is an example of starting up a minimal app without JSX nor HMR:
+This is a provisional implementation; aspects beyond the core functionality of a stack that pushes and pops screens (such as the customisation of its appearance) may not be fully working yet.
 
-```js
-// app.ts
-import * as React from "react";
-import * as ReactNativeScript from "react-nativescript/dist/index";
-import { $StackLayout, $Label } from "react-nativescript/dist/index";
-import { Color } from "tns-core-modules/color";
+## Documentation
 
-const rootRef: React.RefObject<any> = React.createRef<any>();
+* React Navigation: https://reactnavigation.org/docs/getting-started
+* React NativeScript: https://react-nativescript.netlify.com/
 
-ReactNativeScript.start(
-    React.createElement(
-        $StackLayout,
-        {
-            ref: rootRef,
-            backgroundColor: new Color('green')
-        },
-        React.createElement(
-            $Label,
-            {
-                color: new Color('blue')
-            },
-            "Hello, World!"
-        ),
-    ),
-    rootRef
+The React NativeScript docs will have a section on navigation at some point.
+
+See also the typings for this package!
+
+## Example usage
+
+```tsx
+import { stackNavigatorFactory, tabNavigatorFactory } from "react-nativescript-navigation";
+
+/* Tabs Navigator. */
+const TabsAppContainer = () => (
+    <BaseNavigationContainer>
+        <TabNavigator.Navigator initialRouteName="first">
+            <TabNavigator.Screen name="first" component={First}/>
+            <TabNavigator.Screen name="second" component={Second}/>
+        </TabNavigator.Navigator>
+    </BaseNavigationContainer>
 );
+
+/* Stack Navigator. */
+const StackAppContainer = () => (
+    <BaseNavigationContainer>
+        <StackNavigator.Navigator
+            initialRouteName="first"
+            screenOptions={{
+                headerShown: true,
+            }}
+        >
+            <StackNavigator.Screen name="first" component={First}/>
+            <StackNavigator.Screen name="second" component={Second}/>
+        </StackNavigator.Navigator>
+    </BaseNavigationContainer>
+);
+
+function First({ navigation }){
+    function onButtonTap(){
+        navigation.navigate('second');
+    }
+
+    return (
+        <flexboxLayout
+            style={{
+                flexGrow: 1,
+                width: "100%",
+                height: "100%",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "yellow",
+            }}
+        >
+            <label fontSize={24} text={"You're viewing the first route!"}/>
+            <button onTap={onButtonTap} fontSize={24} text={"Go to next route"}/>
+        </flexboxLayout>
+    );
+}
+
+function Second({ navigation }){
+    function onButtonTap(){
+        navigation.goBack();
+    }
+
+    return (
+        <flexboxLayout
+            style={{
+                flexGrow: 1,
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "gold",
+            }}
+        >
+            <label fontSize={24} text={"You're viewing the second route!"}/>
+            <button onTap={onButtonTap} fontSize={24} text={"Go back"}/>
+        </flexboxLayout>
+    );
+}
+
+// export default TabsAppContainer;
+export default StackAppContainer;
 ```
 
-More comprehensive setup documentation can be found here: https://github.com/shirakaba/react-nativescript

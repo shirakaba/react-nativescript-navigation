@@ -1,3 +1,7 @@
+/**
+ * Created by following the React Navigation docs.
+ * @see https://reactnavigation.org/docs/custom-navigators/
+ */
 import * as React from 'react';
 import {} from "react-nativescript"; // Import just to get the TypeScript global types filled
 import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";

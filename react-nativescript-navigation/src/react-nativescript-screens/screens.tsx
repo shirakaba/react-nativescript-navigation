@@ -1,3 +1,7 @@
+/**
+ * A reimplementation of React Native Screens for React NativeScript.
+ * @see https://github.com/software-mansion/react-native-screens/blob/73959abc975b5718e683d39f1452ec0bb4d5f475/src/screens.native.js
+ */
 import * as React from 'react';
 import { PropsWithChildren } from 'react';
 import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";

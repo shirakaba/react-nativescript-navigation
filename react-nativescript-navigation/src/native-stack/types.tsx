@@ -1,9 +1,14 @@
+/**
+ * A reimplementation of React Native Screens for React NativeScript.
+ * @see https://github.com/software-mansion/react-native-screens/blob/73959abc975b5718e683d39f1452ec0bb4d5f475/native-stack/types.tsx
+ */
+
 import * as React from 'react';
 // import { StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
 import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
 import { NavigationButtonAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
 import { ImageSource, Color } from "@nativescript/core";
-import { ScreenProps } from '../react-native-screens/screens';
+import { ScreenProps } from '../react-nativescript-screens/screens';
 import {
   DefaultNavigatorOptions,
   Descriptor,

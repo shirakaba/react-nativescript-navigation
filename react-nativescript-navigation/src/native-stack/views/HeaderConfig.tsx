@@ -1,3 +1,7 @@
+/**
+ * A reimplementation of React Native Screens for React NativeScript.
+ * @see https://github.com/software-mansion/react-native-screens/blob/73959abc975b5718e683d39f1452ec0bb4d5f475/native-stack/views/HeaderConfig.tsx
+ */
 import * as React from 'react';
 import {
   ScreenStackHeaderBackButtonImage,
@@ -5,7 +9,7 @@ import {
   ScreenStackHeaderRightView,
   ScreenStackHeaderLeftView,
   ScreenStackHeaderCenterView,
-} from '../../react-native-screens/screens';
+} from '../../react-nativescript-screens/screens';
 import {
   Route,
   // useTheme
