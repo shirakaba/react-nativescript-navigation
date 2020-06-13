@@ -20,7 +20,12 @@ See also the typings for this package!
 ## Example usage
 
 ```tsx
+import * as React from "react";
+import { BaseNavigationContainer } from '@react-navigation/core';
 import { stackNavigatorFactory, tabNavigatorFactory } from "react-nativescript-navigation";
+
+const TabNavigator = tabNavigatorFactory();
+const StackNavigator = stackNavigatorFactory();
 
 /* Tabs Navigator. */
 const TabsAppContainer = () => (
