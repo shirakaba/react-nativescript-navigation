@@ -5,8 +5,8 @@
 
 import * as React from 'react';
 // import { StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
-import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
-import { NavigationButtonAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
+import { RNSStyle } from "react-nativescript";
+import { NavigationButtonAttributes } from "react-nativescript";
 import { ImageSource, Color } from "@nativescript/core";
 import { ScreenProps } from '../react-nativescript-screens/screens';
 import {
@@ -19,7 +19,6 @@ import {
   StackRouterOptions,
 } from '@react-navigation/core';
 
-type RNSStyle = ViewBaseAttributes["style"];
 type StyleProp<T> = T;
 type TextStyle = RNSStyle;
 type ViewStyle = RNSStyle;

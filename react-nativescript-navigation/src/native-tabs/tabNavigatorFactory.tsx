@@ -3,8 +3,7 @@
  * @see https://reactnavigation.org/docs/custom-navigators/
  */
 import * as React from 'react';
-import {} from "react-nativescript"; // Import just to get the TypeScript global types filled
-import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
+import { RNSStyle } from "react-nativescript";
 import {
     NavigationHelpersContext,
     createNavigatorFactory,
@@ -19,8 +18,8 @@ import {
 
 // Props accepted by the view
 type TabNavigationConfig = {
-    tabBarStyle: ViewBaseAttributes["style"];
-    contentStyle: ViewBaseAttributes["style"];
+    tabBarStyle: RNSStyle;
+    contentStyle: RNSStyle;
 };
   
 // Supported screen options

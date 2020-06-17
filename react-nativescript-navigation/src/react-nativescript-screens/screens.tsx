@@ -4,10 +4,9 @@
  */
 import * as React from 'react';
 import { PropsWithChildren } from 'react';
-import { ViewBaseAttributes } from "react-nativescript/dist/shared/NativeScriptJSXTypings";
-import { PageAttributes, FlexboxLayoutAttributes, NavigationButtonAttributes, ActionBarAttributes, ActionItemAttributes } from "react-nativescript/dist/lib/react-nativescript-jsx";
+import { RNSStyle, PageAttributes, FlexboxLayoutAttributes, NavigationButtonAttributes, ActionBarAttributes, ActionItemAttributes } from "react-nativescript";
 import { NavigatedData, Color, Page, Frame } from "@nativescript/core";
-type RNSStyle = ViewBaseAttributes["style"];
+
 type StyleProp<T> = T;
 type TextStyle = RNSStyle;
 type ViewStyle = RNSStyle;
@@ -196,8 +195,6 @@ export class NativeScreen extends React.Component<ScreenProps, NativeScreenState
     };
   }
 
-  private readonly pageRef = React.createRef<Page>();
-
   // 1
   private readonly onNavigatingFrom = (args: NavigatedData) => {
     this.props.onWillDisappear && this.props.onWillDisappear(args); // √
@@ -227,7 +224,6 @@ export class NativeScreen extends React.Component<ScreenProps, NativeScreenState
 
     return (
       <page
-        ref={this.pageRef}
         enableSwipeBackNavigation={gestureEnabled}
         onNavigatingTo={this.onNavigatingTo}
         onNavigatedTo={this.onNavigatedTo}

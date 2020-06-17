@@ -10,7 +10,7 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "postinstall": "patch-package",
+    "pp": "patch-package",
     "prettier": "prettier --print-width 120 --tab-width 4 --trailing-comma es5 --end-of-line lf --write \"src/**/*.ts\"",
     "build": "tsc --project ./tsconfig.json",
     "dev": "tsc --watch --project ./tsconfig.json",
@@ -33,7 +33,6 @@
   },
   "homepage": "https://github.com/shirakaba/react-nativescript-navigation#readme",
   "peerDependencies": {
-    "@types/react": "16.9.34",
     "react": "^16.9.0",
     "react-nativescript": "^1.0.0",
     "@react-navigation/native": "^5.4.3",
