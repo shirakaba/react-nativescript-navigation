@@ -8,14 +8,24 @@ For implementing the native tabs, I've simply followed the React Navigation docs
 
 This is a provisional implementation; aspects beyond the core functionality of a stack that pushes and pops screens (such as the customisation of its appearance) may not be fully working yet.
 
+## Installation
+
+```sh
+npm install --save react-nativescript-navigation @react-navigation/native
+```
+
+You do **not** need to install any of `react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view` as mentioned in the "Getting Started" section of React Navigation. Those are only for React Native projects. `react-nativescript-navigation` brings all the dependencies it needs.
+
 ## Documentation
 
 * React Navigation: https://reactnavigation.org/docs/getting-started
 * React NativeScript: https://react-nativescript.netlify.com/
+* Navigation in React NativeScript: https://react-nativescript.netlify.app/docs/core-concepts/navigation
 
-The React NativeScript docs will have a section on navigation at some point.
+For the full list of configurable options, see the typings:
 
-See also the typings for this package!
+* [for tabNavigator](https://github.com/shirakaba/react-nativescript-navigation/blob/245aa1405cabd9a36735397f24969c986c94aca2/react-nativescript-navigation/src/native-tabs/tabNavigatorFactory.tsx#L26-L28)
+* [for StackNavigator](https://github.com/shirakaba/react-nativescript-navigation/blob/master/react-nativescript-navigation/src/native-stack/types.tsx)
 
 ## Example usage
 
@@ -100,3 +110,15 @@ function Second({ navigation }){
 export default StackAppContainer;
 ```
 
+## Limitations
+
+React NativeScript Navigation's TabNavigator and StackNavigator have fewer configurable options than React Navigation's ones – this is because the React NativeScript Navigation navigators are fully native, and so are ultimately limited by the styling options that are possible natively (and the way that NativeScript Core wraps them).
+
+This library is also a work in progress and I simply don't have time to implement everything all on my own. If you need more configurability, please consider making a Pull Request.
+
+To see the full list of configurable options, see the typings:
+
+* [for tabNavigator](https://github.com/shirakaba/react-nativescript-navigation/blob/245aa1405cabd9a36735397f24969c986c94aca2/react-nativescript-navigation/src/native-tabs/tabNavigatorFactory.tsx#L26-L28)
+* [for StackNavigator](https://github.com/shirakaba/react-nativescript-navigation/blob/master/react-nativescript-navigation/src/native-stack/types.tsx)
+
+Disclaimer: the library is young, so there is a very good chance that I've incorrectly implemented some of the configuration options listed in the typings. For the happy path, I recommend starting out simple and being flexible in your design if the navigators just don't appear to be able to support it.
