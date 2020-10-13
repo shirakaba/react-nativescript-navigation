@@ -27,13 +27,15 @@ import {
   BackstackEntry as BackstackEntry,
 } from "@nativescript/core";
 
-type TNSFramePrivate = Frame & {
-  _navigationQueue: NavigationContext[],
-  _backStack: BackstackEntry[], // backStack just returns a copy.
-  _currentEntry: BackstackEntry|undefined,
+interface TNSFramePrivate extends Frame {
+  /** As of NativeScript 7, these private members have now been added to the Frame interface. */
+  // _navigationQueue: NavigationContext[],
+  // _backStack: BackstackEntry[], // backStack just returns a copy.
+  // _currentEntry: BackstackEntry | undefined,
+
   isCurrent: (entry: BackstackEntry) => boolean,
-  _removeEntry: (entry: BackstackEntry) => void,
-};
+  _removeEntry: (entry: BackstackEntry) => void,  
+}
 
 const Screen = (ScreenComponent as unknown) as React.ComponentType<ScreenProps>;
 
@@ -87,7 +89,7 @@ export default function NativeStackView({
             onDidDisappear={(args: NavigatedData) => {
               const page = args.object as Page;
               const frame = page.frame as TNSFramePrivate;
-              if(frame && frame._currentEntry && frame._currentEntry.resolvedPage === page){
+              if(frame?._currentEntry?.resolvedPage){
                 console.log(`[Screen.${route.key} ${args.object}] 'didDisappear'. Still currentPage.`);
                 // "First" screen fires this upon disappearing when navigating forward to "Second" via React Navigation.
                 // "Second" screen fires this upon disappearing when navigating backward to "First" via React Navigation.
@@ -143,7 +145,7 @@ export default function NativeStackView({
               const page = args.object as Page;
               const frame = page.frame as TNSFramePrivate;
 
-              if(frame && frame._currentEntry && frame._currentEntry.resolvedPage === page){
+              if(frame?._currentEntry?.resolvedPage === page){
                 // "Second" screen fires this upon appearing when being navigating forward to from "First" via React Navigation.
                 // "First" screen fires this upon appearing when being navigating backward to from "Second" via React Navigation.
                 // "First" screen fires this upon appearing when being navigating backward to from "Second" via user.

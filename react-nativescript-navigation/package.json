@@ -1,6 +1,6 @@
 {
   "name": "react-nativescript-navigation",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React Navigation integration for NativeScript",
   "main": "dist/index.js",
   "files": [
@@ -34,18 +34,18 @@
   "homepage": "https://github.com/shirakaba/react-nativescript-navigation#readme",
   "peerDependencies": {
     "react": "^16.9.0",
-    "react-nativescript": "^1.0.0",
+    "react-nativescript": "^2.0.0",
     "@react-navigation/native": "^5.4.3",
-    "tns-core-modules": "^6.5.0"
+    "@nativescript/core": "~7.0.0"
   },
   "devDependencies": {
+    "@nativescript/core": "~7.0.0",
     "@react-navigation/native": "^5.4.3",
     "@types/react": "16.9.34",
     "patch-package": "^6.2.2",
     "prettier": "1.18.2",
     "react": "16.9.0",
     "react-nativescript": "file:../../react-nativescript/react-nativescript",
-    "tns-core-modules": "6.5.0",
     "typescript": "^3.9.3"
   }
 }
