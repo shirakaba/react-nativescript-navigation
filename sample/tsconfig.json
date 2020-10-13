@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "esnext",
         "moduleResolution": "node",
-        "target": "es2015",
+        "target": "es2017",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "noEmitHelpers": true,
@@ -28,8 +28,7 @@
     ],
     "exclude": [
         "node_modules",
-        "../react-nativescript-navigation/node_modules",
-        "../../react-nativescript/react-nativescript/node_modules",
+        "../react-nativescript/node_modules",
         "platforms"
     ]
 }
