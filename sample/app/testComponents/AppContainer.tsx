@@ -76,7 +76,7 @@ const authFlowTest = () => {
             }
         },
         {
-            isLoading: true,
+            isLoading: false, // Nothing to load in this minimal example.
             isSignout: false,
             userToken: null,
         }
