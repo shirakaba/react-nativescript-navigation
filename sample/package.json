@@ -9,16 +9,16 @@
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "dependencies": {
-    "react": "^16.13.1",
-    "react-nativescript-navigation": "file:../react-nativescript-navigation",
-    "react-nativescript": "^2.0.0",
+    "@nativescript/core": "~7.0.0",
     "@react-navigation/native": "^5.4.3",
-    "@nativescript/core": "~7.0.0"
+    "react": "^16.13.1",
+    "react-nativescript": "file:../../react-nativescript/react-nativescript",
+    "react-nativescript-navigation": "file:../react-nativescript-navigation"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@nativescript/android": "^7.0.0",
-    "@nativescript/ios": "7.0.1",
+    "@nativescript/ios": "7.0.3",
     "@nativescript/types": "7.0.1",
     "@nativescript/webpack": "~3.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.0-beta.5",
