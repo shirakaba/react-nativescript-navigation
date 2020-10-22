@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { forwardNavOpts } from 'react-nativescript';
-import { BaseNavigationContainer, RouteProp } from '@react-navigation/core';
+import { BaseNavigationContainer, RouteProp, StackActions } from '@react-navigation/core';
 import { stackNavigatorFactory, NativeStackNavigationProp, tabNavigatorFactory } from "react-nativescript-navigation";
 
 const StackNavigator = stackNavigatorFactory();
@@ -129,13 +129,17 @@ function Login({ navigation }: LoginScreenProps) {
     const { signIn } = React.useContext(AuthContext);
 
     function onSwitchButtonTap(): void {
-        navigation.navigate('registration');
+        // navigation.navigate('registration');
+        forwardNavOpts.push({
+            clearHistory: true,
+        });
+        navigation.dispatch(StackActions.replace('registration', {}));
     }
 
     function onLogInButtonTap(): void {
-        // forwardNavOpts.push({
-        //     clearHistory: true,
-        // });
+        forwardNavOpts.push({
+            clearHistory: true,
+        });
         signIn({ username: "dummy", password: "whatever" });
     }
 
@@ -168,14 +172,17 @@ function Registration({ navigation }: RegistrationScreenProps) {
     const { signIn } = React.useContext(AuthContext);
 
     function onSwitchButtonTap(): void {
-        navigation.navigate('login');
-        // navigation.
+        // navigation.navigate('login');
+        forwardNavOpts.push({
+            clearHistory: true,
+        });
+        navigation.dispatch(StackActions.replace('login', {}));
     }
 
     function onRegisterButtonTap(): void {
-        // forwardNavOpts.push({
-        //     clearHistory: true,
-        // });
+        forwardNavOpts.push({
+            clearHistory: true,
+        });
         signIn({ username: "dummy", password: "whatever" });
     }
 
