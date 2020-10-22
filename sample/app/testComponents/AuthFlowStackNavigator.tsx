@@ -94,6 +94,7 @@ export const authFlowStackNavigatorTest = () => {
                                 <>
                                     <StackNavigator.Screen options={{ headerShown: true }} name="login" component={Login} />
                                     <StackNavigator.Screen options={{ headerShown: true }} name="registration" component={Registration} />
+                                    <StackNavigator.Screen options={{ headerShown: true }} name="nested" component={Nested} />
                                 </>
                             ) :
                             (
@@ -112,6 +113,9 @@ export const authFlowStackNavigatorTest = () => {
 type UnauthorisedStackParamList = {
     login: {};
     registration: {};
+    nested: {
+        level: number,
+    };
 };
 
 type AuthorisedStackParamList = {
@@ -129,7 +133,6 @@ function Login({ navigation }: LoginScreenProps) {
     const { signIn } = React.useContext(AuthContext);
 
     function onSwitchButtonTap(): void {
-        // navigation.navigate('registration');
         forwardNavOpts.push({
             clearHistory: true,
         });
@@ -141,6 +144,10 @@ function Login({ navigation }: LoginScreenProps) {
             clearHistory: true,
         });
         signIn({ username: "dummy", password: "whatever" });
+    }
+
+    function onNestedButtonTap(): void {
+        navigation.push("nested", { level: 0 });
     }
 
     return (
@@ -157,6 +164,7 @@ function Login({ navigation }: LoginScreenProps) {
         >
             <label fontSize={24} fontWeight={"bold"} text={"Login Screen"} />
             <button onTap={onSwitchButtonTap} fontSize={24} text={"Switch to registration screen"} />
+            <button onTap={onNestedButtonTap} fontSize={24} text={"Push nested screen"} />
             <button onTap={onLogInButtonTap} fontSize={24} text={"Log in"} />
         </flexboxLayout>
     );
@@ -172,7 +180,6 @@ function Registration({ navigation }: RegistrationScreenProps) {
     const { signIn } = React.useContext(AuthContext);
 
     function onSwitchButtonTap(): void {
-        // navigation.navigate('login');
         forwardNavOpts.push({
             clearHistory: true,
         });
@@ -205,6 +212,59 @@ function Registration({ navigation }: RegistrationScreenProps) {
     );
 }
 
+type NestedScreenProps = {
+    route: RouteProp<UnauthorisedStackParamList, "nested">,
+    navigation: NativeStackNavigationProp<UnauthorisedStackParamList, "nested">,
+}
+
+function Nested({ navigation, route }: NestedScreenProps) {
+    const { signIn } = React.useContext(AuthContext);
+
+    function onWindBackButtonTap(): void {
+        // FIXME: Maybe an off-by-one error – it's popping off the Page beneath, rather than the current frame.
+        // [NSVElement:Page(8),NSVElement:Page(73),NSVElement:Page(81)]
+        // [NSVElement:Page(8),NSVElement:Page(81)]
+        // [NSVElement:Page(8)]
+        navigation.navigate("login");
+    }
+
+    function onLogInButtonTap(): void {
+        forwardNavOpts.push({
+            clearHistory: true,
+            /**
+             * What happens from here is that the whole Unauthorised stack is popped off, one screen at a time,
+             * until we reach the bottom of the stack. However, the animation only represents one screen getting
+             * popped off, so although there IS an animation to see, it's very confusing to look at.
+             */
+            animated: false,
+        });
+        signIn({ username: "dummy", password: "whatever" });
+    }
+
+    function onNestedButtonTap(): void {
+        navigation.push("nested", { level: route.params!.level + 1 });
+    }
+
+    return (
+        <flexboxLayout
+            style={{
+                flexGrow: 1,
+                width: "100%",
+                height: "100%",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "purple",
+            }}
+        >
+            <label fontSize={24} fontWeight={"bold"} text={`Nested Screen, level ${route.params!.level}`} />
+            <button onTap={onWindBackButtonTap} fontSize={24} text={"Wind back to login screen"} />
+            <button onTap={onNestedButtonTap} fontSize={24} text={"Push nested screen"} />
+            <button onTap={onLogInButtonTap} fontSize={24} text={"Log in"} />
+        </flexboxLayout>
+    );
+}
+
 type HomeScreenProps = {
     route: RouteProp<AuthorisedStackParamList, "home">,
     navigation: NativeStackNavigationProp<AuthorisedStackParamList, "home">,
@@ -215,7 +275,6 @@ function Home({ navigation }: HomeScreenProps) {
 
     function onButtonTap() {
         signOut();
-        // navigation.navigate('login');
     }
 
     return (
