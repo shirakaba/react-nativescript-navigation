@@ -133,16 +133,16 @@ function Login({ navigation }: LoginScreenProps) {
     const { signIn } = React.useContext(AuthContext);
 
     function onSwitchButtonTap(): void {
-        forwardNavOpts.push({
-            clearHistory: true,
-        });
+        // forwardNavOpts.push({
+        //     clearHistory: true,
+        // });
         navigation.dispatch(StackActions.replace('registration', {}));
     }
 
     function onLogInButtonTap(): void {
-        forwardNavOpts.push({
-            clearHistory: true,
-        });
+        // forwardNavOpts.push({
+        //     clearHistory: true,
+        // });
         signIn({ username: "dummy", password: "whatever" });
     }
 
@@ -165,7 +165,7 @@ function Login({ navigation }: LoginScreenProps) {
             <label fontSize={24} fontWeight={"bold"} text={"Login Screen"} />
             <button onTap={onSwitchButtonTap} fontSize={24} text={"Switch to registration screen"} />
             <button onTap={onNestedButtonTap} fontSize={24} text={"Push nested screen"} />
-            <button onTap={onLogInButtonTap} fontSize={24} text={"Log in"} />
+            <button onTap={onLogInButtonTap} fontSize={24} text={"Log in (go to Home screen)"} />
         </flexboxLayout>
     );
 }
@@ -180,16 +180,20 @@ function Registration({ navigation }: RegistrationScreenProps) {
     const { signIn } = React.useContext(AuthContext);
 
     function onSwitchButtonTap(): void {
-        forwardNavOpts.push({
-            clearHistory: true,
-        });
+        // forwardNavOpts.push({
+        //     clearHistory: true,
+        // });
         navigation.dispatch(StackActions.replace('login', {}));
     }
 
+    function onNestedButtonTap(): void {
+        navigation.push("nested", { level: 0 });
+    }
+
     function onRegisterButtonTap(): void {
-        forwardNavOpts.push({
-            clearHistory: true,
-        });
+        // forwardNavOpts.push({
+        //     clearHistory: true,
+        // });
         signIn({ username: "dummy", password: "whatever" });
     }
 
@@ -202,12 +206,13 @@ function Registration({ navigation }: RegistrationScreenProps) {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "yellow",
+                backgroundColor: "green",
             }}
         >
             <label fontSize={24} fontWeight={"bold"} text={"Registration Screen"} />
             <button onTap={onSwitchButtonTap} fontSize={24} text={"Switch to login screen"} />
-            <button onTap={onRegisterButtonTap} fontSize={24} text={"Register"} />
+            <button onTap={onNestedButtonTap} fontSize={24} text={"Push nested screen"} />
+            <button onTap={onRegisterButtonTap} fontSize={24} text={"Register (go to Home screen)"} />
         </flexboxLayout>
     );
 }
@@ -220,24 +225,22 @@ type NestedScreenProps = {
 function Nested({ navigation, route }: NestedScreenProps) {
     const { signIn } = React.useContext(AuthContext);
 
-    function onWindBackButtonTap(): void {
-        // FIXME: Maybe an off-by-one error – it's popping off the Page beneath, rather than the current frame.
-        // [NSVElement:Page(8),NSVElement:Page(73),NSVElement:Page(81)]
-        // [NSVElement:Page(8),NSVElement:Page(81)]
-        // [NSVElement:Page(8)]
+    function onNavToLoginTap(): void {
+        // If you came from login, it'll wind back.
+        // If you came from register (i.e. login is no longer in your stack because it was replaced with register), it'll push.
         navigation.navigate("login");
     }
 
     function onLogInButtonTap(): void {
-        forwardNavOpts.push({
-            clearHistory: true,
-            /**
-             * What happens from here is that the whole Unauthorised stack is popped off, one screen at a time,
-             * until we reach the bottom of the stack. However, the animation only represents one screen getting
-             * popped off, so although there IS an animation to see, it's very confusing to look at.
-             */
-            animated: false,
-        });
+        // forwardNavOpts.push({
+        //     clearHistory: true,
+        //     /**
+        //      * What happens from here is that the whole Unauthorised stack is popped off, one screen at a time,
+        //      * until we reach the bottom of the stack. However, the animation only represents one screen getting
+        //      * popped off, so although there IS an animation to see, it's very confusing to look at.
+        //      */
+        //     animated: false,
+        // });
         signIn({ username: "dummy", password: "whatever" });
     }
 
@@ -258,9 +261,9 @@ function Nested({ navigation, route }: NestedScreenProps) {
             }}
         >
             <label fontSize={24} fontWeight={"bold"} text={`Nested Screen, level ${route.params!.level}`} />
-            <button onTap={onWindBackButtonTap} fontSize={24} text={"Wind back to login screen"} />
+            <button onTap={onNavToLoginTap} fontSize={24} text={"Navigate to login screen"} />
             <button onTap={onNestedButtonTap} fontSize={24} text={"Push nested screen"} />
-            <button onTap={onLogInButtonTap} fontSize={24} text={"Log in"} />
+            <button onTap={onLogInButtonTap} fontSize={24} text={"Log in (go to Home screen)"} />
         </flexboxLayout>
     );
 }
