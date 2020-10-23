@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { forwardNavOpts } from 'react-nativescript';
+import { __unstable__forwardNavOpts } from 'react-nativescript';
 import { BaseNavigationContainer, RouteProp, StackActions } from '@react-navigation/core';
 import { stackNavigatorFactory, NativeStackNavigationProp, tabNavigatorFactory } from "react-nativescript-navigation";
 
@@ -133,15 +133,20 @@ function Login({ navigation }: LoginScreenProps) {
     const { signIn } = React.useContext(AuthContext);
 
     function onSwitchButtonTap(): void {
-        // forwardNavOpts.push({
-        //     clearHistory: true,
+        // __unstable__forwardNavOpts.push({
+        //     animated: false,
         // });
         navigation.dispatch(StackActions.replace('registration', {}));
     }
 
     function onLogInButtonTap(): void {
-        // forwardNavOpts.push({
-        //     clearHistory: true,
+        // __unstable__forwardNavOpts.push({
+        //     /**
+        //      * What happens from here is that the whole Unauthorised stack is popped off, one screen at a time,
+        //      * until we reach the bottom of the stack. However, the animation only represents one screen getting
+        //      * popped off, so although there IS an animation to see, it's very confusing to look at.
+        //      */
+        //     animated: false,
         // });
         signIn({ username: "dummy", password: "whatever" });
     }
@@ -180,8 +185,8 @@ function Registration({ navigation }: RegistrationScreenProps) {
     const { signIn } = React.useContext(AuthContext);
 
     function onSwitchButtonTap(): void {
-        // forwardNavOpts.push({
-        //     clearHistory: true,
+        // __unstable__forwardNavOpts.push({
+        //     animated: false,
         // });
         navigation.dispatch(StackActions.replace('login', {}));
     }
@@ -191,8 +196,13 @@ function Registration({ navigation }: RegistrationScreenProps) {
     }
 
     function onRegisterButtonTap(): void {
-        // forwardNavOpts.push({
-        //     clearHistory: true,
+        // __unstable__forwardNavOpts.push({
+        //     /**
+        //      * What happens from here is that the whole Unauthorised stack is popped off, one screen at a time,
+        //      * until we reach the bottom of the stack. However, the animation only represents one screen getting
+        //      * popped off, so although there IS an animation to see, it's very confusing to look at.
+        //      */
+        //     animated: false,
         // });
         signIn({ username: "dummy", password: "whatever" });
     }
@@ -232,8 +242,7 @@ function Nested({ navigation, route }: NestedScreenProps) {
     }
 
     function onLogInButtonTap(): void {
-        // forwardNavOpts.push({
-        //     clearHistory: true,
+        // __unstable__forwardNavOpts.push({
         //     /**
         //      * What happens from here is that the whole Unauthorised stack is popped off, one screen at a time,
         //      * until we reach the bottom of the stack. However, the animation only represents one screen getting
