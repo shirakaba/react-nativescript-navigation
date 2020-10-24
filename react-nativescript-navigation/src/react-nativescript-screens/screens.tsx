@@ -4,7 +4,7 @@
  */
 import * as React from 'react';
 import { PropsWithChildren } from 'react';
-import { RNSStyle, PageAttributes, FlexboxLayoutAttributes, NavigationButtonAttributes, ActionBarAttributes, ActionItemAttributes } from "react-nativescript";
+import { RNSStyle, PageAttributes, FlexboxLayoutAttributes, NavigationButtonAttributes, ActionBarAttributes, ActionItemAttributes, NSVElement } from "react-nativescript";
 import { NavigatedData, Color, Page, Frame } from "@nativescript/core";
 
 type StyleProp<T> = T;
@@ -187,6 +187,9 @@ interface NativeScreenState {
  * @see https://docs.nativescript.org/ui/components/page#page-events
  */
 export class NativeScreen extends React.Component<ScreenProps, NativeScreenState> {
+  // Strictly, this is an NSVElement<Page>, but I'm hitting a TSC error – probably a @nativescript/core version mismatch in my dependencies.
+  private readonly ref = React.createRef<NSVElement<any>>();
+
   constructor(props: ScreenProps){
     super(props);
 
@@ -197,24 +200,30 @@ export class NativeScreen extends React.Component<ScreenProps, NativeScreenState
 
   // 1
   private readonly onNavigatingFrom = (args: NavigatedData) => {
-    this.props.onWillDisappear && this.props.onWillDisappear(args); // √
+    this.props.onWillDisappear?.(args); // √
   };
   
   // 2
   private readonly onNavigatingTo = (args: NavigatedData) => {
-    this.setState({ onscreen: true });
-    this.props.onWillAppear && this.props.onWillAppear(args);
+    // Checking whether our ref is still populated avoids "Can't perform a React state update on an unmounted component."
+    if(this.ref.current){
+      this.setState({ onscreen: true });
+    }
+    this.props.onWillAppear?.(args);
   };
   
   // 3
   private readonly onNavigatedFrom = (args: NavigatedData) => {
-    this.props.onDidDisappear && this.props.onDidDisappear(args);
-    // this.setState({ onscreen: false }); // Can't perform state update on unmounted component.
+    this.props.onDidDisappear?.(args);
+    // Checking whether our ref is still populated avoids "Can't perform a React state update on an unmounted component."
+    if(this.ref.current){
+      this.setState({ onscreen: false });
+    }
   };
   
   // 4
   private readonly onNavigatedTo = (args: NavigatedData) => {
-    this.props.onDidAppear && this.props.onDidAppear(args);
+    this.props.onDidAppear?.(args);
   };
 
   render(){
@@ -224,6 +233,7 @@ export class NativeScreen extends React.Component<ScreenProps, NativeScreenState
 
     return (
       <page
+        ref={this.ref}
         enableSwipeBackNavigation={gestureEnabled}
         onNavigatingTo={this.onNavigatingTo}
         onNavigatedTo={this.onNavigatedTo}
