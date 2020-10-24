@@ -5,7 +5,7 @@
 import * as React from 'react';
 import { PropsWithChildren } from 'react';
 import { RNSStyle, PageAttributes, FlexboxLayoutAttributes, NavigationButtonAttributes, ActionBarAttributes, ActionItemAttributes, NSVElement } from "react-nativescript";
-import { NavigatedData, Color, Page, Frame } from "@nativescript/core";
+import { NavigatedData, Color } from "@nativescript/core";
 
 type StyleProp<T> = T;
 type TextStyle = RNSStyle;

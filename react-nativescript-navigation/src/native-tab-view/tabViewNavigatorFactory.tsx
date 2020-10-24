@@ -25,6 +25,12 @@ type TabNavigationConfig = {
 // Supported screen options
 type TabNavigationOptions = {
     title?: string;
+    /**
+     * The source of the image to use for the tab's icon.
+     * @example "res://home_icon" (where the icon file is called "home_icon.png")
+     * @see https://docs.nativescript.org/ui/image-resources
+     */
+    iconSource?: string;
 };
 
 // Map of events and the type of data (in event.data)
@@ -37,7 +43,7 @@ type Props = DefaultNavigatorOptions<TabNavigationOptions> &
 TabRouterOptions &
 TabNavigationConfig;
 
-function TabNavigator({
+function TabViewNavigator({
   initialRouteName,
   children,
   screenOptions,
@@ -53,7 +59,7 @@ function TabNavigator({
   // console.log(`[TabNavigator] render`);
 
   return (
-    <tabs
+    <tabView
       style={{ width: "100%", height: "100%", }}
       selectedIndex={state.index}
       // onSelectedIndexChange={(args) => {
@@ -87,39 +93,27 @@ function TabNavigator({
         }
       }}
     >
-      <tabStrip nodeRole="tabStrip">
-        {state.routes.map(route => (
-          <tabStripItem
+      {state.routes.map(route => {
+        const routeOptions = descriptors[route.key].options;
+
+        return (
+          <tabViewItem
             key={route.key}
             nodeRole="items"
+            title={routeOptions.title || route.name}
+            iconSource={routeOptions.iconSource}
           >
-            <label
-              nodeRole="label"
-              style={{}}
-            >
-              {descriptors[route.key].options.title || route.name}
-            </label>
-            {/* We'll be able to fill this later by exposing options. */}
-            <image
-              nodeRole="image"
-              style={{}}
-            />
-          </tabStripItem>
-        ))}
-      </tabStrip>
-
-      {state.routes.map(route => (
-        <tabContentItem key={route.key} nodeRole="items">
-          {descriptors[route.key].render()}
-        </tabContentItem>
-      ))}
-    </tabs>
+            {descriptors[route.key].render()}
+          </tabViewItem>
+        );
+      })}
+    </tabView>
   );
 }
 
 export default createNavigatorFactory<
   TabNavigationState,
-  typeof TabNavigator,
+  TabNavigationOptions,
   EventMapBase,
   React.ComponentType<any>
->(TabNavigator);
+>(TabViewNavigator);

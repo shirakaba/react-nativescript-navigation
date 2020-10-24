@@ -5,5 +5,8 @@ export {
     NativeStackNavigationProp
 } from "./native-stack";
 export {
-    default as tabNavigatorFactory,
-} from "./native-tabs/tabNavigatorFactory";
+    default as tabsNavigatorFactory,
+} from "./native-tabs/tabsNavigatorFactory";
+export {
+    default as tabViewNavigatorFactory,
+} from "./native-tab-view/tabViewNavigatorFactory";

@@ -1,8 +1,7 @@
 import * as React from "react";
-import { useState } from "react";
 import { __unstable__forwardNavOpts } from 'react-nativescript';
 import { BaseNavigationContainer, RouteProp, StackActions } from '@react-navigation/core';
-import { stackNavigatorFactory, NativeStackNavigationProp, tabNavigatorFactory } from "react-nativescript-navigation";
+import { stackNavigatorFactory, NativeStackNavigationProp } from "react-nativescript-navigation";
 
 const StackNavigator = stackNavigatorFactory();
 
