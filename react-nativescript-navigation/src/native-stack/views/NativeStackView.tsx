@@ -78,7 +78,6 @@ export default function NativeStackView({
             key={route.key}
             active={active ? 1 : 0}
             style={styles.fill}
-            backgroundColor={"red"}
             actionBarHidden={!headerShown}
             gestureEnabled={isAndroid ? false : gestureEnabled}
             stackPresentation={stackPresentation}
