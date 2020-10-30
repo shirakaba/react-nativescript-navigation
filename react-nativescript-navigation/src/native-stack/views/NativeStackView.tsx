@@ -55,7 +55,7 @@ export default function NativeStackView({
   descriptors,
 }: Props) {
   // const { colors } = useTheme();
-  console.log(`[NativeStackView] ${JSON.stringify(state.routes.map(route => route.key))}`);
+  // console.log(`[NativeStackView] ${JSON.stringify(state.routes.map(route => route.key))}`);
 
   return (
     // Frame
