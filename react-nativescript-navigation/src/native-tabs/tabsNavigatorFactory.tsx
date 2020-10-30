@@ -3,79 +3,58 @@
  * @see https://reactnavigation.org/docs/custom-navigators/
  */
 import * as React from 'react';
-import { RNSStyle } from "react-nativescript";
 import {
-    NavigationHelpersContext,
     createNavigatorFactory,
     useNavigationBuilder,
     DefaultNavigatorOptions,
     TabRouter,
     TabActions,
+    TabActionHelpers,
     TabRouterOptions,
     TabNavigationState,
-    EventMapBase,
+    ParamListBase,
 } from '@react-navigation/core';
-import { ImageSource } from '@nativescript/core';
-
-// Props accepted by the view
-type TabNavigationConfig = {
-    tabBarStyle: RNSStyle;
-    contentStyle: RNSStyle;
-};
-  
-// Supported screen options
-type TabNavigationOptions = {
-    title?: string;
-    /**
-     * The source of the image to use for the tab's icon.
-     * If src is also provided, imageSource will take priority.
-     * @see src
-     * @see https://docs.nativescript.org/ui/image-resources
-     * @see https://docs.nativescript.org/ns-framework-modules/image-source#load-image-using-resource-name
-     */
-    imageSource?: ImageSource;
-    /**
-     * The source of the image to use for the tab's icon.
-     * If imageSource is also provided, this property will be ignored.
-     * @example "res://home_icon" (where the icon file is called "home_icon.png")
-     * @see imageSource
-     * @see https://docs.nativescript.org/ui/image-resources
-     */
-    src?: string;
-};
-
-// Map of events and the type of data (in event.data)
-type TabNavigationEventMap = {
-    tabPress: { isAlreadyFocused: boolean };
-};
+import type { TabsNavigationOptions, TabsNavigationConfig, TabsNavigationEventMap } from './types';
 
 // The props accepted by the component is a combination of 3 things
-type Props = DefaultNavigatorOptions<TabNavigationOptions> &
+type Props = DefaultNavigatorOptions<TabsNavigationOptions> &
 TabRouterOptions &
-TabNavigationConfig;
+TabsNavigationConfig;
 
+/**
+ * 
+ * @see https://github.com/react-navigation/react-navigation/blob/a35ac813b6b0816cef93b54792f2164f9b82d55e/packages/bottom-tabs/src/navigators/createBottomTabNavigator.tsx
+ * @see https://github.com/react-navigation/react-navigation/blob/f51086edea42f2382dac8c6914aac8574132114b/packages/material-top-tabs/src/navigators/createMaterialTopTabNavigator.tsx
+ */
 function TabsNavigator({
   initialRouteName,
+  backBehavior,
   children,
   screenOptions,
-  tabBarStyle,
-  contentStyle,
+  style,
+  tabStripOptions,
+  ...rest
 }: Props) {
-  const { state, navigation, descriptors } = useNavigationBuilder(TabRouter, {
+  const { state, navigation, descriptors } = useNavigationBuilder<
+    TabNavigationState<ParamListBase>,
+    TabRouterOptions,
+    TabActionHelpers<ParamListBase>,
+    TabsNavigationOptions,
+    TabsNavigationEventMap
+  >(TabRouter, {
+    initialRouteName,
+    backBehavior,
     children,
     screenOptions,
-    initialRouteName,
   });
 
   // console.log(`[TabNavigator] render`);
 
   return (
     <tabs
-      style={{ width: "100%", height: "100%", }}
+      {...rest}
+      style={{ width: "100%", height: "100%", ...style }}
       selectedIndex={state.index}
-      // onSelectedIndexChange={(args) => {
-      //   console.log(`[Tabs.onSelectedIndexChange] ${args.oldValue} -> ${args.value}`);
-      // }}
       /**
        * Firing the navigation event upon onSelectedIndexChanged handles both the case of
        * tapping the target TabStripItem and swiping between TabContentItems.
@@ -104,13 +83,13 @@ function TabsNavigator({
         }
       }}
     >
-      <tabStrip nodeRole="tabStrip">
+      <tabStrip nodeRole="tabStrip" {...tabStripOptions}>
         {state.routes.map(route => {
           const routeOptions = descriptors[route.key].options;
 
           return (
             <tabStripItem
-              key={route.key}
+              key={route.key + "-tabStripItem"}
               nodeRole="items"
             >
               <label
@@ -140,7 +119,7 @@ function TabsNavigator({
       </tabStrip>
 
       {state.routes.map(route => (
-        <tabContentItem key={route.key} nodeRole="items">
+        <tabContentItem key={route.key + "-tabContentItem"} nodeRole="items">
           {descriptors[route.key].render()}
         </tabContentItem>
       ))}
@@ -149,8 +128,8 @@ function TabsNavigator({
 }
 
 export default createNavigatorFactory<
-  TabNavigationState,
-  TabNavigationOptions,
-  EventMapBase,
-  React.ComponentType<any>
+  TabNavigationState<ParamListBase>,
+  TabsNavigationOptions,
+  TabsNavigationEventMap,
+  typeof TabsNavigator
 >(TabsNavigator);
