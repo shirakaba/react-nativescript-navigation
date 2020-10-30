@@ -74,8 +74,7 @@ function TabsNavigator({
         });
         // console.log(`[Tabs.onSelectedIndexChanged] emitted event`, event);
 
-        // Can't figure out typings, but defaultPrevented is clearly a populated boolean.
-        if (!(event as any).defaultPrevented) {
+        if (!event.defaultPrevented) {
           navigation.dispatch({
             ...TabActions.jumpTo(route.name),
             target: state.key,

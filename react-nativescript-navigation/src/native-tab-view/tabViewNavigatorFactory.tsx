@@ -3,64 +3,52 @@
  * @see https://reactnavigation.org/docs/custom-navigators/
  */
 import * as React from 'react';
-import { RNSStyle } from "react-nativescript";
 import {
-    NavigationHelpersContext,
-    createNavigatorFactory,
-    useNavigationBuilder,
-    DefaultNavigatorOptions,
-    TabRouter,
-    TabActions,
-    TabRouterOptions,
-    TabNavigationState,
-    EventMapBase,
+  createNavigatorFactory,
+  useNavigationBuilder,
+  DefaultNavigatorOptions,
+  TabRouter,
+  TabActions,
+  TabActionHelpers,
+  TabRouterOptions,
+  TabNavigationState,
+  ParamListBase,
 } from '@react-navigation/core';
+import type { TabViewNavigationOptions, TabViewNavigationConfig, TabViewNavigationEventMap } from './types';
 
-// Props accepted by the view
-type TabNavigationConfig = {
-    tabBarStyle: RNSStyle;
-    contentStyle: RNSStyle;
-};
-  
-// Supported screen options
-type TabNavigationOptions = {
-    title?: string;
-    /**
-     * The source of the image to use for the tab's icon.
-     * @example "res://home_icon" (where the icon file is called "home_icon.png")
-     * @see https://docs.nativescript.org/ui/image-resources
-     */
-    iconSource?: string;
-};
-
-// Map of events and the type of data (in event.data)
-type TabNavigationEventMap = {
-    tabPress: { isAlreadyFocused: boolean };
-};
 
 // The props accepted by the component is a combination of 3 things
-type Props = DefaultNavigatorOptions<TabNavigationOptions> &
+type Props = DefaultNavigatorOptions<TabViewNavigationOptions> &
 TabRouterOptions &
-TabNavigationConfig;
+TabViewNavigationConfig;
 
 function TabViewNavigator({
   initialRouteName,
+  backBehavior,
   children,
   screenOptions,
-  tabBarStyle,
-  contentStyle,
+  style,
+  ...rest
 }: Props) {
-  const { state, navigation, descriptors } = useNavigationBuilder(TabRouter, {
+  const { state, navigation, descriptors } = useNavigationBuilder<
+    TabNavigationState<ParamListBase>,
+    TabRouterOptions,
+    TabActionHelpers<ParamListBase>,
+    TabViewNavigationOptions,
+    TabViewNavigationEventMap
+  >(TabRouter, {
+    initialRouteName,
+    backBehavior,
     children,
     screenOptions,
-    initialRouteName,
   });
 
   // console.log(`[TabNavigator] render`);
 
   return (
     <tabView
-      style={{ width: "100%", height: "100%", }}
+      {...rest}
+      style={{ width: "100%", height: "100%", ...style }}
       selectedIndex={state.index}
       // onSelectedIndexChange={(args) => {
       //   console.log(`[Tabs.onSelectedIndexChange] ${args.oldValue} -> ${args.value}`);
@@ -84,8 +72,7 @@ function TabViewNavigator({
         });
         // console.log(`[Tabs.onSelectedIndexChanged] emitted event`, event);
 
-        // Can't figure out typings, but defaultPrevented is clearly a populated boolean.
-        if (!(event as any).defaultPrevented) {
+        if (!event.defaultPrevented) {
           navigation.dispatch({
             ...TabActions.jumpTo(route.name),
             target: state.key,
@@ -112,8 +99,8 @@ function TabViewNavigator({
 }
 
 export default createNavigatorFactory<
-  TabNavigationState,
-  TabNavigationOptions,
-  EventMapBase,
-  React.ComponentType<any>
+  TabNavigationState<ParamListBase>,
+  TabViewNavigationOptions,
+  TabViewNavigationEventMap,
+  typeof TabViewNavigator
 >(TabViewNavigator);
