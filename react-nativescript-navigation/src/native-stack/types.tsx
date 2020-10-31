@@ -5,9 +5,9 @@
 
 import * as React from 'react';
 // import { StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
-import { RNSStyle } from "react-nativescript";
+import { FrameAttributes, NativeScriptProps, RNSStyle } from "react-nativescript";
 import { NavigationButtonAttributes } from "react-nativescript";
-import { ImageSource, Color } from "@nativescript/core";
+import { ImageSource, Color, Frame } from "@nativescript/core";
 import { ScreenProps } from '../react-nativescript-screens/screens';
 import {
   DefaultNavigatorOptions,
@@ -43,7 +43,7 @@ export type NativeStackNavigationProp<
 > = NavigationProp<
   ParamList,
   RouteName,
-  StackNavigationState,
+  StackNavigationState<ParamListBase>,
   NativeStackNavigationOptions,
   NativeStackNavigationEventMap
 > & {
@@ -75,8 +75,7 @@ export type NativeStackNavigationHelpers = NavigationHelpers<
   NativeStackNavigationEventMap
 >;
 
-export type NativeStackNavigationConfig = {};
-
+// Supported screen (Page) options
 export type NativeStackNavigationOptions = {
   /**
    * String that can be displayed in the header as a fallback for `headerTitle`.
@@ -250,6 +249,42 @@ export type NativeStackNavigationOptions = {
   stackAnimation?: ScreenProps['stackAnimation'];
 };
 
+export type NativeStackNavigationConfig = Partial<
+  Omit<
+    NativeScriptProps<FrameAttributes, Frame>,
+    "actionBarVisibility" |
+    "android" |
+    "backStack" |
+    "currentEntry" | 
+    "currentPage" |
+    "defaultPage" | 
+    "ios" |
+    "onActionBarVisibilityChange" |
+    "onDefaultPageChange"
+  >
+> & {
+  // Custom props that aren't simply spread onto the frame element as-is
+};
+
+// There may be a better way to express this (some subset of how NativeStackViewProps was constructed),
+// but Omit does the trick.
+// export type NativeStackViewProps = {
+//   state: StackNavigationState<ParamListBase>;
+//   navigation: NativeStackNavigationHelpers;
+//   descriptors: NativeStackDescriptorMap;
+// } & Omit<
+//   NativeStackNavigatorProps,
+//   "initialRouteName" |
+//   "children" |
+//   "screenOptions"
+// >;
+
+export type NativeStackViewProps = NativeStackNavigationConfig & {
+  state: StackNavigationState<ParamListBase>;
+  navigation: NativeStackNavigationHelpers;
+  descriptors: NativeStackDescriptorMap;
+};
+
 export type NativeStackNavigatorProps = DefaultNavigatorOptions<
   NativeStackNavigationOptions
 > &
@@ -259,7 +294,7 @@ export type NativeStackNavigatorProps = DefaultNavigatorOptions<
 export type NativeStackDescriptor = Descriptor<
   ParamListBase,
   string,
-  StackNavigationState,
+  StackNavigationState<ParamListBase>,
   NativeStackNavigationOptions
 >;
 

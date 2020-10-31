@@ -1,22 +1,24 @@
 /**
- * A reimplementation of React Native Screens for React NativeScript.
+ * Originally reimplementation of React Native Screens for React NativeScript.
  * @see https://github.com/software-mansion/react-native-screens/blob/73959abc975b5718e683d39f1452ec0bb4d5f475/native-stack/navigators/createNativeStackNavigator.tsx
+ * 
+ * Now (with the React Navigation version update) also based on these files (and of course our Tab Navigators):
+ * @see https://github.com/react-navigation/react-navigation/blob/a35ac813b6b0816cef93b54792f2164f9b82d55e/packages/stack/src/navigators/createStackNavigator.tsx
+ * @see https://github.com/react-navigation/react-navigation/blob/a35ac813b6b0816cef93b54792f2164f9b82d55e/packages/stack/src/types.tsx
  */
 import * as React from 'react';
 import {
-  createNavigatorFactory,
   useNavigationBuilder,
+  createNavigatorFactory,
   EventArg,
   StackRouter,
-  StackNavigationState,
   StackRouterOptions,
+  StackNavigationState,
   StackActions,
+  ParamListBase,
+  StackActionHelpers,
 } from '@react-navigation/core';
-
-import {
-  screensEnabled,
-  // eslint-disable-next-line import/no-unresolved
-} from '../../react-nativescript-screens/screens';
+import { screensEnabled } from '../../react-nativescript-screens/screens';
 import NativeStackView from '../views/NativeStackView';
 import {
   NativeStackNavigatorProps,
@@ -27,14 +29,15 @@ import {
 function NativeStackNavigator(props: NativeStackNavigatorProps) {
   if (!screensEnabled()) {
     throw new Error(
-      'Native stack is only available if React Native Screens is enabled.'
+      'Native stack is only available if React NativeScript Screens is enabled.'
     );
   }
 
   const { initialRouteName, children, screenOptions, ...rest } = props;
   const { state, descriptors, navigation } = useNavigationBuilder<
-    StackNavigationState,
+    StackNavigationState<ParamListBase>,
     StackRouterOptions,
+    StackActionHelpers<ParamListBase>,
     NativeStackNavigationOptions,
     NativeStackNavigationEventMap
   >(StackRouter, {
@@ -80,7 +83,7 @@ function NativeStackNavigator(props: NativeStackNavigatorProps) {
 }
 
 export default createNavigatorFactory<
-  StackNavigationState,
+  StackNavigationState<ParamListBase>,
   NativeStackNavigationOptions,
   NativeStackNavigationEventMap,
   typeof NativeStackNavigator

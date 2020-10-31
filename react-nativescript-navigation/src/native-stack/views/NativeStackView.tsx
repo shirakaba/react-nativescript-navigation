@@ -12,12 +12,14 @@ import {
 import {
   StackNavigationState,
   StackActions,
+  ParamListBase,
   // useTheme,
 } from '@react-navigation/core';
 import HeaderConfig from './HeaderConfig';
-import {
+import type {
   NativeStackNavigationHelpers,
   NativeStackDescriptorMap,
+  NativeStackViewProps,
 } from '../types';
 import { isAndroid } from "@nativescript/core";
 import {
@@ -39,12 +41,6 @@ interface TNSFramePrivate extends Frame {
 
 const Screen = (ScreenComponent as unknown) as React.ComponentType<ScreenProps>;
 
-type Props = {
-  state: StackNavigationState;
-  navigation: NativeStackNavigationHelpers;
-  descriptors: NativeStackDescriptorMap;
-};
-
 /**
  * 
  * @see https://github.com/software-mansion/react-native-screens/blob/73959abc975b5718e683d39f1452ec0bb4d5f475/native-stack/views/NativeStackView.tsx#L27
@@ -53,13 +49,15 @@ export default function NativeStackView({
   state,
   navigation,
   descriptors,
-}: Props) {
+  style,
+  ...rest
+}: NativeStackViewProps) {
   // const { colors } = useTheme();
   // console.log(`[NativeStackView] ${JSON.stringify(state.routes.map(route => route.key))}`);
 
   return (
     // Frame
-    <ScreenStack style={styles.container}>
+    <ScreenStack {...rest} style={{ ...styles.container, ...style }}>
       {state.routes.map((route, index, self) => {
         const { options, render: renderScene } = descriptors[route.key];
         const {
