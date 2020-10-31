@@ -1,6 +1,6 @@
 {
   "name": "react-nativescript-navigation",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "React Navigation integration for NativeScript",
   "main": "dist/index.js",
   "files": [

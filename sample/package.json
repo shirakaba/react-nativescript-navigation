@@ -17,8 +17,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
-    "@nativescript/android": "^7.0.0",
-    "@nativescript/ios": "7.0.3",
+    "@nativescript/android": "^7.0.1",
+    "@nativescript/ios": "^7.0.4",
     "@nativescript/types": "7.0.1",
     "@nativescript/webpack": "~3.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.0-beta.5",
