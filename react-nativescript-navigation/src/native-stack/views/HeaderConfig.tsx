@@ -14,9 +14,9 @@ import {
   Route,
   // useTheme
 } from '@react-navigation/core';
-import { NativeStackNavigationOptions } from '../types';
+import { FrameNavigationOptions } from '../types';
 
-type Props = NativeStackNavigationOptions & {
+type Props = FrameNavigationOptions & {
   route: Route<string>;
 };
 
