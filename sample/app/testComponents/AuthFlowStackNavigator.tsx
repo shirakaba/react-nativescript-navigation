@@ -1,7 +1,7 @@
 import * as React from "react";
 import { __unstable__forwardNavOpts } from 'react-nativescript';
 import { BaseNavigationContainer, RouteProp, StackActions } from '@react-navigation/core';
-import { stackNavigatorFactory, NativeStackNavigationProp } from "react-nativescript-navigation";
+import { stackNavigatorFactory, FrameNavigationProp } from "react-nativescript-navigation";
 
 const StackNavigator = stackNavigatorFactory();
 
@@ -125,7 +125,7 @@ type AuthorisedStackParamList = {
 
 type LoginScreenProps = {
     route: RouteProp<UnauthorisedStackParamList, "login">,
-    navigation: NativeStackNavigationProp<UnauthorisedStackParamList, "login">,
+    navigation: FrameNavigationProp<UnauthorisedStackParamList, "login">,
 }
 
 function Login({ navigation }: LoginScreenProps) {
@@ -177,7 +177,7 @@ function Login({ navigation }: LoginScreenProps) {
 
 type RegistrationScreenProps = {
     route: RouteProp<UnauthorisedStackParamList, "registration">,
-    navigation: NativeStackNavigationProp<UnauthorisedStackParamList, "registration">,
+    navigation: FrameNavigationProp<UnauthorisedStackParamList, "registration">,
 }
 
 function Registration({ navigation }: RegistrationScreenProps) {
@@ -228,7 +228,7 @@ function Registration({ navigation }: RegistrationScreenProps) {
 
 type NestedScreenProps = {
     route: RouteProp<UnauthorisedStackParamList, "nested">,
-    navigation: NativeStackNavigationProp<UnauthorisedStackParamList, "nested">,
+    navigation: FrameNavigationProp<UnauthorisedStackParamList, "nested">,
 }
 
 function Nested({ navigation, route }: NestedScreenProps) {
@@ -278,7 +278,7 @@ function Nested({ navigation, route }: NestedScreenProps) {
 
 type HomeScreenProps = {
     route: RouteProp<AuthorisedStackParamList, "home">,
-    navigation: NativeStackNavigationProp<AuthorisedStackParamList, "home">,
+    navigation: FrameNavigationProp<AuthorisedStackParamList, "home">,
 }
 
 function Home({ navigation }: HomeScreenProps) {
@@ -306,7 +306,7 @@ function Home({ navigation }: HomeScreenProps) {
 
 type ProfileScreenProps = {
     route: RouteProp<AuthorisedStackParamList, "profile">,
-    navigation: NativeStackNavigationProp<AuthorisedStackParamList, "profile">,
+    navigation: FrameNavigationProp<AuthorisedStackParamList, "profile">,
 }
 
 function Profile({ navigation }: ProfileScreenProps) {

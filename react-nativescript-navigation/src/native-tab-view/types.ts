@@ -44,7 +44,14 @@ export type TabViewScreenProps<
   route: RouteProp<ParamList, RouteName>;
 };
 
-// Supported screen options
+/**
+ * Supported screen options, which determine the behaviour of each TabStripItem and its corresponding TabContentItem.
+ * Set these to common values via the TabsNavigator.Navigator `screenOptions` prop;
+ * ... or to screen-specific values via each TabsNavigator.Screen `options` prop.
+ * 
+ * @example <TabNavigator.Navigator initialRouteName="home" screenOptions={{ iconSource: "res://tab_icon_home" }}>
+ * @example <TabNavigator.Screen options={{ iconSource: "res://tab_icon_home" }} name="home" component={Home} />
+ */
 export type TabViewNavigationOptions = {
     title?: string;
     /**
@@ -66,7 +73,12 @@ export type TabViewDescriptorMap = {
   [key: string]: TabViewDescriptor;
 };
 
-// Props accepted by the view
+/**
+ * The navigation config, which determines the behaviour of the Tabs and TabStrip components.
+ * Set these by passing the props directly to TabNavigator.Navigator
+ * 
+ * @example <TabNavigator.Navigator initialRouteName="home" exampleOption={"Just an example."}>
+ */
 export type TabViewNavigationConfig = Partial<
   Omit<
     NativeScriptProps<TabViewAttributes, TabView>,
@@ -75,4 +87,9 @@ export type TabViewNavigationConfig = Partial<
   >
 > & {
     // Custom props that aren't simply spread onto the tabView element as-is
+
+    /**
+     * Doesn't do anything; is just included to demonstrate how to configure the Navigator.
+     */
+    exampleOption?: string;
 };

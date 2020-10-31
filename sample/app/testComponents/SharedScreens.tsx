@@ -1,6 +1,6 @@
 import * as React from "react";
 import { RouteProp } from '@react-navigation/core';
-import { NativeStackNavigationProp } from "react-nativescript-navigation";
+import { FrameNavigationProp } from "react-nativescript-navigation";
 
 type SimpleStackParamList = {
     first: {},
@@ -10,7 +10,7 @@ type SimpleStackParamList = {
 
 type FirstScreenProps = {
     route: RouteProp<SimpleStackParamList, "first">,
-    navigation: NativeStackNavigationProp<SimpleStackParamList, "first">,
+    navigation: FrameNavigationProp<SimpleStackParamList, "first">,
 }
 
 export function First({ navigation }: FirstScreenProps) {
@@ -38,7 +38,7 @@ export function First({ navigation }: FirstScreenProps) {
 
 type SecondScreenProps = {
     route: RouteProp<SimpleStackParamList, "second">,
-    navigation: NativeStackNavigationProp<SimpleStackParamList, "second">,
+    navigation: FrameNavigationProp<SimpleStackParamList, "second">,
 }
 
 export function Second({ navigation }: SecondScreenProps) {

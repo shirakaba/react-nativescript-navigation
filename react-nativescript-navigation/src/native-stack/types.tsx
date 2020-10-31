@@ -75,7 +75,14 @@ export type FrameNavigationHelpers = NavigationHelpers<
   FrameNavigationEventMap
 >;
 
-// Supported screen (Page) options
+/**
+ * Supported screen options, which determine the behaviour of the Page and ActionBar components.
+ * Set these to common values via the StackNavigator.Navigator `screenOptions` prop;
+ * ... or to screen-specific values via each StackNavigator.Screen `options` prop.
+ * 
+ * @example <TabNavigator.Navigator initialRouteName="home" screenOptions={{ title: "Landing Page" }}>
+ * @example <TabNavigator.Screen options={{ title: "Landing Page" }} name="home" component={Home} />
+ */
 export type FrameNavigationOptions = {
   /**
    * String that can be displayed in the header as a fallback for `headerTitle`.
@@ -249,6 +256,12 @@ export type FrameNavigationOptions = {
   stackAnimation?: ScreenProps['stackAnimation'];
 };
 
+/**
+ * The navigation config, which determines the behaviour of the Frame component.
+ * Set these by passing the props directly to TabNavigator.Navigator.
+ * 
+ * @example <TabNavigator.Navigator initialRouteName="home" exampleOption={"Just an example."}>
+ */
 export type FrameNavigationConfig = Partial<
   Omit<
     NativeScriptProps<FrameAttributes, Frame>,
@@ -264,6 +277,11 @@ export type FrameNavigationConfig = Partial<
   >
 > & {
   // Custom props that aren't simply spread onto the frame element as-is
+
+  /**
+   * Doesn't do anything; is just included to demonstrate how to configure the Navigator.
+   */
+  exampleOption?: string;
 };
 export type FrameProps = FrameNavigationConfig & {
   state: StackNavigationState<ParamListBase>;

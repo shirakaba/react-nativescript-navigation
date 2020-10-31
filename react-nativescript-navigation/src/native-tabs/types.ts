@@ -44,7 +44,14 @@ export type TabsScreenProps<
   route: RouteProp<ParamList, RouteName>;
 };
 
-// Supported screen options
+/**
+ * Supported screen options, which determine the behaviour of each TabStripItem and its corresponding TabContentItem.
+ * Set these to common values via the TabsNavigator.Navigator `screenOptions` prop;
+ * ... or to screen-specific values via each TabsNavigator.Screen `options` prop.
+ * 
+ * @example <TabNavigator.Navigator initialRouteName="home" screenOptions={{ src: "res://tab_icon_home" }}>
+ * @example <TabNavigator.Screen options={{ src: "res://tab_icon_home" }} name="home" component={Home} />
+ */
 export type TabsNavigationOptions = {
     title?: string;
     /**
@@ -76,7 +83,12 @@ export type TabsDescriptorMap = {
   [key: string]: TabsDescriptor;
 };
 
-// Props accepted by the view
+/**
+ * The navigation config, which determines the behaviour of the Tabs and TabStrip components.
+ * Set these by passing the props directly to TabNavigator.Navigator
+ * 
+ * @example <TabNavigator.Navigator initialRouteName="home" tabStripOptions={{ selectedItemColor: 'purple' }}>
+ */
 export type TabsNavigationConfig = Partial<
   Omit<
     NativeScriptProps<TabsAttributes, Tabs>,
