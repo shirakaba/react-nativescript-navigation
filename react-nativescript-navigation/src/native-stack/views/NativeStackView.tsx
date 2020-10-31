@@ -17,9 +17,9 @@ import {
 } from '@react-navigation/core';
 import HeaderConfig from './HeaderConfig';
 import type {
-  NativeStackNavigationHelpers,
-  NativeStackDescriptorMap,
-  NativeStackViewProps,
+  FrameNavigationHelpers,
+  FrameDescriptorMap,
+  FrameProps,
 } from '../types';
 import { isAndroid } from "@nativescript/core";
 import {
@@ -43,17 +43,17 @@ const Screen = (ScreenComponent as unknown) as React.ComponentType<ScreenProps>;
 
 /**
  * 
- * @see https://github.com/software-mansion/react-native-screens/blob/73959abc975b5718e683d39f1452ec0bb4d5f475/native-stack/views/NativeStackView.tsx#L27
+ * @see https://github.com/software-mansion/react-native-screens/blob/73959abc975b5718e683d39f1452ec0bb4d5f475/native-stack/views/Frame.tsx#L27
  */
-export default function NativeStackView({
+export default function FrameNavigatorView({
   state,
   navigation,
   descriptors,
   style,
   ...rest
-}: NativeStackViewProps) {
+}: FrameProps) {
   // const { colors } = useTheme();
-  // console.log(`[NativeStackView] ${JSON.stringify(state.routes.map(route => route.key))}`);
+  // console.log(`[Frame] ${JSON.stringify(state.routes.map(route => route.key))}`);
 
   return (
     // Frame
@@ -133,7 +133,7 @@ export default function NativeStackView({
               // console.log(`[Screen.${route.key} ${args.object}] 'willAppear'.`);
             }}
             onDidAppear={(args: NavigatedData) => {
-              // Software Mansion's NativeStackView chooses to emit before the dispatch.
+              // Software Mansion's Frame chooses to emit before the dispatch.
               navigation.emit({
                 type: 'didAppear',
                 target: route.key,

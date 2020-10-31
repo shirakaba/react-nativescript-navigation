@@ -26,7 +26,7 @@ type NativeSyntheticEvent<T> = any;
 type NativeTouchEvent = any;
 type ImageSourcePropType = ImageSource;
 
-export type NativeStackNavigationEventMap = {
+export type FrameNavigationEventMap = {
   /**
    * Event which fires when the screen appears.
    */
@@ -37,15 +37,15 @@ export type NativeStackNavigationEventMap = {
   didDisappear: { data: undefined };
 };
 
-export type NativeStackNavigationProp<
+export type FrameNavigationProp<
   ParamList extends ParamListBase,
   RouteName extends keyof ParamList = string
 > = NavigationProp<
   ParamList,
   RouteName,
   StackNavigationState<ParamListBase>,
-  NativeStackNavigationOptions,
-  NativeStackNavigationEventMap
+  FrameNavigationOptions,
+  FrameNavigationEventMap
 > & {
   /**
    * Push a new screen onto the stack.
@@ -70,13 +70,13 @@ export type NativeStackNavigationProp<
   popToTop(): void;
 };
 
-export type NativeStackNavigationHelpers = NavigationHelpers<
+export type FrameNavigationHelpers = NavigationHelpers<
   ParamListBase,
-  NativeStackNavigationEventMap
+  FrameNavigationEventMap
 >;
 
 // Supported screen (Page) options
-export type NativeStackNavigationOptions = {
+export type FrameNavigationOptions = {
   /**
    * String that can be displayed in the header as a fallback for `headerTitle`.
    */
@@ -249,7 +249,7 @@ export type NativeStackNavigationOptions = {
   stackAnimation?: ScreenProps['stackAnimation'];
 };
 
-export type NativeStackNavigationConfig = Partial<
+export type FrameNavigationConfig = Partial<
   Omit<
     NativeScriptProps<FrameAttributes, Frame>,
     "actionBarVisibility" |
@@ -265,39 +265,25 @@ export type NativeStackNavigationConfig = Partial<
 > & {
   // Custom props that aren't simply spread onto the frame element as-is
 };
-
-// There may be a better way to express this (some subset of how NativeStackViewProps was constructed),
-// but Omit does the trick.
-// export type NativeStackViewProps = {
-//   state: StackNavigationState<ParamListBase>;
-//   navigation: NativeStackNavigationHelpers;
-//   descriptors: NativeStackDescriptorMap;
-// } & Omit<
-//   NativeStackNavigatorProps,
-//   "initialRouteName" |
-//   "children" |
-//   "screenOptions"
-// >;
-
-export type NativeStackViewProps = NativeStackNavigationConfig & {
+export type FrameProps = FrameNavigationConfig & {
   state: StackNavigationState<ParamListBase>;
-  navigation: NativeStackNavigationHelpers;
-  descriptors: NativeStackDescriptorMap;
+  navigation: FrameNavigationHelpers;
+  descriptors: FrameDescriptorMap;
 };
 
-export type NativeStackNavigatorProps = DefaultNavigatorOptions<
-  NativeStackNavigationOptions
+export type FrameNavigatorProps = DefaultNavigatorOptions<
+  FrameNavigationOptions
 > &
   StackRouterOptions &
-  NativeStackNavigationConfig;
+  FrameNavigationConfig;
 
-export type NativeStackDescriptor = Descriptor<
+export type FrameDescriptor = Descriptor<
   ParamListBase,
   string,
   StackNavigationState<ParamListBase>,
-  NativeStackNavigationOptions
+  FrameNavigationOptions
 >;
 
-export type NativeStackDescriptorMap = {
-  [key: string]: NativeStackDescriptor;
+export type FrameDescriptorMap = {
+  [key: string]: FrameDescriptor;
 };

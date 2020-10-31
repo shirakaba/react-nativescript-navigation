@@ -19,14 +19,14 @@ import {
   StackActionHelpers,
 } from '@react-navigation/core';
 import { screensEnabled } from '../../react-nativescript-screens/screens';
-import NativeStackView from '../views/NativeStackView';
+import FrameNavigatorView from '../views/NativeStackView';
 import {
-  NativeStackNavigatorProps,
-  NativeStackNavigationOptions,
-  NativeStackNavigationEventMap,
+  FrameNavigatorProps,
+  FrameNavigationOptions,
+  FrameNavigationEventMap,
 } from '../types';
 
-function NativeStackNavigator(props: NativeStackNavigatorProps) {
+function StackNavigator(props: FrameNavigatorProps) {
   if (!screensEnabled()) {
     throw new Error(
       'Native stack is only available if React NativeScript Screens is enabled.'
@@ -38,8 +38,8 @@ function NativeStackNavigator(props: NativeStackNavigatorProps) {
     StackNavigationState<ParamListBase>,
     StackRouterOptions,
     StackActionHelpers<ParamListBase>,
-    NativeStackNavigationOptions,
-    NativeStackNavigationEventMap
+    FrameNavigationOptions,
+    FrameNavigationEventMap
   >(StackRouter, {
     initialRouteName,
     children,
@@ -73,7 +73,7 @@ function NativeStackNavigator(props: NativeStackNavigatorProps) {
   );
 
   return (
-    <NativeStackView
+    <FrameNavigatorView
       {...rest}
       state={state}
       navigation={navigation}
@@ -84,7 +84,7 @@ function NativeStackNavigator(props: NativeStackNavigatorProps) {
 
 export default createNavigatorFactory<
   StackNavigationState<ParamListBase>,
-  NativeStackNavigationOptions,
-  NativeStackNavigationEventMap,
-  typeof NativeStackNavigator
->(NativeStackNavigator);
+  FrameNavigationOptions,
+  FrameNavigationEventMap,
+  typeof StackNavigator
+>(StackNavigator);
