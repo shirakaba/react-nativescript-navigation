@@ -11,12 +11,12 @@ export { default as createNativeStackNavigator } from './navigators/createNative
 /**
  * Views
  */
-export { default as NativeStackView } from './views/NativeStackView';
+export { default as FrameNavigatorView } from './views/FrameNavigatorView';
 
 /**
  * Types
  */
 export type {
-  NativeStackNavigationOptions,
-  NativeStackNavigationProp,
+  FrameNavigationOptions,
+  FrameNavigationProp,
 } from './types';

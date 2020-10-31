@@ -1,8 +1,8 @@
 export {
     createNativeStackNavigator as stackNavigatorFactory,
-    NativeStackView,
-    NativeStackNavigationOptions,
-    NativeStackNavigationProp
+    FrameNavigatorView,
+    FrameNavigationOptions,
+    FrameNavigationProp
 } from "./native-stack";
 export {
     default as tabsNavigatorFactory,
