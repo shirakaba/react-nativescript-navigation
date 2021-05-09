@@ -35,12 +35,12 @@
   "peerDependencies": {
     "react": "^16.13.1",
     "react-nativescript": ">=3.0.0-beta.1",
-    "@react-navigation/core": "^5.13.2",
+    "@react-navigation/core": "^5.15.3",
     "@nativescript/core": "^8.0.0"
   },
   "devDependencies": {
     "@nativescript/core": "^8.0.4",
-    "@react-navigation/core": "^5.13.2",
+    "@react-navigation/core": "^5.15.3",
     "@types/react": "16.9.34",
     "patch-package": "^6.2.2",
     "prettier": "1.18.2",
