@@ -9,10 +9,10 @@
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "dependencies": {
-    "@nativescript/core": "~8.0.0",
-    "@react-navigation/core": "^5.13.2",
-    "react": "^16.13.1",
-    "react-nativescript": "^3.0.0-beta.1",
+    "@nativescript/core": "file:../react-nativescript-navigation/node_modules/@nativescript/core",
+    "@react-navigation/core": "file:../react-nativescript-navigation/node_modules/@react-navigation/core",
+    "react": "file:../react-nativescript-navigation/node_modules/react",
+    "react-nativescript": "file:../react-nativescript-navigation/node_modules/react-nativescript",
     "react-nativescript-navigation": "file:../react-nativescript-navigation"
   },
   "devDependencies": {
@@ -22,10 +22,10 @@
     "@nativescript/types": "~8.0.0",
     "@nativescript/webpack": "5.0.0-beta.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.0-beta.5",
-    "@types/react": "16.9.34",
+    "@types/react": "file:../react-nativescript-navigation/node_modules/@types/react",
     "patch-package": "~6.2.2",
     "react-refresh": "~0.8.3",
-    "typescript": "~4.0.0"
+    "typescript": "file:../react-nativescript-navigation/node_modules/typescript"
   },
   "readme": "NativeScript Application"
 }
