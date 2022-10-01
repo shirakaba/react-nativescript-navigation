@@ -1,7 +1,7 @@
 import { NativeScriptConfig } from '@nativescript/core';
 
 export default {
-    id: 'uk.co.birchlabs.rnssample',
+    id: 'uk.co.birchlabs.rnsnavsample',
     appPath: 'app',
     appResourcesPath: 'App_Resources',
     useLegacyWorkflow: false,

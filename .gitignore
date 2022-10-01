@@ -9,3 +9,4 @@ react-nativescript-navigation/src/**/*.js
 github_img/HQ
 .npmrc
 sample/.awcache
+.DS_Store

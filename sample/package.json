@@ -2,30 +2,30 @@
   "name": "rns-navigation-sample-app",
   "main": "app/app.ts",
   "scripts": {
-    "postinstall": "patch-package",
     "tsc": "tsc"
   },
   "description": "NativeScript Application",
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "dependencies": {
-    "@nativescript/core": "file:../react-nativescript-navigation/node_modules/@nativescript/core",
-    "@react-navigation/core": "file:../react-nativescript-navigation/node_modules/@react-navigation/core",
-    "react": "file:../react-nativescript-navigation/node_modules/react",
-    "react-nativescript": "file:../react-nativescript-navigation/node_modules/react-nativescript",
-    "react-nativescript-navigation": "file:../react-nativescript-navigation"
+    "@nativescript/core": "^8.3.5",
+    "@nativescript/ios": "^8.3.3",
+    "@react-navigation/core": "^5.16.1",
+    "react": "^16.14.0",
+    "react-nativescript": "^4.0.0",
+    "react-nativescript-navigation": "file:../react-nativescript-navigation",
+    "react-refresh": "~0.14.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@nativescript/android": "8.0.0",
-    "@nativescript/ios": "8.0.0",
-    "@nativescript/types": "~8.0.0",
-    "@nativescript/webpack": "5.0.0-beta.0",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.0-beta.5",
-    "@types/react": "file:../react-nativescript-navigation/node_modules/@types/react",
-    "patch-package": "~6.2.2",
-    "react-refresh": "~0.8.3",
-    "typescript": "file:../react-nativescript-navigation/node_modules/typescript"
+    "@babel/core": "^7.19.3",
+    "@nativescript/types": "^8.3.1",
+    "@nativescript/webpack": "~5.0.8",
+    "@pmmmwh/react-refresh-webpack-plugin": "~0.5.7",
+    "@types/react": "npm:types-react-without-jsx-intrinsics@^16.14.30",
+    "babel-loader": "^8.2.5",
+    "copy-webpack-plugin": "^11.0.0",
+    "fork-ts-checker-webpack-plugin": "^7.2.13",
+    "typescript": "^4.8.4"
   },
   "readme": "NativeScript Application"
 }
