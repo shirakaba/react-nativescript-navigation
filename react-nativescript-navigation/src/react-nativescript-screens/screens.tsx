@@ -477,6 +477,7 @@ export const NativeScreensProvider: React.FC<FrameProps> = ({ children, ...rest 
   }
   function $navigate<T>(params: GoToScreenParams<T>) {
     createView(params, (page) => {
+      page.actionBarHidden = !!params.pageProps?.actionBarHidden
       navRef.current.nativeView.navigate({
         create() {
           return page
