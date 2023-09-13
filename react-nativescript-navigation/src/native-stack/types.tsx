@@ -7,7 +7,7 @@ import * as React from 'react';
 // import { StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
 import { FrameAttributes, NativeScriptProps, RNSStyle } from "react-nativescript";
 import { NavigationButtonAttributes } from "react-nativescript";
-import { ImageSource, Color, Frame } from "@nativescript/core";
+import { ImageSource, Color, Frame, NavigatedData } from "@nativescript/core";
 import { ScreenProps } from '../react-nativescript-screens/screens';
 import {
   DefaultNavigatorOptions,
@@ -30,11 +30,18 @@ export type FrameNavigationEventMap = {
   /**
    * Event which fires when the screen appears.
    */
-  didAppear: { data: undefined };
+  willAppear: { data: NavigatedData };
+
+  /**
+   * Event which fires when the screen appears.
+   */
+  didAppear: { data: NavigatedData };
   /**
    * Event which fires when the current screen is dismissed by hardware back (on Android) or dismiss gesture (swipe back or down).
    */
-  didDisappear: { data: undefined };
+  didDisappear: { data: NavigatedData };
+
+  willDisappear: { data: NavigatedData };
 };
 
 export type FrameNavigationProp<
