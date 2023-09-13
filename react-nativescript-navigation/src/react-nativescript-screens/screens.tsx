@@ -439,6 +439,8 @@ type GoToScreenParams<T> = {
 interface NativeScreensContextData {
   $showModal<T>(params: GoToScreenParams<T>): void
   $navigate<T>(params: GoToScreenParams<T>): void
+  $goBack(): void
+  $closeModal(): void
 }
 
 const NativeScreensContext = React.createContext({} as NativeScreensContextData)
@@ -460,7 +462,16 @@ export const NativeScreensProvider: React.FC<FrameProps> = ({ children, ...rest 
           </NativeScreen>
         </NativeScreensProvider>
       ),
-      container, () => callback(container.nativeView), key, true)
+      container, () => {
+        if (params.pageProps) { 
+          Object.keys(params.pageProps).forEach((key) => {
+            if (container.nativeView[key]) {
+              container.nativeView[key] = params.pageProps[key]
+            }
+          })
+        }
+        callback(container.nativeView)
+      }, key, true)
   }
   function $showModal<T>(params: GoToScreenParams<T>, fullScreen?: boolean) {
     createView(params, (page) => {
@@ -477,7 +488,6 @@ export const NativeScreensProvider: React.FC<FrameProps> = ({ children, ...rest 
   }
   function $navigate<T>(params: GoToScreenParams<T>) {
     createView(params, (page) => {
-      page.actionBarHidden = !!params.pageProps?.actionBarHidden
       navRef.current.nativeView.navigate({
         create() {
           return page
@@ -489,10 +499,22 @@ export const NativeScreensProvider: React.FC<FrameProps> = ({ children, ...rest 
       })
     })
   }
+
+  function $goBack() {
+    if (!navRef.current) return
+    if (navRef.current.nativeView.canGoBack()) navRef.current.nativeView.goBack()
+  }
+
+  function $closeModal() {
+    if (!navRef.current) return
+    navRef.current.nativeView.closeModal()
+  }
   return (
     <NativeScreensContext.Provider value={{
       $navigate,
       $showModal,
+      $goBack,
+      $closeModal,
     }}>
       <frame {...rest} ref={navRef}>
         {children}
