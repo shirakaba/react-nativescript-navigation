@@ -4,8 +4,9 @@
  */
 import * as React from 'react';
 import { PropsWithChildren } from 'react';
-import { RNSStyle, PageAttributes, FlexboxLayoutAttributes, NavigationButtonAttributes, ActionBarAttributes, ActionItemAttributes, NSVElement } from "react-nativescript";
-import { NavigatedData, Color } from "@nativescript/core";
+import { RNSStyle, PageAttributes, FlexboxLayoutAttributes, NavigationButtonAttributes, ActionBarAttributes, ActionItemAttributes, NSVElement, render } from "react-nativescript";
+import { NavigatedData, Color, Page, Frame, NavigationTransition, ContainerView, EventData, ContentView } from "@nativescript/core";
+import { FrameProps } from 'src/native-stack/types';
 
 type StyleProp<T> = T;
 type TextStyle = RNSStyle;
@@ -178,81 +179,67 @@ export interface ScreenStackHeaderConfigProps extends FlexboxLayoutAttributes {
   children?: React.ReactNode;
 }
 
-interface NativeScreenState {
-  onscreen: boolean,
-}
 
 /**
  * @see https://github.com/software-mansion/react-native-screens/blob/master/src/screens.web.js
  * @see https://docs.nativescript.org/ui/components/page#page-events
  */
-export class NativeScreen extends React.Component<ScreenProps, NativeScreenState> {
-  // Strictly, this is an NSVElement<Page>, but I'm hitting a TSC error – probably a @nativescript/core version mismatch in my dependencies.
-  private readonly ref = React.createRef<NSVElement<any>>();
 
-  constructor(props: ScreenProps){
-    super(props);
-
-    this.state = {
-      onscreen: props.active === 1,
-    };
-  }
-
+export const NativeScreen: React.FC<ScreenProps> = (props) => {
+  const { active, gestureEnabled, style, ...rest } = props;
+  const [onScreen, setOnScreen] = React.useState<boolean>(() => props.active === 1)
+  const ref = React.useRef<NSVElement<Page>>()
   // 1
-  private readonly onNavigatingFrom = (args: NavigatedData) => {
-    this.props.onWillDisappear?.(args); // √
+  const onNavigatingFrom = (args: NavigatedData) => {
+    props.onWillDisappear?.(args); // √
   };
-  
+
   // 2
-  private readonly onNavigatingTo = (args: NavigatedData) => {
+  const onNavigatingTo = (args: NavigatedData) => {
     // Checking whether our ref is still populated avoids "Can't perform a React state update on an unmounted component."
-    if(this.ref.current){
-      this.setState({ onscreen: true });
+    if (ref.current) {
+      setOnScreen(true);
     }
-    this.props.onWillAppear?.(args);
+    props.onWillAppear?.(args);
   };
-  
+
   // 3
-  private readonly onNavigatedFrom = (args: NavigatedData) => {
-    this.props.onDidDisappear?.(args);
+  const onNavigatedFrom = (args: NavigatedData) => {
+    props.onDidDisappear?.(args);
     // Checking whether our ref is still populated avoids "Can't perform a React state update on an unmounted component."
-    if(this.ref.current){
-      this.setState({ onscreen: false });
+    if (ref.current) {
+      setOnScreen(false)
     }
   };
-  
+
   // 4
-  private readonly onNavigatedTo = (args: NavigatedData) => {
-    this.props.onDidAppear?.(args);
+  const onNavigatedTo = (args: NavigatedData) => {
+    props.onDidAppear?.(args);
   };
 
-  render(){
-    const { active, gestureEnabled, style, ...rest } = this.props;
+  // console.log(`[NativeScreen] ENABLE_SCREENS && !active ${ENABLE_SCREENS && !active}`);
 
-    // console.log(`[NativeScreen] ENABLE_SCREENS && !active ${ENABLE_SCREENS && !active}`);
-
-    return (
-      <page
-        ref={this.ref}
-        enableSwipeBackNavigation={gestureEnabled}
-        onNavigatingTo={this.onNavigatingTo}
-        onNavigatedTo={this.onNavigatedTo}
-        onNavigatedFrom={this.onNavigatedFrom}
-        onNavigatingFrom={this.onNavigatingFrom}
-        style={{
-          ...style,
-          ...(
-            ENABLE_SCREENS && !active && !this.state.onscreen ? 
-              {
-                visibility: 'collapse' // Because `display: 'none'` doesn't exist in NativeScript
-              } : 
-              {}
-          ),
-        }}
-        {...rest}
-      />
-    );
-  }
+  return (
+    <page
+      ref={ref}
+      enableSwipeBackNavigation={gestureEnabled}
+      onNavigatingTo={onNavigatingTo}
+      onNavigatedTo={onNavigatedTo}
+      onNavigatedFrom={onNavigatedFrom}
+      onNavigatingFrom={onNavigatingFrom}
+      style={{
+        ...style,
+        ...(
+          ENABLE_SCREENS && !active && !onScreen ?
+            {
+              visibility: 'collapse' // Because `display: 'none'` doesn't exist in NativeScript
+            } :
+            {}
+        ),
+      }}
+      {...rest}
+    />
+  );
 }
 
 const styles = {
@@ -442,3 +429,96 @@ export const NativeScreenContainer: React.ElementType<JSX.IntrinsicElements["fle
 
 // ScreenStack contains any number of Screen components.
 export const ScreenStack: React.ElementType<JSX.IntrinsicElements["frame"]> = "frame";
+
+type GoToScreenParams<T> = {
+  screen: React.JSXElementConstructor<T>,
+  props?: T,
+  transition?: NavigationTransition,
+  pageProps?: ScreenProps
+}
+interface NativeScreensContextData {
+  $showModal<T>(params: GoToScreenParams<T>): void
+  $navigate<T>(params: GoToScreenParams<T>): void
+  $goBack(): void
+  $closeModal(): void
+}
+
+const NativeScreensContext = React.createContext({} as NativeScreensContextData)
+
+export const NativeScreensProvider: React.FC<FrameProps> = ({ children, ...rest }) => {
+  const navRef = React.useRef<NSVElement<Frame>>()
+  function createView<T>(params: GoToScreenParams<T>, callback = (page: Page) => { }, modal?: boolean) {
+    const { screen: Screen, props } = params
+    if (!navRef.current) return
+    const ref = React.createRef<NSVElement<ContentView>>()
+    const container = new NSVElement<Page>('page')
+    if (modal) container.nativeView.background = 'transparent'
+    const key = `${Date.now()}-screen`
+    render(
+      (
+        <NativeScreensProvider {...rest}>
+          <NativeScreen {...params.pageProps} active={1} key={key}>
+            <Screen {...props ? props : undefined} />
+          </NativeScreen>
+        </NativeScreensProvider>
+      ),
+      container, () => {
+        if (params.pageProps) { 
+          Object.keys(params.pageProps).forEach((key) => {
+            if (container.nativeView[key]) {
+              container.nativeView[key] = params.pageProps[key]
+            }
+          })
+        }
+        callback(container.nativeView)
+      }, key, true)
+  }
+  function $showModal<T>(params: GoToScreenParams<T>, fullScreen?: boolean) {
+    createView(params, (page) => {
+      navRef.current.nativeView.showModal(page, {
+        animated: true,
+        transparent: true,
+        fullscreen: fullScreen,
+        context: params.props,
+        closeCallback: (_args: any) => {
+
+        }
+      });
+    })
+  }
+  function $navigate<T>(params: GoToScreenParams<T>) {
+    createView(params, (page) => {
+      navRef.current.nativeView.navigate({
+        create() {
+          return page
+        },
+        transition: params.transition,
+        backstackVisible: true,
+        context: params.props,
+        animated: true,
+      })
+    })
+  }
+
+  function $goBack() {
+    if (Frame.topmost().canGoBack()) Frame.topmost().goBack()
+  }
+
+  function $closeModal() {
+    Frame.topmost().closeModal()
+  }
+  return (
+    <NativeScreensContext.Provider value={{
+      $navigate,
+      $showModal,
+      $goBack,
+      $closeModal,
+    }}>
+      <frame {...rest} ref={navRef}>
+        {children}
+      </frame>
+    </NativeScreensContext.Provider>
+  )
+}
+
+export const useNativeScreensContext = () => React.useContext(NativeScreensContext)

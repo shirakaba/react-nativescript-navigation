@@ -5,8 +5,8 @@
 import * as React from 'react';
 // import { View, StyleSheet, Platform } from 'react-native';
 import {
-  ScreenStack,
-  Screen as ScreenComponent,
+  NativeScreensProvider as ScreenStack,
+  NativeScreen as ScreenComponent,
   ScreenProps,
 } from '../../react-nativescript-screens/screens';
 import {
@@ -36,7 +36,7 @@ interface TNSFramePrivate extends Frame {
   // _currentEntry: BackstackEntry | undefined,
 
   isCurrent: (entry: BackstackEntry) => boolean,
-  _removeEntry: (entry: BackstackEntry) => void,  
+  _removeEntry: (entry: BackstackEntry) => void,
 }
 
 const Screen = (ScreenComponent as unknown) as React.ComponentType<ScreenProps>;
@@ -46,12 +46,14 @@ const Screen = (ScreenComponent as unknown) as React.ComponentType<ScreenProps>;
  * @see https://github.com/software-mansion/react-native-screens/blob/73959abc975b5718e683d39f1452ec0bb4d5f475/native-stack/views/Frame.tsx#L27
  */
 export default function FrameNavigatorView({
-  state,
-  navigation,
-  descriptors,
   style,
   ...rest
 }: FrameProps) {
+  const {
+    state,
+    navigation,
+    descriptors,
+  } = rest
   // const { colors } = useTheme();
   // console.log(`[Frame] ${JSON.stringify(state.routes.map(route => route.key))}`);
 
@@ -82,11 +84,16 @@ export default function FrameNavigatorView({
             stackAnimation={stackAnimation}
             onWillDisappear={(args: NavigatedData) => {
               // console.log(`[Screen.${route.key} ${args.object}] 'willDisappear'.`);
+              navigation.emit({
+                type: 'willDisappear',
+                target: route.key,
+                data: args
+              });
             }}
             onDidDisappear={(args: NavigatedData) => {
               const page = args.object as Page;
               const frame = page.frame as TNSFramePrivate;
-              if(frame?._currentEntry?.resolvedPage){
+              if (frame?._currentEntry?.resolvedPage) {
                 // console.log(`[Screen.${route.key} ${args.object}] 'didDisappear'. Still currentPage.`);
                 // "First" screen fires this upon disappearing when navigating forward to "Second" via React Navigation.
                 // "Second" screen fires this upon disappearing when navigating backward to "First" via React Navigation.
@@ -131,6 +138,11 @@ export default function FrameNavigatorView({
             }}
             onWillAppear={(args: NavigatedData) => {
               // console.log(`[Screen.${route.key} ${args.object}] 'willAppear'.`);
+              navigation.emit({
+                type: 'willAppear',
+                target: route.key,
+                data: args
+              });
             }}
             onDidAppear={(args: NavigatedData) => {
               // Software Mansion's Frame chooses to emit before the dispatch.
@@ -142,12 +154,12 @@ export default function FrameNavigatorView({
               const page = args.object as Page;
               const frame = page.frame as TNSFramePrivate;
 
-              if(frame?._currentEntry?.resolvedPage === page){
+              if (frame?._currentEntry?.resolvedPage === page) {
                 // "Second" screen fires this upon appearing when being navigating forward to from "First" via React Navigation.
                 // "First" screen fires this upon appearing when being navigating backward to from "Second" via React Navigation.
                 // "First" screen fires this upon appearing when being navigating backward to from "Second" via user.
                 // console.log(`[Screen.${route.key} ${args.object}] 'didAppear', becoming currentPage. active: ${active}`);
-                if(!active){
+                if (!active) {
                   const topRoute = state.routes[state.routes.length - 1];
                   navigation.dispatch({
                     ...StackActions.pop(),
@@ -159,7 +171,7 @@ export default function FrameNavigatorView({
                 // console.log(`[Screen.${route.key} ${args.object}] 'didAppear', but not becoming currentPage.`);
               }
             }}
-            >
+          >
             <HeaderConfig {...options} route={route} />
             <flexboxLayout
               nodeRole={"content"}
