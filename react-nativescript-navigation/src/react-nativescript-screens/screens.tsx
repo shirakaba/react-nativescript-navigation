@@ -501,13 +501,11 @@ export const NativeScreensProvider: React.FC<FrameProps> = ({ children, ...rest 
   }
 
   function $goBack() {
-    if (!navRef.current) return
-    if (navRef.current.nativeView.canGoBack()) navRef.current.nativeView.goBack()
+    if (Frame.topmost().canGoBack()) Frame.topmost().goBack()
   }
 
   function $closeModal() {
-    if (!navRef.current) return
-    navRef.current.nativeView.closeModal()
+    Frame.topmost().closeModal()
   }
   return (
     <NativeScreensContext.Provider value={{
