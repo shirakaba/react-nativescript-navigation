@@ -500,4 +500,4 @@ export const NativeScreensProvider: React.FC<FrameProps> = ({ children, ...rest 
   )
 }
 
-export const useNativeScreenContext = () => React.useContext(NativeScreensContext)
+export const useNativeScreensContext = () => React.useContext(NativeScreensContext)
